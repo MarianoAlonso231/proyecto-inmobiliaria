@@ -1,6 +1,6 @@
 {
-  "/page": "app/page.js",
+  "/ventas/page": "app/ventas/page.js",
   "/alquileres/page": "app/alquileres/page.js",
-  "/not-found": "app/not-found.js",
-  "/ventas/page": "app/ventas/page.js"
+  "/contacto/page": "app/contacto/page.js",
+  "/tasacion/page": "app/tasacion/page.js"
 }
