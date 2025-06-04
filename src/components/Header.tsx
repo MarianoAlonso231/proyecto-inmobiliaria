@@ -41,7 +41,7 @@ const Header = () => {
 
           {/* Contact Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm" className="border-primary-400 text-primary-400 hover:bg-primary-50">
+            <Button className="bg-primary-400 hover:bg-primary-500 text-white">
               <Phone className="w-4 h-4 mr-2" />
               Contactar
             </Button>
@@ -77,7 +77,7 @@ const Header = () => {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="outline" size="sm" className="border-primary-400 text-primary-400">
+                <Button className="bg-primary-400 hover:bg-primary-500 text-white w-full">
                   <Phone className="w-4 h-4 mr-2" />
                   Contactar
                 </Button>

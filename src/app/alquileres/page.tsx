@@ -9,6 +9,7 @@ import { MapPin, Bed, Bath, Square, Search, Filter, Loader2, AlertCircle } from 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useProperties, Property } from '@/hooks/useProperties';
+import PropertyCard from '@/components/PropertyCard';
 
 export default function AlquileresPage() {
   const { properties: allProperties, isLoading, error } = useProperties();
@@ -103,21 +104,21 @@ export default function AlquileresPage() {
         </div>
 
         {/* Filtros */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
+        <Card className="mb-8 bg-white border-gray-200">
+          <CardContent className="p-6 bg-white">
             <div className="flex items-center gap-2 mb-4">
-              <Filter className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-semibold">Filtros de búsqueda</h2>
+              <Filter className="w-5 h-5 text-primary-400" />
+              <h2 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div>
-                <Label htmlFor="tipo">Tipo de propiedad</Label>
+                <Label htmlFor="tipo" className="text-gray-700 font-medium">Tipo de propiedad</Label>
                 <Select value={filters.tipo} onValueChange={(value) => setFilters({...filters, tipo: value})}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="todos">Todos</SelectItem>
                     <SelectItem value="casa">Casa</SelectItem>
                     <SelectItem value="apartamento">Apartamento</SelectItem>
@@ -129,12 +130,12 @@ export default function AlquileresPage() {
               </div>
 
               <div>
-                <Label htmlFor="dormitorios">Dormitorios</Label>
+                <Label htmlFor="dormitorios" className="text-gray-700 font-medium">Dormitorios</Label>
                 <Select value={filters.dormitorios} onValueChange={(value) => setFilters({...filters, dormitorios: value})}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border-gray-300 text-gray-900">
                     <SelectValue placeholder="Cualquiera" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="cualquiera">Cualquiera</SelectItem>
                     <SelectItem value="1">1</SelectItem>
                     <SelectItem value="2">2</SelectItem>
@@ -145,39 +146,42 @@ export default function AlquileresPage() {
               </div>
 
               <div>
-                <Label htmlFor="precioMin">Precio mínimo</Label>
+                <Label htmlFor="precioMin" className="text-gray-700 font-medium">Precio mínimo</Label>
                 <Input
                   id="precioMin"
                   type="number"
                   placeholder="$500"
                   value={filters.precioMin}
                   onChange={(e) => setFilters({...filters, precioMin: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
                 />
               </div>
 
               <div>
-                <Label htmlFor="precioMax">Precio máximo</Label>
+                <Label htmlFor="precioMax" className="text-gray-700 font-medium">Precio máximo</Label>
                 <Input
                   id="precioMax"
                   type="number"
                   placeholder="$2000"
                   value={filters.precioMax}
                   onChange={(e) => setFilters({...filters, precioMax: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
                 />
               </div>
 
               <div>
-                <Label htmlFor="barrio">Barrio</Label>
+                <Label htmlFor="barrio" className="text-gray-700 font-medium">Barrio</Label>
                 <Input
                   id="barrio"
                   placeholder="Buscar barrio"
                   value={filters.barrio}
                   onChange={(e) => setFilters({...filters, barrio: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
                 />
               </div>
             </div>
 
-            <Button onClick={applyFilters} className="mt-4 bg-blue-600 hover:bg-blue-700">
+            <Button onClick={applyFilters} className="mt-4 bg-primary-400 hover:bg-primary-500 text-white">
               <Search className="w-4 h-4 mr-2" />
               Aplicar filtros
             </Button>
@@ -207,85 +211,36 @@ export default function AlquileresPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProperties.map((property) => (
-              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow bg-white">
-                <div className="aspect-video bg-gray-200 relative">
-                  {property.images.length > 0 ? (
-                    <img 
-                      src={property.images[0]} 
-                      alt={property.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                      <div className="text-center text-gray-500">
-                        <Square className="h-12 w-12 mx-auto mb-2" />
-                        <p className="text-sm font-medium">Sin imagen</p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute top-4 right-4 bg-blue-700 text-white px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
-                    {formatPrice(property.price, property.currency)}/mes
-                  </div>
-                  {property.featured && (
-                    <div className="absolute top-4 left-4 bg-orange-600 text-white px-2 py-1 rounded-md text-xs font-bold shadow-lg">
-                      Destacada
-                    </div>
-                  )}
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-gray-900">{property.title}</h3>
-                  <div className="flex items-center text-gray-700 mb-2">
-                    <MapPin className="w-4 h-4 mr-1 text-gray-600" />
-                    <span className="text-sm font-medium">
-                      {property.address || property.neighborhood || property.city || 'Ubicación no especificada'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-700 mb-4 font-medium">
-                    {property.bedrooms > 0 && (
-                      <div className="flex items-center">
-                        <Bed className="w-4 h-4 mr-1 text-gray-600" />
-                        <span>{property.bedrooms}</span>
-                      </div>
-                    )}
-                    {property.bathrooms > 0 && (
-                      <div className="flex items-center">
-                        <Bath className="w-4 h-4 mr-1 text-gray-600" />
-                        <span>{property.bathrooms}</span>
-                      </div>
-                    )}
-                    {property.area_m2 && (
-                      <div className="flex items-center">
-                        <Square className="w-4 h-4 mr-1 text-gray-600" />
-                        <span>{property.area_m2}m²</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {property.features.length > 0 && (
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-1">
-                        {property.features.slice(0, 3).map((feature, index) => (
-                          <span key={index} className="bg-purple-50 text-purple-800 text-xs px-2 py-1 rounded font-medium border border-purple-200">
-                            {feature}
-                          </span>
-                        ))}
-                        {property.features.length > 3 && (
-                          <span className="bg-purple-50 text-purple-800 text-xs px-2 py-1 rounded font-medium border border-purple-200">
-                            +{property.features.length - 3} más
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
-                    Ver detalles
-                  </Button>
-                </CardContent>
-              </Card>
+              <PropertyCard
+                key={property.id}
+                id={property.id}
+                title={property.title}
+                price={`${formatPrice(property.price, property.currency)}/mes`}
+                location={property.address || property.neighborhood || property.city || 'Ubicación no especificada'}
+                bedrooms={property.bedrooms}
+                bathrooms={property.bathrooms}
+                area={property.area_m2 ? `${property.area_m2}m²` : 'No especificada'}
+                image={property.images.length > 0 ? property.images[0] : '/placeholder.svg'}
+                type="alquiler"
+                propertyType={property.property_type}
+                description={property.description}
+                yearBuilt={2020} // Datos por defecto hasta que tengamos más campos en la BD
+                garage={true}
+                garden={property.features.some(f => f.toLowerCase().includes('jardín'))}
+                pool={property.features.some(f => f.toLowerCase().includes('piscina'))}
+                security={property.features.some(f => f.toLowerCase().includes('seguridad'))}
+                gym={property.features.some(f => f.toLowerCase().includes('gimnasio'))}
+                wifi={true}
+                furnished={property.features.some(f => f.toLowerCase().includes('amueblado'))}
+                pets={property.features.some(f => f.toLowerCase().includes('mascotas'))}
+                features={property.features}
+                address={property.address}
+                neighborhood={property.neighborhood}
+                contactName="María González"
+                contactPhone="+54 381 506-3361"
+                contactEmail="info@inmobi.com"
+                images={property.images}
+              />
             ))}
           </div>
         )}

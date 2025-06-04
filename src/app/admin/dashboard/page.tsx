@@ -42,11 +42,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     const initializeDashboard = async () => {
       try {
-        // 1. Verificar sesión
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        // 1. Verificar usuario (método seguro)
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
         
-        if (sessionError || !session?.user) {
-          console.error('No hay sesión válida:', sessionError);
+        if (userError || !user) {
+          console.error('No hay usuario válido:', userError);
           router.replace('/admin/login');
           return;
         }
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
         const { data: adminUser, error: adminError } = await supabase
           .from('admin_users')
           .select('*')
-          .eq('email', session.user.email)
+          .eq('email', user.email)
           .single();
 
         if (adminError || !adminUser) {
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
         }
 
         // 3. Si todo está bien, establecer los datos
-        setUser(session.user);
+        setUser(user);
         setAdminData(adminUser);
         
       } catch (error) {
@@ -90,10 +90,18 @@ export default function AdminDashboard() {
         router.replace('/admin/login');
       } else if (event === 'SIGNED_IN' && session?.user) {
         try {
+          // Verificar usuario de forma segura
+          const { data: { user }, error: userError } = await supabase.auth.getUser();
+          
+          if (userError || !user) {
+            await supabase.auth.signOut();
+            return;
+          }
+
           const { data: adminUser, error } = await supabase
             .from('admin_users')
             .select('*')
-            .eq('email', session.user.email)
+            .eq('email', user.email)
             .single();
 
           if (error || !adminUser) {
@@ -101,7 +109,7 @@ export default function AdminDashboard() {
             return;
           }
 
-          setUser(session.user);
+          setUser(user);
           setAdminData(adminUser);
         } catch (error) {
           console.error('Error al verificar permisos:', error);
@@ -445,7 +453,7 @@ export default function AdminDashboard() {
               
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button onClick={resetForm} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button onClick={resetForm} className="flex items-center gap-2 bg-primary-400 hover:bg-primary-500 text-white">
                     <Plus className="h-4 w-4" />
                     Agregar Propiedad
                   </Button>

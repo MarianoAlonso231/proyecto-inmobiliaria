@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ const ServicesSection = () => {
       title: 'Ventas',
       description: 'Encuentra la propiedad perfecta para comprar. Tenemos una amplia selección de casas, apartamentos y locales comerciales.',
       icon: Home,
-      color: 'bg-green-500',
+      color: 'bg-primary-400',
       href: '/ventas'
     },
     {
@@ -19,7 +18,7 @@ const ServicesSection = () => {
       title: 'Alquileres',
       description: 'Descubre opciones de alquiler que se adapten a tu presupuesto y necesidades. Desde estudios hasta casas familiares.',
       icon: Key,
-      color: 'bg-blue-500',
+      color: 'bg-primary-400',
       href: '/alquileres'
     },
     {
@@ -27,7 +26,7 @@ const ServicesSection = () => {
       title: 'Tasación',
       description: 'Obtén una valuación profesional de tu propiedad. Nuestros expertos te ayudan a conocer el valor real de tu inmueble.',
       icon: Calculator,
-      color: 'bg-purple-500',
+      color: 'bg-primary-400',
       href: '/tasacion'
     },
     {

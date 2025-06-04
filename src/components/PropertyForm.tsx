@@ -28,7 +28,7 @@ export function PropertyForm({
   onCancel 
 }: PropertyFormProps) {
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6 bg-white text-gray-900">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Información Básica */}
         <div className="space-y-4">
@@ -40,7 +40,7 @@ export function PropertyForm({
               onChange={(e) => onInputChange('title', e.target.value)}
               placeholder="Ej: Casa moderna en el centro"
               required
-              className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
 
@@ -55,7 +55,7 @@ export function PropertyForm({
               onChange={(e) => onInputChange('price', e.target.value)}
               placeholder="250000"
               required
-              className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
 
@@ -114,7 +114,7 @@ export function PropertyForm({
                 max="20"
                 value={formData.bedrooms}
                 onChange={(e) => onInputChange('bedrooms', e.target.value)}
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -126,7 +126,7 @@ export function PropertyForm({
                 max="20"
                 value={formData.bathrooms}
                 onChange={(e) => onInputChange('bathrooms', e.target.value)}
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -142,7 +142,7 @@ export function PropertyForm({
                 value={formData.area_m2}
                 onChange={(e) => onInputChange('area_m2', e.target.value)}
                 placeholder="150.5"
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -155,7 +155,7 @@ export function PropertyForm({
                 value={formData.lot_area_m2}
                 onChange={(e) => onInputChange('lot_area_m2', e.target.value)}
                 placeholder="200.0"
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -170,7 +170,7 @@ export function PropertyForm({
               value={formData.address}
               onChange={(e) => onInputChange('address', e.target.value)}
               placeholder="Calle San Martín 123"
-              className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
 
@@ -181,7 +181,7 @@ export function PropertyForm({
               value={formData.neighborhood}
               onChange={(e) => onInputChange('neighborhood', e.target.value)}
               placeholder="Centro"
-              className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
 
@@ -192,7 +192,7 @@ export function PropertyForm({
                 id="city"
                 value={formData.city}
                 onChange={(e) => onInputChange('city', e.target.value)}
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
             <div>
@@ -201,7 +201,7 @@ export function PropertyForm({
                 id="province"
                 value={formData.province}
                 onChange={(e) => onInputChange('province', e.target.value)}
-                className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -213,7 +213,7 @@ export function PropertyForm({
               value={formData.features}
               onChange={(e) => onInputChange('features', e.target.value)}
               placeholder="garage, jardín, piscina, aire acondicionado"
-              className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             />
             <p className="text-xs text-gray-500 mt-1">
               Ejemplos: garage, jardín, piscina, aire acondicionado, cocina equipada, seguridad 24h
@@ -267,7 +267,7 @@ export function PropertyForm({
           onChange={(e) => onInputChange('description', e.target.value)}
           placeholder="Descripción detallada de la propiedad. Incluye detalles sobre las comodidades, ubicación, estado de la propiedad, etc."
           rows={4}
-          className="mt-1 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500 resize-none"
+          className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 resize-none"
         />
       </div>
 
@@ -284,7 +284,7 @@ export function PropertyForm({
         <Button 
           type="submit" 
           disabled={isLoading}
-          className="min-w-[140px] bg-blue-600 hover:bg-blue-700 text-white"
+          className="min-w-[140px] bg-primary-400 hover:bg-primary-500 text-white"
         >
           {isLoading ? (
             <>

@@ -88,7 +88,7 @@ export default function ContactoPage() {
                   <div>
                     <h3 className="font-semibold text-gray-800">Teléfono</h3>
                     <p className="text-gray-600">+54 381 123-4567</p>
-                    <p className="text-gray-600">+54 381 987-6543</p>
+                    <p className="text-gray-600">+54 381 506-3361</p>
                   </div>
                 </div>
 
@@ -106,7 +106,7 @@ export default function ContactoPage() {
                   <div>
                     <h3 className="font-semibold text-gray-800">Dirección</h3>
                     <p className="text-gray-600">
-                      Av. Independencia 123<br />
+                      San Martin 1051 8° D<br />
                       San Miguel de Tucumán<br />
                       Tucumán, Argentina
                     </p>
@@ -125,10 +125,32 @@ export default function ContactoPage() {
                   </div>
                 </div>
 
-                {/* Mapa placeholder */}
+                {/* Mapa funcional */}
                 <div className="mt-6">
-                  <div className="bg-gray-200 h-48 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-500">Mapa de ubicación</p>
+                  <h3 className="font-semibold text-gray-800 mb-3">Nuestra Ubicación</h3>
+                  <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                    <iframe
+                      src="https://www.google.com/maps?q=San+Martin+1051+8°+D,+San+Miguel+de+Tucumán,+Tucumán,+Argentina&output=embed"
+                      width="100%"
+                      height="250"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Ubicación de InmoBI - San Martín 1051 8° D, San Miguel de Tucumán"
+                      className="w-full h-64 rounded-lg"
+                    />
+                  </div>
+                  <div className="mt-2 text-center">
+                    <a
+                      href="https://www.google.com/maps/search/San+Martin+1051+8°+D,+San+Miguel+de+Tucumán,+Tucumán,+Argentina"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-primary-400 hover:text-primary-500 text-sm font-medium transition-colors"
+                    >
+                      <MapPin className="w-4 h-4 mr-1" />
+                      Ver en Google Maps
+                    </a>
                   </div>
                 </div>
               </CardContent>

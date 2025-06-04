@@ -134,6 +134,92 @@
   @apply bg-gradient-to-br from-white to-gray-50 border border-gray-200;
 }
 
+/* Forzar tema claro para componentes de formulario */
+[data-radix-select-trigger],
+[data-radix-select-content],
+[data-radix-select-item] {
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+[data-radix-select-item]:hover,
+[data-radix-select-item]:focus,
+[data-radix-select-item][data-highlighted] {
+  @apply bg-gray-100 text-gray-900 !important;
+}
+
+/* Forzar tema claro para dialogs */
+[data-radix-dialog-content] {
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+[data-radix-dialog-title] {
+  @apply text-gray-900 !important;
+}
+
+/* Forzar tema claro para labels */
+.form-label,
+label {
+  @apply text-gray-700 !important;
+}
+
+/* Forzar tema claro para inputs y textareas */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  @apply bg-white text-gray-900 border-gray-300 !important;
+}
+
+input:focus:not([type="checkbox"]):not([type="radio"]),
+textarea:focus,
+select:focus {
+  @apply border-primary-400 ring-primary-400 !important;
+}
+
+/* Forzar tema claro para placeholders */
+input::placeholder,
+textarea::placeholder {
+  @apply text-gray-500 !important;
+}
+
+/* Forzar tema claro para todos los componentes UI */
+.ui-card,
+[data-testid="card"],
+.card {
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+/* Forzar tema claro para botones select */
+[data-state="open"],
+[data-state="closed"] {
+  @apply bg-white text-gray-900 !important;
+}
+
+/* Forzar tema claro para contenido de popovers y menus */
+[role="menu"],
+[role="listbox"],
+[data-radix-select-content],
+[data-radix-popover-content] {
+  @apply bg-white text-gray-900 border-gray-200 !important;
+}
+
+/* Garantizar que todos los textos sean legibles */
+h1, h2, h3, h4, h5, h6 {
+  @apply text-gray-900 !important;
+}
+
+p, span, div {
+  @apply text-gray-900;
+}
+
+/* Estilos para filtros específicos */
+.filter-card {
+  @apply bg-white border border-gray-200 !important;
+}
+
+.filter-card * {
+  @apply text-gray-900 !important;
+}
+
 /* Estilo para badges */
 .badge {
   @apply bg-gray-100 text-gray-800 border-gray-200;

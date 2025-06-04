@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/middleware';
 
 // Constantes para rutas
 const ADMIN_LOGIN_PATH = '/admin/login';
-const ADMIN_DASHBOARD_PATH = '/admin';
+const ADMIN_DASHBOARD_PATH = '/admin/dashboard';
 const ADMIN_BASE_PATH = '/admin';
 
 // Tipos para mejor tipado
@@ -18,26 +18,26 @@ export async function middleware(request: NextRequest) {
     const { supabase, response } = createClient(request);
     const { pathname } = request.nextUrl;
 
-    // Verificar sesión
+    // Verificar usuario (método seguro)
     const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-    // Si hay un error al obtener la sesión
-    if (sessionError) {
-      console.error('Error al obtener la sesión:', sessionError);
+    // Si hay un error al obtener el usuario
+    if (userError) {
+      console.error('Error al obtener el usuario:', userError);
       return handleAuthError(request, pathname);
     }
 
     // Rutas protegidas del admin (excluyendo /admin/login)
     if (isProtectedAdminRoute(pathname)) {
-      return await handleProtectedRoute(supabase, session, request, response);
+      return await handleProtectedRoute(supabase, user, request, response);
     }
 
     // Si el usuario está autenticado y está intentando acceder al login del admin
-    if (session && pathname === ADMIN_LOGIN_PATH) {
-      return await handleAdminLoginRedirect(supabase, session, request);
+    if (user && pathname === ADMIN_LOGIN_PATH) {
+      return await handleAdminLoginRedirect(supabase, user, request);
     }
 
     return response;
@@ -62,11 +62,11 @@ function handleAuthError(request: NextRequest, pathname: string): NextResponse {
 
 async function handleProtectedRoute(
   supabase: any,
-  session: any,
+  user: any,
   request: NextRequest,
   response: NextResponse
 ): Promise<NextResponse> {
-  if (!session) {
+  if (!user) {
     return NextResponse.redirect(new URL(ADMIN_LOGIN_PATH, request.url));
   }
 
@@ -74,7 +74,7 @@ async function handleProtectedRoute(
     const { data: adminUser, error } = await supabase
       .from('admin_users')
       .select('id, email, created_at')
-      .eq('email', session.user.email)
+      .eq('email', user.email)
       .single();
 
     if (error || !adminUser) {
@@ -93,14 +93,14 @@ async function handleProtectedRoute(
 
 async function handleAdminLoginRedirect(
   supabase: any,
-  session: any,
+  user: any,
   request: NextRequest
 ): Promise<NextResponse> {
   try {
     const { data: adminUser } = await supabase
       .from('admin_users')
       .select('id, email')
-      .eq('email', session.user.email)
+      .eq('email', user.email)
       .single();
 
     if (adminUser) {
