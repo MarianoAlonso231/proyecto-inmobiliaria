@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,7 @@ import PropertyCard from '@/components/PropertyCard';
 
 export default function AlquileresPage() {
   const { properties: allProperties, isLoading, error } = useProperties();
+  const searchParams = useSearchParams();
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [filters, setFilters] = useState({
     tipo: 'todos',
@@ -27,23 +29,49 @@ export default function AlquileresPage() {
     property.operation_type === 'alquiler' && property.status === 'disponible'
   );
 
+  // Aplicar filtros desde URL cuando las propiedades se cargan
   useEffect(() => {
-    setFilteredProperties(alquilerProperties);
-  }, [allProperties]);
+    if (allProperties.length > 0) {
+      // Leer parámetros de la URL
+      const urlTipo = searchParams.get('tipo');
+      const urlDormitorios = searchParams.get('dormitorios');
+      const urlBarrio = searchParams.get('barrio');
 
-  const applyFilters = () => {
+      // Actualizar estado de filtros con parámetros de URL
+      const newFilters = {
+        tipo: urlTipo || 'todos',
+        dormitorios: urlDormitorios || 'cualquiera',
+        precioMin: '',
+        precioMax: '',
+        barrio: urlBarrio || ''
+      };
+
+      setFilters(newFilters);
+
+      // Aplicar filtros automáticamente
+      applyFiltersWithParams(newFilters);
+    } else {
+      setFilteredProperties(alquilerProperties);
+    }
+  }, [allProperties, searchParams]);
+
+  const applyFiltersWithParams = (filtersToApply = filters) => {
     let filtered = alquilerProperties.filter(property => {
-      if (filters.tipo !== 'todos' && property.property_type !== filters.tipo) return false;
-      if (filters.dormitorios !== 'cualquiera') {
-        if (filters.dormitorios === '4' && property.bedrooms < 4) return false;
-        if (filters.dormitorios !== '4' && property.bedrooms.toString() !== filters.dormitorios) return false;
+      if (filtersToApply.tipo !== 'todos' && property.property_type !== filtersToApply.tipo) return false;
+      if (filtersToApply.dormitorios !== 'cualquiera') {
+        if (filtersToApply.dormitorios === '4' && property.bedrooms < 4) return false;
+        if (filtersToApply.dormitorios !== '4' && property.bedrooms.toString() !== filtersToApply.dormitorios) return false;
       }
-      if (filters.precioMin && property.price < parseInt(filters.precioMin)) return false;
-      if (filters.precioMax && property.price > parseInt(filters.precioMax)) return false;
-      if (filters.barrio && property.neighborhood && !property.neighborhood.toLowerCase().includes(filters.barrio.toLowerCase())) return false;
+      if (filtersToApply.precioMin && property.price < parseInt(filtersToApply.precioMin)) return false;
+      if (filtersToApply.precioMax && property.price > parseInt(filtersToApply.precioMax)) return false;
+      if (filtersToApply.barrio && property.neighborhood && !property.neighborhood.toLowerCase().includes(filtersToApply.barrio.toLowerCase())) return false;
       return true;
     });
     setFilteredProperties(filtered);
+  };
+
+  const applyFilters = () => {
+    applyFiltersWithParams();
   };
 
   const formatPrice = (price: number, currency: string = 'USD') => {

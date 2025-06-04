@@ -74,7 +74,7 @@ export const initialFormData: PropertyFormData = {
 
 export function useProperties() {
   const [properties, setProperties] = useState<Property[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadProperties = async () => {
@@ -284,7 +284,7 @@ export function useProperties() {
 // Hook específico para propiedades destacadas
 export function useFeaturedProperties(limit = 6) {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadFeaturedProperties = async () => {
