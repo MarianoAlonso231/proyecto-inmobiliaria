@@ -99,22 +99,6 @@ const FeaturedProperties = () => {
                   image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                   type={property.operation_type}
                   propertyType={property.property_type}
-                  description={property.description}
-                  yearBuilt={2020} // Valor por defecto - podrías añadir este campo a la BD
-                  garage={true}
-                  garden={property.property_type === 'casa'}
-                  pool={false}
-                  security={true}
-                  gym={false}
-                  wifi={true}
-                  furnished={false}
-                  pets={property.property_type === 'casa'}
-                  features={property.features.length > 0 ? property.features : ['Excelente ubicación', 'Bien mantenida']}
-                  address={property.address}
-                  neighborhood={property.neighborhood}
-                  contactName="María González"
-                  contactPhone="+54 381 506-3361"
-                  contactEmail="info@inmobi.com"
                   images={property.images.length > 0 ? property.images : ['/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png']}
                 />
               ))}

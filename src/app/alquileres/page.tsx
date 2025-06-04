@@ -215,7 +215,7 @@ export default function AlquileresPage() {
                 key={property.id}
                 id={property.id}
                 title={property.title}
-                price={`${formatPrice(property.price, property.currency)}/mes`}
+                price={formatPrice(property.price, property.currency)}
                 location={property.address || property.neighborhood || property.city || 'Ubicación no especificada'}
                 bedrooms={property.bedrooms}
                 bathrooms={property.bathrooms}
@@ -223,22 +223,6 @@ export default function AlquileresPage() {
                 image={property.images.length > 0 ? property.images[0] : '/placeholder.svg'}
                 type="alquiler"
                 propertyType={property.property_type}
-                description={property.description}
-                yearBuilt={2020} // Datos por defecto hasta que tengamos más campos en la BD
-                garage={true}
-                garden={property.features.some(f => f.toLowerCase().includes('jardín'))}
-                pool={property.features.some(f => f.toLowerCase().includes('piscina'))}
-                security={property.features.some(f => f.toLowerCase().includes('seguridad'))}
-                gym={property.features.some(f => f.toLowerCase().includes('gimnasio'))}
-                wifi={true}
-                furnished={property.features.some(f => f.toLowerCase().includes('amueblado'))}
-                pets={property.features.some(f => f.toLowerCase().includes('mascotas'))}
-                features={property.features}
-                address={property.address}
-                neighborhood={property.neighborhood}
-                contactName="María González"
-                contactPhone="+54 381 506-3361"
-                contactEmail="info@inmobi.com"
                 images={property.images}
               />
             ))}
