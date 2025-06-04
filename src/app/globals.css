@@ -13,76 +13,76 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 28 100% 64%;
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 222.2 84% 4.9%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 210 40% 98%;
+    --accent-foreground: 222.2 84% 4.9%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 28 100% 64%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
 
     --radius: 0.5rem;
 
-    /* Variables del sidebar agregadas */
+    /* Variables del sidebar mejoradas */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 210 40% 98%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 221 83% 53%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 28 100% 64%;
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 28 100% 64%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 221 83% 53%;
 
-    /* Variables del sidebar en modo oscuro agregadas */
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    /* Variables del sidebar en modo oscuro */
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 221 83% 53%;
   }
 }
 
@@ -93,7 +93,20 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/* Forzar tema claro para todos los componentes principales */
+.card,
+[data-testid="card"],
+.ui-card {
+  @apply bg-white border-gray-200 text-gray-900 shadow-sm;
+}
+
+.button,
+.ui-button {
+  @apply bg-white border-gray-200 text-gray-900 hover:bg-gray-50;
 }
 
 /* Estilos específicos para los componentes de formulario */
@@ -101,4 +114,47 @@
 .form-select,
 .form-textarea {
   @apply bg-white border-gray-200 text-gray-900;
+}
+
+/* Asegurar que las tabs tengan buen contraste */
+[data-state="active"] {
+  @apply bg-white text-gray-900;
+}
+
+[data-state="inactive"] {
+  @apply bg-gray-100 text-gray-600;
+}
+
+/* Mejoras para el dashboard específicamente */
+.dashboard-card {
+  @apply bg-white border border-gray-200 shadow-sm;
+}
+
+.stats-card {
+  @apply bg-gradient-to-br from-white to-gray-50 border border-gray-200;
+}
+
+/* Estilo para badges */
+.badge {
+  @apply bg-gray-100 text-gray-800 border-gray-200;
+}
+
+.badge-green {
+  @apply bg-green-100 text-green-800 border-green-200;
+}
+
+.badge-blue {
+  @apply bg-blue-100 text-blue-800 border-blue-200;
+}
+
+.badge-red {
+  @apply bg-red-100 text-red-800 border-red-200;
+}
+
+.badge-yellow {
+  @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+}
+
+.badge-orange {
+  @apply bg-orange-100 text-orange-800 border-orange-200;
 }

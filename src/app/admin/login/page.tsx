@@ -44,7 +44,19 @@ export default function AdminLoginPage() {
     setIsLoading(true);
 
     try {
-      // Primero verificar si el usuario existe en la tabla de administradores
+      // Primero intentar iniciar sesión
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        setError('Credenciales incorrectas');
+        setIsLoading(false);
+        return;
+      }
+
+      // Si la autenticación es exitosa, verificar si es admin
       const { data: adminUser, error: queryError } = await supabase
         .from('admin_users')
         .select('*')
@@ -52,21 +64,16 @@ export default function AdminLoginPage() {
         .single();
 
       if (queryError || !adminUser) {
-        setError('Usuario no encontrado o sin permisos de administrador');
+        // Si no es admin, cerrar la sesión que acabamos de crear
+        await supabase.auth.signOut();
+        setError('Usuario sin permisos de administrador');
         setIsLoading(false);
         return;
       }
 
-      // Intentar iniciar sesión
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) throw authError;
-
-      // Si la autenticación es exitosa, redirigir al dashboard
+      // Si todo está bien, redirigir al dashboard
       router.push('/admin/dashboard');
+      
     } catch (err) {
       console.error('Error de login:', err);
       setError('Error al iniciar sesión. Por favor, verifica tus credenciales.');
@@ -147,4 +154,4 @@ export default function AdminLoginPage() {
       </Card>
     </div>
   );
-} 
+}
