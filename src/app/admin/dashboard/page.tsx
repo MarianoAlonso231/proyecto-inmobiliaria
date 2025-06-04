@@ -35,6 +35,7 @@ export default function AdminDashboard() {
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   // Hook personalizado para propiedades
   const { properties, isLoading: isLoadingProperties, error: propertiesError, stats, createProperty, updateProperty, deleteProperty, propertyToFormData, clearError } = useProperties();
@@ -180,10 +181,30 @@ export default function AdminDashboard() {
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      setIsSigningOut(true);
+      
+      // Cerrar sesión en Supabase
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Error al cerrar sesión:', error);
+        setError('Error al cerrar sesión');
+        setIsSigningOut(false);
+        return;
+      }
+
+      // Forzar redirección al login después del logout exitoso
+      router.push('/admin/login');
+      
+      // Opcionalmente, recargar la página para limpiar cualquier estado
+      setTimeout(() => {
+        window.location.href = '/admin/login';
+      }, 100);
+      
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
       setError('Error al cerrar sesión');
+      setIsSigningOut(false);
     }
   };
 
@@ -268,10 +289,18 @@ export default function AdminDashboard() {
             </div>
             <Button
               onClick={handleSignOut}
+              disabled={isSigningOut}
               variant="outline"
               className="hover:bg-red-50 hover:text-red-600 hover:border-red-200 bg-white"
             >
-              Cerrar Sesión
+              {isSigningOut ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Cerrando...
+                </>
+              ) : (
+                'Cerrar Sesión'
+              )}
             </Button>
           </div>
         </div>
