@@ -112,12 +112,12 @@ const PropertyCard = ({
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary-400">
+          <div className="text-2xl font-bold text-[#ff8425]">
             {price}
           </div>
           <Button 
             size="sm" 
-            className="bg-primary-400 hover:bg-primary-500 text-white"
+            className="bg-[#ff8425] hover:bg-[#e6741f] text-white"
             onClick={handleViewDetails}
           >
             Ver detalles

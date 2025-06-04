@@ -6,8 +6,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "InmoBI - Real Estate",
-  description: "Find your perfect property",
+  title: "Group Inmobiliaria",
+  description: "Tu inmobiliaria de confianza",
 };
 
 export default function RootLayout({

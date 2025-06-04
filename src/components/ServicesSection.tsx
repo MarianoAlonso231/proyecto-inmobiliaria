@@ -10,7 +10,7 @@ const ServicesSection = () => {
       title: 'Ventas',
       description: 'Encuentra la propiedad perfecta para comprar. Tenemos una amplia selección de casas, apartamentos y locales comerciales.',
       icon: Home,
-      color: 'bg-primary-400',
+      color: 'bg-[#ff8425]',
       href: '/ventas'
     },
     {
@@ -18,7 +18,7 @@ const ServicesSection = () => {
       title: 'Alquileres',
       description: 'Descubre opciones de alquiler que se adapten a tu presupuesto y necesidades. Desde estudios hasta casas familiares.',
       icon: Key,
-      color: 'bg-primary-400',
+      color: 'bg-[#ff8425]',
       href: '/alquileres'
     },
     {
@@ -26,7 +26,7 @@ const ServicesSection = () => {
       title: 'Tasación',
       description: 'Obtén una valuación profesional de tu propiedad. Nuestros expertos te ayudan a conocer el valor real de tu inmueble.',
       icon: Calculator,
-      color: 'bg-primary-400',
+      color: 'bg-[#ff8425]',
       href: '/tasacion'
     },
     {
@@ -34,7 +34,7 @@ const ServicesSection = () => {
       title: 'Contacto',
       description: 'Ponte en contacto con nuestro equipo de profesionales. Estamos aquí para ayudarte en cada paso del proceso.',
       icon: Phone,
-      color: 'bg-primary-400',
+      color: 'bg-[#ff8425]',
       href: '/contacto'
     }
   ];
@@ -69,7 +69,7 @@ const ServicesSection = () => {
                   <Link href={service.href}>
                     <Button 
                       variant="outline" 
-                      className="border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-white transition-colors w-full"
+                      className="border-[#ff8425] text-[#ff8425] hover:bg-[#ff8425] hover:text-white transition-colors w-full"
                     >
                       Más información
                     </Button>

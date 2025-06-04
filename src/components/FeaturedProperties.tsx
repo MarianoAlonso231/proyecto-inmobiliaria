@@ -4,6 +4,8 @@ import { useFeaturedProperties } from '@/hooks/useProperties';
 import PropertyCard from './PropertyCard';
 import { Loader2, Home, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const FeaturedProperties = () => {
   const { featuredProperties, isLoading, error } = useFeaturedProperties(6);
@@ -57,7 +59,7 @@ const FeaturedProperties = () => {
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="flex flex-col items-center gap-3">
-              <Loader2 className="h-8 w-8 animate-spin text-primary-400" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#ff8425]" />
               <p className="text-gray-600">Cargando propiedades destacadas...</p>
             </div>
           </div>
@@ -107,7 +109,7 @@ const FeaturedProperties = () => {
             <div className="text-center mt-12">
               <button 
                 onClick={() => router.push('/ventas')}
-                className="bg-primary-400 hover:bg-primary-500 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
               >
                 Ver todas las propiedades
                 <ExternalLink className="h-4 w-4" />

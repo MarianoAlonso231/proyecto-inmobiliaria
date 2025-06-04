@@ -64,7 +64,7 @@ const HeroSection = () => {
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 animate-fade-in drop-shadow-lg">
             Encuentra tu
-            <span className="text-primary-400 block">propiedad ideal</span>
+            <span className="text-[#ff8425] block">propiedad ideal</span>
           </h1>
           <p className="text-2xl text-white max-w-3xl mx-auto drop-shadow-md leading-relaxed">
             Descubre las mejores oportunidades inmobiliarias en tu zona preferida
@@ -149,7 +149,7 @@ const HeroSection = () => {
 
           <Button 
             onClick={handleSearch}
-            className="w-full md:w-auto bg-primary-400 hover:bg-primary-500 text-white px-8 py-3 text-lg font-semibold"
+            className="w-full md:w-auto bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 text-lg font-semibold"
           >
             <Search className="w-5 h-5 mr-2" />
             Buscar propiedades
