@@ -55,7 +55,7 @@ export function PropertyForm({
               onChange={(e) => onInputChange('price', e.target.value)}
               placeholder="250000"
               required
-              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
             />
           </div>
 
@@ -114,7 +114,7 @@ export function PropertyForm({
                 max="20"
                 value={formData.bedrooms}
                 onChange={(e) => onInputChange('bedrooms', e.target.value)}
-                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />
             </div>
             <div>
@@ -126,7 +126,7 @@ export function PropertyForm({
                 max="20"
                 value={formData.bathrooms}
                 onChange={(e) => onInputChange('bathrooms', e.target.value)}
-                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />
             </div>
           </div>
@@ -142,7 +142,7 @@ export function PropertyForm({
                 value={formData.area_m2}
                 onChange={(e) => onInputChange('area_m2', e.target.value)}
                 placeholder="150.5"
-                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />
             </div>
             <div>
@@ -155,7 +155,7 @@ export function PropertyForm({
                 value={formData.lot_area_m2}
                 onChange={(e) => onInputChange('lot_area_m2', e.target.value)}
                 placeholder="200.0"
-                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />
             </div>
           </div>
@@ -249,7 +249,7 @@ export function PropertyForm({
                 id="featured"
                 checked={formData.featured}
                 onChange={(e) => onInputChange('featured', e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="h-4 w-4 rounded border-gray-300 bg-white focus:border-primary-400 focus:ring-primary-400"
               />
               <Label htmlFor="featured" className="text-sm font-medium text-gray-700 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Propiedad Destacada

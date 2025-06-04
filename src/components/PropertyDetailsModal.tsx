@@ -8,7 +8,6 @@ import {
   Bed, 
   Bath, 
   Square, 
-  Heart, 
   Phone, 
   Mail, 
   Calendar,
@@ -22,7 +21,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Maximize2
+  Maximize2,
+  Heart
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -64,7 +64,6 @@ interface PropertyDetailsModalProps {
 
 const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   if (!property) return null;
@@ -169,7 +168,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
   // Lightbox component with improved event handling
   const LightboxComponent = () => (
     <div 
-      className="fixed inset-0 bg-black/95 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-100 flex items-center justify-center"
       style={{ 
         position: 'fixed', 
         top: 0, 
@@ -228,7 +227,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
           }}
-          className="fixed top-6 right-6 p-4 bg-black/90 text-white rounded-full hover:bg-black transition-all duration-200 border border-white/20 cursor-pointer"
+          className="fixed top-6 right-6 p-4 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-all duration-200 border border-gray-200 cursor-pointer"
           style={{ 
             zIndex: 100001,
             pointerEvents: 'auto'
@@ -253,7 +252,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                 e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
               }}
-              className="fixed left-6 top-1/2 transform -translate-y-1/2 p-4 bg-black/90 text-white rounded-full hover:bg-black transition-all duration-200 border border-white/20 cursor-pointer"
+              className="fixed left-6 top-1/2 transform -translate-y-1/2 p-4 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-all duration-200 border border-gray-200 cursor-pointer"
               style={{ 
                 zIndex: 100001,
                 pointerEvents: 'auto'
@@ -274,7 +273,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                 e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
               }}
-              className="fixed right-6 top-1/2 transform -translate-y-1/2 p-4 bg-black/90 text-white rounded-full hover:bg-black transition-all duration-200 border border-white/20 cursor-pointer"
+              className="fixed right-6 top-1/2 transform -translate-y-1/2 p-4 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-all duration-200 border border-gray-200 cursor-pointer"
               style={{ 
                 zIndex: 100001,
                 pointerEvents: 'auto'
@@ -288,12 +287,12 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
         
         {/* Información de la imagen en lightbox */}
         <div 
-          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-6 py-3 rounded-full border border-white/20 pointer-events-none select-none"
+          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-100 text-gray-700 px-6 py-3 rounded-full border border-gray-200 pointer-events-none select-none"
           style={{ zIndex: 100001 }}
         >
           <div className="text-center">
             <div className="text-sm font-medium">{property.title}</div>
-            <div className="text-xs text-gray-300">
+            <div className="text-xs text-gray-500">
               Imagen {currentImageIndex + 1} de {property.images.length}
             </div>
           </div>
@@ -302,7 +301,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
         {/* Thumbnails en lightbox */}
         {property.images.length > 1 && (
           <div 
-            className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-[80vw] overflow-x-auto bg-black/80 p-3 rounded-lg border border-white/20"
+            className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-[80vw] overflow-x-auto bg-gray-100 p-3 rounded-lg border border-gray-200"
             style={{ zIndex: 100001 }}
             onClick={(e) => {
               e.preventDefault();
@@ -331,8 +330,8 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                 }}
                 className={`flex-shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-all hover:scale-105 cursor-pointer ${
                   index === currentImageIndex 
-                    ? 'border-white ring-2 ring-white/50' 
-                    : 'border-white/30 hover:border-white/60'
+                    ? 'border-gray-300 ring-2 ring-gray-300' 
+                    : 'border-gray-200 hover:border-gray-300'
                 }`}
                 style={{ pointerEvents: 'auto' }}
               >
@@ -374,7 +373,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                   >
                     {property.type === 'venta' ? 'Venta' : 'Alquiler'}
                   </Badge>
-                  <Badge variant="outline" className="bg-gray-100">
+                  <Badge variant="outline" className="bg-gray-100 text-gray-900 border-gray-300">
                     {property.propertyType}
                   </Badge>
                 </div>
@@ -383,14 +382,6 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                 <div className="text-3xl font-bold text-primary-400 mb-2">
                   {property.price}
                 </div>
-                <button
-                  onClick={() => setIsFavorite(!isFavorite)}
-                  className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-                >
-                  <Heart 
-                    className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
-                  />
-                </button>
               </div>
             </div>
           </DialogHeader>
@@ -540,63 +531,68 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
               </div>
             )}
 
-            {/* Comodidades */}
+            {/* Características */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Comodidades</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {Object.entries(amenityIcons).map(([key, Icon]) => {
-                  const hasAmenity = property[key as keyof PropertyDetails];
-                  return (
-                    <div
-                      key={key}
-                      className={`flex items-center p-3 rounded-lg border ${
-                        hasAmenity 
-                          ? 'bg-primary-50 border-primary-200 text-primary-700' 
-                          : 'bg-gray-50 border-gray-200 text-gray-400'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5 mr-2" />
-                      <span className="capitalize text-sm font-medium">
-                        {key === 'garage' ? 'Garaje' :
-                         key === 'garden' ? 'Jardín' :
-                         key === 'pool' ? 'Piscina' :
-                         key === 'security' ? 'Seguridad' :
-                         key === 'gym' ? 'Gimnasio' :
-                         key === 'wifi' ? 'WiFi' : key}
-                      </span>
-                    </div>
-                  );
-                })}
-                
-                {property.furnished && (
-                  <div className="flex items-center p-3 rounded-lg border bg-primary-50 border-primary-200 text-primary-700">
-                    <Building className="w-5 h-5 mr-2" />
-                    <span className="text-sm font-medium">Amueblado</span>
-                  </div>
-                )}
-                
-                {property.pets && (
-                  <div className="flex items-center p-3 rounded-lg border bg-primary-50 border-primary-200 text-primary-700">
-                    <Heart className="w-5 h-5 mr-2" />
-                    <span className="text-sm font-medium">Se aceptan mascotas</span>
-                  </div>
-                )}
-              </div>
-            </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Características</h3>
+              {property.features && property.features.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {property.features.map((feature, index) => {
+                    const featureLower = feature.toLowerCase();
+                    
+                    // Mapeo de características a iconos
+                    let IconComponent = null;
+                    let displayName = feature;
+                    
+                    if (featureLower.includes('garage') || featureLower.includes('garaje')) {
+                      IconComponent = Car;
+                      displayName = 'Garaje';
+                    } else if (featureLower.includes('jardín') || featureLower.includes('jardin') || featureLower.includes('garden')) {
+                      IconComponent = TreePine;
+                      displayName = 'Jardín';
+                    } else if (featureLower.includes('piscina') || featureLower.includes('pool')) {
+                      IconComponent = Waves;
+                      displayName = 'Piscina';
+                    } else if (featureLower.includes('seguridad') || featureLower.includes('security')) {
+                      IconComponent = Shield;
+                      displayName = 'Seguridad';
+                    } else if (featureLower.includes('gimnasio') || featureLower.includes('gym')) {
+                      IconComponent = Dumbbell;
+                      displayName = 'Gimnasio';
+                    } else if (featureLower.includes('wifi') || featureLower.includes('internet')) {
+                      IconComponent = Wifi;
+                      displayName = 'WiFi';
+                    } else if (featureLower.includes('amueblado') || featureLower.includes('furnished')) {
+                      IconComponent = Building;
+                      displayName = 'Amueblado';
+                    } else if (featureLower.includes('mascotas') || featureLower.includes('pets')) {
+                      IconComponent = Heart;
+                      displayName = 'Se aceptan mascotas';
+                    }
 
-            {/* Características adicionales */}
-            {property.features && property.features.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Características</h3>
-                <div className="flex flex-wrap gap-2">
-                  {property.features.map((feature, index) => (
-                    <Badge key={index} variant="outline" className="bg-gray-50">
-                      {feature}
-                    </Badge>
-                  ))}
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center p-3 rounded-lg border bg-primary-50 border-primary-200 text-primary-700"
+                      >
+                        {IconComponent ? (
+                          <IconComponent className="w-5 h-5 mr-2" />
+                        ) : (
+                          <div className="w-5 h-5 mr-2 flex items-center justify-center">
+                            <div className="w-2 h-2 bg-primary-400 rounded-full"></div>
+                          </div>
+                        )}
+                        <span className="text-sm font-medium">{displayName}</span>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-gray-500">No hay características especificadas para esta propiedad</p>
+                  <p className="text-xs text-gray-400 mt-1">Las características se pueden agregar desde el panel de administración</p>
+                </div>
+              )}
+            </div>
 
             {/* Información de contacto */}
             <div className="bg-gray-50 p-6 rounded-lg">

@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Bed, Bath, Square, Heart } from 'lucide-react';
+import { MapPin, Bed, Bath, Square } from 'lucide-react';
 import { useState } from 'react';
 import PropertyDetailsModal, { PropertyDetails } from './PropertyDetailsModal';
 
@@ -67,7 +67,6 @@ const PropertyCard = ({
   contactEmail,
   images
 }: PropertyCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Datos completos para el modal
@@ -121,16 +120,8 @@ const PropertyCard = ({
               {type === 'venta' ? 'Venta' : 'Alquiler'}
             </Badge>
           </div>
-          <button
-            onClick={() => setIsFavorite(!isFavorite)}
-            className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
-          >
-            <Heart 
-              className={`w-4 h-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
-            />
-          </button>
           <div className="absolute bottom-3 left-3">
-            <Badge variant="outline" className="bg-white/90 text-gray-700">
+            <Badge variant="outline" className="bg-white/90 text-gray-900 border-gray-300">
               {propertyType}
             </Badge>
           </div>

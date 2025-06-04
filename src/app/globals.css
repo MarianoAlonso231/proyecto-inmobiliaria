@@ -202,6 +202,93 @@ textarea::placeholder {
   @apply bg-white text-gray-900 border-gray-200 !important;
 }
 
+/* Estilos para spinners de inputs numéricos - colores claros */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Spinner personalizado para inputs numéricos */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Estilos alternativos para spinners (si se necesitan) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  background: transparent !important;
+}
+
+/* Firefox spinners */
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+
+input[type="number"]::-moz-number-spinner-box {
+  background: white !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+input[type="number"]::-moz-number-spinner-up,
+input[type="number"]::-moz-number-spinner-down {
+  background: white !important;
+  color: #6b7280 !important;
+  border: none !important;
+}
+
+input[type="number"]::-moz-number-spinner-up:hover,
+input[type="number"]::-moz-number-spinner-down:hover {
+  background: #f9fafb !important;
+  color: #374151 !important;
+}
+
+/* Estilos para checkbox - colores claros */
+input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.25rem !important;
+  background: white !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #9ca3af !important;
+  background: #f9fafb !important;
+}
+
+input[type="checkbox"]:focus {
+  outline: none !important;
+  border-color: #FF9A47 !important;
+  box-shadow: 0 0 0 3px rgba(255, 154, 71, 0.1) !important;
+}
+
+input[type="checkbox"]:checked {
+  background: #FF9A47 !important;
+  border-color: #FF9A47 !important;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 0.75rem !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+}
+
 /* Garantizar que todos los textos sean legibles */
 h1, h2, h3, h4, h5, h6 {
   @apply text-gray-900 !important;

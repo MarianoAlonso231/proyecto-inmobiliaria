@@ -1634,16 +1634,6 @@ video {
 .border-transparent {
   border-color: transparent;
 }
-.border-white {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
-}
-.border-white\/20 {
-  border-color: rgb(255 255 255 / 0.2);
-}
-.border-white\/30 {
-  border-color: rgb(255 255 255 / 0.3);
-}
 .border-yellow-200 {
   --tw-border-opacity: 1;
   border-color: rgb(254 240 138 / var(--tw-border-opacity, 1));
@@ -1671,12 +1661,6 @@ video {
 }
 .bg-black\/80 {
   background-color: rgb(0 0 0 / 0.8);
-}
-.bg-black\/90 {
-  background-color: rgb(0 0 0 / 0.9);
-}
-.bg-black\/95 {
-  background-color: rgb(0 0 0 / 0.95);
 }
 .bg-blue-100 {
   --tw-bg-opacity: 1;
@@ -1790,9 +1774,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
-.bg-white\/80 {
-  background-color: rgb(255 255 255 / 0.8);
-}
 .bg-white\/90 {
   background-color: rgb(255 255 255 / 0.9);
 }
@@ -1817,9 +1798,6 @@ video {
 }
 .fill-current {
   fill: currentColor;
-}
-.fill-red-500 {
-  fill: #ef4444;
 }
 .object-contain {
   -o-object-fit: contain;
@@ -2042,9 +2020,6 @@ video {
 .font-semibold {
   font-weight: 600;
 }
-.capitalize {
-  text-transform: capitalize;
-}
 .tabular-nums {
   --tw-numeric-spacing: tabular-nums;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
@@ -2094,10 +2069,6 @@ video {
 }
 .text-foreground\/50 {
   color: hsl(var(--foreground) / 0.5);
-}
-.text-gray-300 {
-  --tw-text-opacity: 1;
-  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
 }
 .text-gray-400 {
   --tw-text-opacity: 1;
@@ -2274,15 +2245,16 @@ video {
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
+.ring-gray-300 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity, 1));
+}
 .ring-primary-200 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(255 209 179 / var(--tw-ring-opacity, 1));
 }
 .ring-ring {
   --tw-ring-color: hsl(var(--ring));
-}
-.ring-white\/50 {
-  --tw-ring-color: rgb(255 255 255 / 0.5);
 }
 .ring-offset-background {
   --tw-ring-offset-color: hsl(var(--background));
@@ -2604,6 +2576,95 @@ textarea::placeholder {
   color: rgb(17 24 39 / var(--tw-text-opacity, 1)) !important;
 }
 
+/* Estilos para spinners de inputs numéricos - colores claros */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Spinner personalizado para inputs numéricos */
+input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+          appearance: textfield;
+}
+
+/* Estilos alternativos para spinners (si se necesitan) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  background: transparent !important;
+}
+
+/* Firefox spinners */
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+
+input[type="number"]::-moz-number-spinner-box {
+  background: white !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+input[type="number"]::-moz-number-spinner-up,
+input[type="number"]::-moz-number-spinner-down {
+  background: white !important;
+  color: #6b7280 !important;
+  border: none !important;
+}
+
+input[type="number"]::-moz-number-spinner-up:hover,
+input[type="number"]::-moz-number-spinner-down:hover {
+  background: #f9fafb !important;
+  color: #374151 !important;
+}
+
+/* Estilos para checkbox - colores claros */
+input[type="checkbox"] {
+  -moz-appearance: none !important;
+       appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.25rem !important;
+  background: white !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #9ca3af !important;
+  background: #f9fafb !important;
+}
+
+input[type="checkbox"]:focus {
+  outline: none !important;
+  border-color: #FF9A47 !important;
+  box-shadow: 0 0 0 3px rgba(255, 154, 71, 0.1) !important;
+}
+
+input[type="checkbox"]:checked {
+  background: #FF9A47 !important;
+  border-color: #FF9A47 !important;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 0.75rem !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+}
+
 /* Garantizar que todos los textos sean legibles */
 h1, h2, h3, h4, h5, h6 {
   --tw-text-opacity: 1 !important;
@@ -2819,17 +2880,8 @@ p, span, div {
   border-color: rgb(254 202 202 / var(--tw-border-opacity, 1));
 }
 
-.hover\:border-white\/60:hover {
-  border-color: rgb(255 255 255 / 0.6);
-}
-
 .hover\:bg-accent:hover {
   background-color: hsl(var(--accent));
-}
-
-.hover\:bg-black:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-black\/80:hover {
@@ -2929,11 +2981,6 @@ p, span, div {
   background-color: hsl(var(--secondary) / 0.8);
 }
 
-.hover\:bg-white:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-yellow-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
@@ -3017,6 +3064,11 @@ p, span, div {
   border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
 }
 
+.focus\:border-primary-400:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 154 71 / var(--tw-border-opacity, 1));
+}
+
 .focus\:bg-accent:focus {
   background-color: hsl(var(--accent));
 }
@@ -3058,6 +3110,11 @@ p, span, div {
 .focus\:ring-blue-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-primary-400:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 154 71 / var(--tw-ring-opacity, 1));
 }
 
 .focus\:ring-ring:focus {

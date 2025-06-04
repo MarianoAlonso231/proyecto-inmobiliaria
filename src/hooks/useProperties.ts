@@ -279,4 +279,49 @@ export function useProperties() {
     propertyToFormData,
     clearError: () => setError(null)
   };
+}
+
+// Hook específico para propiedades destacadas
+export function useFeaturedProperties(limit = 6) {
+  const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadFeaturedProperties = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('featured', true)
+        .eq('status', 'disponible')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) {
+        throw error;
+      }
+
+      setFeaturedProperties(data || []);
+    } catch (error) {
+      console.error('Error al cargar propiedades destacadas:', error);
+      setError('Error al cargar las propiedades destacadas');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadFeaturedProperties();
+  }, [limit]);
+
+  return {
+    featuredProperties,
+    isLoading,
+    error,
+    loadFeaturedProperties,
+    clearError: () => setError(null)
+  };
 } 
