@@ -108,7 +108,7 @@ const FeaturedProperties = () => {
 
             <div className="text-center mt-12">
               <button 
-                onClick={() => router.push('/ventas')}
+                onClick={() => router.push('/propiedades')}
                 className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
               >
                 Ver todas las propiedades

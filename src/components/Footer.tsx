@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, } from 'lucide-react';
 import Image from 'next/image';
 
 const Footer = () => {
@@ -23,15 +23,12 @@ const Footer = () => {
               Tu socio de confianza en el mercado inmobiliario. Más de 10 años ayudando a familias a encontrar su hogar ideal en Tucumán.
             </p>
             <div className="flex space-x-3">
-              <a href="#" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm">
+              <a href="https://www.facebook.com/profile.php?id=100063511333401&mibextid=wwXIfr&rdid=XS58cjdPJU3DF053&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12MUEDoV4A4%2F%3Fmibextid%3DwwXIfr" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm" target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-5 h-5 text-gray-600 group-hover:text-white" />
               </a>
-              <a href="#" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm">
+              <a href="https://www.instagram.com/groupadministraciones/" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm" target="_blank" rel="noopener noreferrer">
                 <Instagram className="w-5 h-5 text-gray-600 group-hover:text-white" />
-              </a>
-              <a href="#" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm">
-                <Twitter className="w-5 h-5 text-gray-600 group-hover:text-white" />
-              </a>
+              </a>            
             </div>
           </div>
 
@@ -102,8 +99,8 @@ const Footer = () => {
                   <Phone className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">+54 381 123-4567</p>
-                  <p className="text-gray-600 text-sm">+54 381 506-3361</p>
+                  <p className="text-gray-600 text-sm font-medium">+54 9 3815 06-3361</p>
+                  <p className="text-gray-600 text-sm">+54 9 3812 23-1989</p>
                 </div>
               </div>
               <div className="flex items-center group">
@@ -111,8 +108,7 @@ const Footer = () => {
                   <Mail className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">info@groupinmobiliaria.com</p>
-                  <p className="text-gray-600 text-sm">ventas@groupinmobiliaria.com</p>
+                  <p className="text-gray-600 text-sm font-medium">Admgrouptuc@gmail.com</p>                 
                 </div>
               </div>
               <div className="flex items-start group">

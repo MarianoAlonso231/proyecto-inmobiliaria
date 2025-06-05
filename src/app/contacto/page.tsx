@@ -22,7 +22,41 @@ export default function ContactoPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Mensaje de contacto:', formData);
+    
+    // Determinar el número de WhatsApp según el asunto
+    const phoneNumber = formData.asunto === 'administracion' 
+      ? '5493814404335'  // +54 9 3814 40-4335 para Administración
+      : '5493816080780'; // +54 9 3816 08-0780 para otros asuntos
+    
+    // Crear el mensaje para WhatsApp
+    const asuntoText = {
+      'consulta-general': 'Consulta general',
+      'compra': 'Interés en compra',
+      'venta': 'Quiero vender mi propiedad',
+      'alquiler': 'Búsqueda de alquiler',
+      'tasacion': 'Solicitud de tasación',
+      'inversion': 'Oportunidades de inversión',
+      'administracion': 'Administración'
+    }[formData.asunto] || formData.asunto;
+    
+    const whatsappMessage = `¡Hola! Me pongo en contacto desde el sitio web.
+
+*Datos de contacto:*
+• Nombre: ${formData.nombre}
+• Email: ${formData.email}
+${formData.telefono ? `• Teléfono: ${formData.telefono}` : ''}
+
+*Asunto:* ${asuntoText}
+
+*Mensaje:*
+${formData.mensaje}
+
+¡Espero su respuesta!`;
+
+    // Abrir WhatsApp con el mensaje
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    window.open(whatsappUrl, '_blank');
+    
     setIsSubmitted(true);
   };
 
@@ -42,16 +76,16 @@ export default function ContactoPage() {
             <CardContent className="p-8">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                ¡Mensaje enviado exitosamente!
+                ¡Mensaje enviado por WhatsApp!
               </h1>
               <p className="text-gray-600 mb-6">
-                Gracias por contactarnos. Hemos recibido tu mensaje y nos pondremos en contacto contigo lo antes posible.
+                Tu mensaje se ha abierto en WhatsApp. Gracias por contactarnos, nos pondremos en contacto contigo lo antes posible.
               </p>
               <Button 
                 onClick={() => setIsSubmitted(false)}
-                className="bg-primary-400 hover:bg-primary-500"
+                className="bg-green-500 hover:bg-green-600 text-white"
               >
-                Enviar otro mensaje
+                Enviar otro mensaje por WhatsApp
               </Button>
             </CardContent>
           </Card>
@@ -87,8 +121,8 @@ export default function ContactoPage() {
                   <Phone className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Teléfono</h3>
-                    <p className="text-gray-600">+54 381 123-4567</p>
-                    <p className="text-gray-600">+54 381 506-3361</p>
+                    <p className="text-gray-600">+54 9 3815 06-3361 (Ventas)</p>
+                    <p className="text-gray-600">+54 9 3812 23-1989 (administración)</p>
                   </div>
                 </div>
 
@@ -96,8 +130,7 @@ export default function ContactoPage() {
                   <Mail className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Email</h3>
-                    <p className="text-gray-600">info@inmobi.com</p>
-                    <p className="text-gray-600">ventas@inmobi.com</p>
+                    <p className="text-gray-600">Admgrouptuc@gmail.com</p>               
                   </div>
                 </div>
 
@@ -118,9 +151,9 @@ export default function ContactoPage() {
                   <div>
                     <h3 className="font-semibold text-gray-800">Horarios de Atención</h3>
                     <p className="text-gray-600">
-                      Lunes a Viernes: 9:00 - 18:00<br />
-                      Sábados: 9:00 - 13:00<br />
-                      Domingos: Cerrado
+                      Lunes a Viernes: 9:30 - 13:00<br />
+                      Martes y Jueves: 14:30 - 16:00<br />
+                      Domingos y sábados: Cerrado
                     </p>
                   </div>
                 </div>
@@ -162,6 +195,9 @@ export default function ContactoPage() {
             <Card className="h-full">
               <CardHeader>
                 <CardTitle>Envíanos un Mensaje</CardTitle>
+                <p className="text-sm text-gray-600 mt-2">
+                  Tu mensaje se enviará directamente por WhatsApp al equipo correspondiente según el asunto seleccionado.
+                </p>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -208,7 +244,7 @@ export default function ContactoPage() {
                         <SelectItem value="alquiler">Búsqueda de alquiler</SelectItem>
                         <SelectItem value="tasacion">Solicitud de tasación</SelectItem>
                         <SelectItem value="inversion">Oportunidades de inversión</SelectItem>
-                        <SelectItem value="otro">Otro</SelectItem>
+                        <SelectItem value="administracion">Administración</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -225,8 +261,9 @@ export default function ContactoPage() {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full bg-primary-400 hover:bg-primary-500">
-                    Enviar Mensaje
+                  <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Enviar por WhatsApp
                   </Button>
                 </form>
               </CardContent>
@@ -235,28 +272,7 @@ export default function ContactoPage() {
         </div>
 
         {/* Sección adicional */}
-        <div className="mt-12">
-          <Card>
-            <CardContent className="p-8 text-center">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                ¿Necesitas ayuda inmediata?
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Nuestro equipo está disponible para atenderte. Llámanos directamente o programa una cita.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-primary-400 hover:bg-primary-500">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Llamar ahora
-                </Button>
-                <Button variant="outline" className="border-primary-400 text-primary-400 hover:bg-primary-50">
-                  <Mail className="w-4 h-4 mr-2" />
-                  Programar cita
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        
       </div>
 
       <Footer />
