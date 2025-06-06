@@ -112,8 +112,10 @@ const PropertyCard = ({
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-[#ff8425]">
-            {price}
+          <div className="bg-[#ff8425] text-white px-4 py-2 rounded-lg shadow-md">
+            <div className="text-lg font-bold leading-tight">
+              {price}
+            </div>
           </div>
           <Button 
             size="sm" 

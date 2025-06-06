@@ -92,8 +92,21 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Forzar tema claro en html y body */
+  html {
+    @apply bg-white;
+  }
+  
+  html.dark {
+    @apply bg-white !important;
+  }
+  
+  body.dark {
+    @apply bg-white text-gray-900 !important;
   }
 }
 
@@ -102,6 +115,18 @@
 [data-testid="card"],
 .ui-card {
   @apply bg-white border-gray-200 text-gray-900 shadow-sm;
+}
+
+/* Forzar tema claro globalmente - esto previene cualquier tema oscuro */
+* {
+  color-scheme: light !important;
+}
+
+/* Forzar el fondo de toda la página */
+#__next,
+main,
+.page-container {
+  @apply bg-white text-gray-900 !important;
 }
 
 .button,

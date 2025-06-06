@@ -12,6 +12,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useProperties, Property } from '@/hooks/useProperties';
 import PropertyCard from '@/components/PropertyCard';
+import { formatPrice } from '@/lib/utils';
 
 function AlquileresContent() {
   const { properties: allProperties, isLoading, error } = useProperties();
@@ -75,13 +76,7 @@ function AlquileresContent() {
     applyFiltersWithParams();
   };
 
-  const formatPrice = (price: number, currency: string = 'USD') => {
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0
-    }).format(price);
-  };
+
 
   if (isLoading) {
     return (

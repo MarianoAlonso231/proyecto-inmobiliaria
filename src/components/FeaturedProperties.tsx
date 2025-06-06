@@ -6,15 +6,13 @@ import { Loader2, Home, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/utils';
 
 const FeaturedProperties = () => {
   const { featuredProperties, isLoading, error } = useFeaturedProperties(6);
   const router = useRouter();
 
-  // Función para formatear el precio
-  const formatPrice = (price: number, currency: string) => {
-    return `${currency} ${price.toLocaleString()}`;
-  };
+
 
   // Función para formatear la ubicación
   const formatLocation = (address: string, neighborhood: string) => {
