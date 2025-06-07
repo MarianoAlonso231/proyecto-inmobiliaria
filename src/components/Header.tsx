@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-3">
+        <div className="flex justify-between items-center py-2 md:py-3">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
@@ -36,7 +36,7 @@ const Header = () => {
                   alt="GROUP Inmobiliaria Logo"
                   width={180}
                   height={90}
-                  className="h-20 w-auto"
+                  className="h-12 w-auto md:h-12"
                   priority
                 />
               </div>
@@ -78,28 +78,28 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
-            <nav className="flex flex-col space-y-4">
+          <div className="md:hidden py-3 border-t">
+            <nav className="flex flex-col space-y-3">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-lg"
+                  className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-base"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-3 pt-4">
+              <div className="flex flex-col space-y-2 pt-3">
                 <Button 
                   onClick={handleWhatsAppClick}
-                  className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2.5 transition-colors"
+                  className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors"
                 >
                   <Phone className="w-4 h-4 mr-2" />
-                  Contactar por WhatsApp
+                  WhatsApp
                 </Button>
                 <Link href="/contacto">
-                  <Button className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2.5 transition-colors">
+                  <Button className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors">
                     <Mail className="w-4 h-4 mr-2" />
                     Consultar
                   </Button>

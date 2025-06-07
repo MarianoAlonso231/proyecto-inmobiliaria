@@ -249,41 +249,29 @@ export default function PropertyDetailsPage() {
           {/* Columna izquierda - Contenido principal */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Título y precio */}
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {property.title}
-                </h1>
-                <div className="flex items-center text-gray-600 mb-4">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  <span className="text-lg">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Badge 
-                    variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
-                    className={`text-sm px-3 py-1 ${
-                      property.operation_type === 'venta' 
-                        ? 'bg-green-500 hover:bg-green-600' 
-                        : 'bg-blue-500 hover:bg-blue-600'
-                    } text-white`}
-                  >
-                    En {property.operation_type}
-                  </Badge>
-                  <Badge variant="outline" className="text-sm px-3 py-1 bg-gray-100 text-gray-900 border-gray-300">
-                    {property.property_type}
-                  </Badge>
-                </div>
+            {/* Título */}
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {property.title}
+              </h1>
+              <div className="flex items-center text-gray-600 mb-4">
+                <MapPin className="w-5 h-5 mr-2" />
+                <span className="text-lg">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
               </div>
-              <div className="text-right">
-                <div className="bg-[#ff8425] text-white px-6 py-4 rounded-lg shadow-lg inline-block">
-                  <div className="text-3xl font-bold mb-1">
-                    {property.currency} {property.price.toLocaleString()}
-                  </div>
-                  <div className="text-sm opacity-90">
-                    {property.operation_type === 'venta' ? 'Precio de venta' : 'Precio de alquiler'}
-                  </div>
-                </div>
+              <div className="flex items-center gap-3">
+                <Badge 
+                  variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
+                  className={`text-sm px-3 py-1 ${
+                    property.operation_type === 'venta' 
+                      ? 'bg-green-500 hover:bg-green-600' 
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  } text-white`}
+                >
+                  En {property.operation_type}
+                </Badge>
+                <Badge variant="outline" className="text-sm px-3 py-1 bg-gray-100 text-gray-900 border-gray-300">
+                  {property.property_type}
+                </Badge>
               </div>
             </div>
 
@@ -611,15 +599,16 @@ export default function PropertyDetailsPage() {
               </form>
             </div>
 
-            {/* Botón de visita */}
+            {/* Precio de la propiedad */}
             <div className="bg-white border rounded-lg p-6">
-              <Button 
-                variant="outline" 
-                className="w-full border-primary-400 text-primary-400 hover:bg-primary-50"
-              >
-                <Calendar className="w-4 h-4 mr-2" />
-                Agendar Visita
-              </Button>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-800 mb-2">
+                  {property.currency} {property.price.toLocaleString()}{property.operation_type === 'alquiler' ? '/mes' : ''}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {property.operation_type === 'venta' ? 'Precio de venta' : 'Precio de alquiler'}
+                </div>
+              </div>
             </div>
           </div>
         </div>
