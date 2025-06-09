@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight, staggerContainer, staggerItem } from '@/hooks/useScrollAnimation';
 
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
@@ -19,6 +21,11 @@ export default function ContactoPage() {
     mensaje: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Animation hooks
+  const { ref: headerRef, controls: headerControls } = useScrollAnimation();
+  const { ref: infoRef, controls: infoControls } = useScrollAnimation();
+  const { ref: formRef, controls: formControls } = useScrollAnimation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,41 +107,70 @@ ${formData.mensaje}
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 text-center">
+        {/* Header animado */}
+        <motion.div 
+          ref={headerRef}
+          initial="hidden"
+          animate={headerControls}
+          variants={fadeInUp}
+          className="mb-8 text-center"
+        >
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Contactanos
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Estamos aquí para ayudarte. Ponte en contacto con nuestro equipo de profesionales inmobiliarios.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Información de contacto */}
-          <div>
+          {/* Información de contacto animada */}
+          <motion.div
+            ref={infoRef}
+            initial="hidden"
+            animate={infoControls}
+            variants={fadeInLeft}
+          >
             <Card className="h-full">
               <CardHeader>
                 <CardTitle>Información de Contacto</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-start space-x-4">
+                <motion.div 
+                  variants={staggerItem}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex items-start space-x-4"
+                >
                   <Phone className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Teléfono</h3>
                     <p className="text-gray-600">+54 9 3815 06-3361 (Ventas)</p>
                     <p className="text-gray-600">+54 9 3812 23-1989 (administración)</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start space-x-4">
+                <motion.div 
+                  variants={staggerItem}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.1 }}
+                  className="flex items-start space-x-4"
+                >
                   <Mail className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Email</h3>
                     <p className="text-gray-600">Admgrouptuc@gmail.com</p>               
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start space-x-4">
+                <motion.div 
+                  variants={staggerItem}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.2 }}
+                  className="flex items-start space-x-4"
+                >
                   <MapPin className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Dirección</h3>
@@ -144,9 +180,15 @@ ${formData.mensaje}
                       Tucumán, Argentina
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start space-x-4">
+                <motion.div 
+                  variants={staggerItem}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.3 }}
+                  className="flex items-start space-x-4"
+                >
                   <Clock className="w-6 h-6 text-primary-400 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Horarios de Atención</h3>
@@ -156,10 +198,16 @@ ${formData.mensaje}
                       Domingos y sábados: Cerrado
                     </p>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Mapa funcional */}
-                <div className="mt-6">
+                {/* Mapa funcional animado */}
+                <motion.div 
+                  variants={staggerItem}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ delay: 0.4 }}
+                  className="mt-6"
+                >
                   <h3 className="font-semibold text-gray-800 mb-3">Nuestra Ubicación</h3>
                   <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
                     <iframe
@@ -185,13 +233,18 @@ ${formData.mensaje}
                       Ver en Google Maps
                     </a>
                   </div>
-                </div>
+                </motion.div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
 
-          {/* Formulario de contacto */}
-          <div>
+          {/* Formulario de contacto animado */}
+          <motion.div
+            ref={formRef}
+            initial="hidden"
+            animate={formControls}
+            variants={fadeInRight}
+          >
             <Card className="h-full">
               <CardHeader>
                 <CardTitle>Envíanos un Mensaje</CardTitle>
@@ -268,10 +321,8 @@ ${formData.mensaje}
                 </form>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
-
-        {/* Sección adicional */}
         
       </div>
 

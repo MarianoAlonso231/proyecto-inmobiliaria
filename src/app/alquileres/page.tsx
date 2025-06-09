@@ -2,6 +2,7 @@
 import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ import { useProperties, Property } from '@/hooks/useProperties';
 import PropertyCard from '@/components/PropertyCard';
 import { formatPrice } from '@/lib/utils';
 
+
 function AlquileresContent() {
   const { properties: allProperties, isLoading, error } = useProperties();
   const searchParams = useSearchParams();
@@ -25,6 +27,8 @@ function AlquileresContent() {
     precioMax: '',
     barrio: ''
   });
+
+
 
   // Filtrar solo propiedades en alquiler y disponibles
   const alquilerProperties = allProperties.filter(property => 
@@ -76,8 +80,6 @@ function AlquileresContent() {
     applyFiltersWithParams();
   };
 
-
-
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,100 +109,112 @@ function AlquileresContent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
+      {/* Header animado */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mb-8"
+      >
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
           Propiedades en Alquiler
         </h1>
         <p className="text-lg text-gray-600">
           Encuentra el lugar perfecto para alquilar
         </p>
-      </div>
+      </motion.div>
 
-      {/* Filtros */}
-      <Card className="mb-8 bg-white border-gray-200">
-        <CardContent className="p-6 bg-white">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="w-5 h-5 text-[#ff8425]" />
-            <h2 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div>
-              <Label htmlFor="tipo" className="text-gray-700 font-medium">Tipo de propiedad</Label>
-              <Select value={filters.tipo} onValueChange={(value) => setFilters({...filters, tipo: value})}>
-                <SelectTrigger className="bg-white border-gray-300 text-gray-900">
-                  <SelectValue placeholder="Seleccionar tipo" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-gray-200">
-                  <SelectItem value="todos">Todos</SelectItem>
-                  <SelectItem value="casa">Casa</SelectItem>
-                  <SelectItem value="apartamento">Apartamento</SelectItem>
-                  <SelectItem value="oficina">Oficina</SelectItem>
-                  <SelectItem value="local">Local</SelectItem>
-                  <SelectItem value="terreno">Terreno</SelectItem>
-                </SelectContent>
-              </Select>
+      {/* Filtros animados */}
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <Card className="mb-8 bg-white border-gray-200">
+          <CardContent className="p-6 bg-white">
+            <div className="flex items-center gap-2 mb-4">
+              <Filter className="w-5 h-5 text-[#ff8425]" />
+              <h2 className="text-lg font-semibold text-gray-900">Filtros de búsqueda</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div>
+                <Label htmlFor="tipo" className="text-gray-700 font-medium">Tipo de propiedad</Label>
+                <Select value={filters.tipo} onValueChange={(value) => setFilters({...filters, tipo: value})}>
+                  <SelectTrigger className="bg-white border-gray-300 text-gray-900">
+                    <SelectValue placeholder="Seleccionar tipo" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border-gray-200">
+                    <SelectItem value="todos">Todos</SelectItem>
+                    <SelectItem value="casa">Casa</SelectItem>
+                    <SelectItem value="apartamento">Apartamento</SelectItem>
+                    <SelectItem value="oficina">Oficina</SelectItem>
+                    <SelectItem value="local">Local</SelectItem>
+                    <SelectItem value="terreno">Terreno</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="dormitorios" className="text-gray-700 font-medium">Dormitorios</Label>
+                <Select value={filters.dormitorios} onValueChange={(value) => setFilters({...filters, dormitorios: value})}>
+                  <SelectTrigger className="bg-white border-gray-300 text-gray-900">
+                    <SelectValue placeholder="Cualquiera" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border-gray-200">
+                    <SelectItem value="cualquiera">Cualquiera</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="precioMin" className="text-gray-700 font-medium">Precio mínimo</Label>
+                <Input
+                  id="precioMin"
+                  type="number"
+                  placeholder="$500"
+                  value={filters.precioMin}
+                  onChange={(e) => setFilters({...filters, precioMin: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="precioMax" className="text-gray-700 font-medium">Precio máximo</Label>
+                <Input
+                  id="precioMax"
+                  type="number"
+                  placeholder="$2000"
+                  value={filters.precioMax}
+                  onChange={(e) => setFilters({...filters, precioMax: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="barrio" className="text-gray-700 font-medium">Barrio</Label>
+                <Input
+                  id="barrio"
+                  type="text"
+                  placeholder="Ej: Centro"
+                  value={filters.barrio}
+                  onChange={(e) => setFilters({...filters, barrio: e.target.value})}
+                  className="bg-white border-gray-300 text-gray-900"
+                />
+              </div>
             </div>
 
-            <div>
-              <Label htmlFor="dormitorios" className="text-gray-700 font-medium">Dormitorios</Label>
-              <Select value={filters.dormitorios} onValueChange={(value) => setFilters({...filters, dormitorios: value})}>
-                <SelectTrigger className="bg-white border-gray-300 text-gray-900">
-                  <SelectValue placeholder="Cualquiera" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-gray-200">
-                  <SelectItem value="cualquiera">Cualquiera</SelectItem>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4+</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="precioMin" className="text-gray-700 font-medium">Precio mínimo</Label>
-              <Input
-                id="precioMin"
-                type="number"
-                placeholder="$500"
-                value={filters.precioMin}
-                onChange={(e) => setFilters({...filters, precioMin: e.target.value})}
-                className="bg-white border-gray-300 text-gray-900"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="precioMax" className="text-gray-700 font-medium">Precio máximo</Label>
-              <Input
-                id="precioMax"
-                type="number"
-                placeholder="$2000"
-                value={filters.precioMax}
-                onChange={(e) => setFilters({...filters, precioMax: e.target.value})}
-                className="bg-white border-gray-300 text-gray-900"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="barrio" className="text-gray-700 font-medium">Barrio</Label>
-              <Input
-                id="barrio"
-                type="text"
-                placeholder="Ej: Centro"
-                value={filters.barrio}
-                onChange={(e) => setFilters({...filters, barrio: e.target.value})}
-                className="bg-white border-gray-300 text-gray-900"
-              />
-            </div>
-          </div>
-
-          <Button onClick={applyFilters} className="mt-4 bg-[#ff8425] hover:bg-[#e6741f] text-white">
-            <Search className="w-4 h-4 mr-2" />
-            Aplicar filtros
-          </Button>
-        </CardContent>
-      </Card>
+            <Button onClick={applyFilters} className="mt-4 bg-[#ff8425] hover:bg-[#e6741f] text-white">
+              <Search className="w-4 h-4 mr-2" />
+              Aplicar filtros
+            </Button>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Resultados */}
       <div className="mb-6">
@@ -210,30 +224,41 @@ function AlquileresContent() {
       </div>
 
       {filteredProperties.length === 0 ? (
-        <div className="text-center py-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center py-12"
+        >
           <div className="text-gray-500 mb-4">
             <Search className="w-16 h-16 mx-auto mb-4 opacity-50" />
             <p className="text-lg font-medium">No se encontraron propiedades</p>
             <p className="text-sm">Intenta ajustar los filtros de búsqueda</p>
           </div>
-        </div>
+        </motion.div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProperties.map((property) => (
-            <PropertyCard
+          {filteredProperties.map((property, index) => (
+            <motion.div
               key={property.id}
-              id={property.id}
-              title={property.title}
-              price={formatPrice(property.price, property.currency)}
-              location={`${property.address}, ${property.neighborhood}`}
-              bedrooms={property.bedrooms}
-              bathrooms={property.bathrooms}
-              area={`${property.area_m2} m²`}
-              image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
-              type={property.operation_type}
-              propertyType={property.property_type}
-              images={property.images}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <PropertyCard
+                id={property.id}
+                title={property.title}
+                price={formatPrice(property.price, property.currency)}
+                location={`${property.address}, ${property.neighborhood}`}
+                bedrooms={property.bedrooms}
+                bathrooms={property.bathrooms}
+                area={`${property.area_m2} m²`}
+                image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
+                type={property.operation_type}
+                propertyType={property.property_type}
+                images={property.images}
+              />
+            </motion.div>
           ))}
         </div>
       )}

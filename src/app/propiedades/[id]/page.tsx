@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -150,13 +151,21 @@ export default function PropertyDetailsPage() {
 
   // Lightbox component
   const LightboxComponent = () => (
-    <div 
+    <motion.div 
       className="fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]"
       onClick={closeLightbox}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
     >
-      <div 
+      <motion.div 
         className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
         <img 
           src={property?.images[currentImageIndex]} 
@@ -168,37 +177,48 @@ export default function PropertyDetailsPage() {
         />
         
         {/* Botón cerrar */}
-        <button
+        <motion.button
           onClick={closeLightbox}
           className="absolute top-4 right-4 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+          whileHover={{ scale: 1.1, rotate: 90 }}
+          whileTap={{ scale: 0.9 }}
         >
           <X className="w-6 h-6" />
-        </button>
+        </motion.button>
         
         {/* Navegación */}
         {property && property.images.length > 1 && (
           <>
-            <button
+            <motion.button
               onClick={prevImage}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+              whileHover={{ scale: 1.1, x: -5 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={nextImage}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+              whileHover={{ scale: 1.1, x: 5 }}
+              whileTap={{ scale: 0.9 }}
             >
               <ChevronRight className="w-6 h-6" />
-            </button>
+            </motion.button>
           </>
         )}
         
         {/* Contador */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full">
+        <motion.div 
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           {currentImageIndex + 1} / {property?.images.length}
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 
   if (isLoading) {
@@ -206,10 +226,27 @@ export default function PropertyDetailsPage() {
       <div>
         <Header />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary-400" />
-            <p className="text-gray-600">Cargando propiedad...</p>
-          </div>
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <Loader2 className="w-8 h-8 mx-auto mb-4 text-primary-400" />
+            </motion.div>
+            <motion.p 
+              className="text-gray-600"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              Cargando propiedad...
+            </motion.p>
+          </motion.div>
         </div>
         <Footer />
       </div>
@@ -221,17 +258,42 @@ export default function PropertyDetailsPage() {
       <div>
         <Header />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Propiedad no encontrada</h1>
-            <p className="text-gray-600 mb-6">La propiedad que buscas no existe o ha sido eliminada.</p>
-            <Button 
-              onClick={() => router.back()}
-              className="bg-primary-400 hover:bg-primary-500"
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.h1 
+              className="text-2xl font-bold text-gray-900 mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Volver atrás
-            </Button>
-          </div>
+              Propiedad no encontrada
+            </motion.h1>
+            <motion.p 
+              className="text-gray-600 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              La propiedad que buscas no existe o ha sido eliminada.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Button 
+                onClick={() => router.back()}
+                className="bg-primary-400 hover:bg-primary-500"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Volver atrás
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
         <Footer />
       </div>
@@ -249,16 +311,35 @@ export default function PropertyDetailsPage() {
           {/* Columna izquierda - Contenido principal */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Título */}
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {/* Título animado */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.h1 
+                className="text-3xl font-bold text-gray-900 mb-2"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
                 {property.title}
-              </h1>
-              <div className="flex items-center text-gray-600 mb-4">
+              </motion.h1>
+              <motion.div 
+                className="flex items-center text-gray-600 mb-4"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 <MapPin className="w-5 h-5 mr-2" />
                 <span className="text-lg">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
-              </div>
-              <div className="flex items-center gap-3">
+              </motion.div>
+              <motion.div 
+                className="flex items-center gap-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
                 <Badge 
                   variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
                   className={`text-sm px-3 py-1 ${
@@ -272,15 +353,22 @@ export default function PropertyDetailsPage() {
                 <Badge variant="outline" className="text-sm px-3 py-1 bg-gray-100 text-gray-900 border-gray-300">
                   {property.property_type}
                 </Badge>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Galería de imágenes */}
-            <div className="space-y-4">
+            {/* Galería de imágenes animada */}
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               {/* Imagen principal */}
-              <div 
+              <motion.div 
                 className="relative h-96 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
                 onClick={openLightbox}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
               >
                 <img 
                   src={property.images[currentImageIndex]} 
@@ -293,46 +381,63 @@ export default function PropertyDetailsPage() {
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3">
+                  <motion.div 
+                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3"
+                    whileHover={{ scale: 1.1, rotate: 15 }}
+                  >
                     <Maximize2 className="w-6 h-6 text-gray-700" />
-                  </div>
+                  </motion.div>
                 </div>
                 
                 {/* Navegación */}
                 {property.images.length > 1 && (
                   <>
-                    <button
+                    <motion.button
                       onClick={(e) => {
                         e.stopPropagation();
                         prevImage();
                       }}
                       className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
+                      whileHover={{ scale: 1.1, x: -3 }}
+                      whileTap={{ scale: 0.9 }}
                     >
                       <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       onClick={(e) => {
                         e.stopPropagation();
                         nextImage();
                       }}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
+                      whileHover={{ scale: 1.1, x: 3 }}
+                      whileTap={{ scale: 0.9 }}
                     >
                       <ChevronRight className="w-5 h-5" />
-                    </button>
+                    </motion.button>
                     
                     {/* Contador */}
-                    <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                    <motion.div 
+                      className="absolute top-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5 }}
+                    >
                       {currentImageIndex + 1} / {property.images.length}
-                    </div>
+                    </motion.div>
                   </>
                 )}
-              </div>
+              </motion.div>
 
               {/* Thumbnails */}
               {property.images.length > 1 && (
-                <div className="grid grid-cols-6 gap-2">
+                <motion.div 
+                  className="grid grid-cols-6 gap-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2, staggerChildren: 0.1 }}
+                >
                   {property.images.slice(0, 6).map((image, index) => (
-                    <button
+                    <motion.button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
                       className={`aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
@@ -340,6 +445,11 @@ export default function PropertyDetailsPage() {
                           ? 'border-primary-400 ring-2 ring-primary-200' 
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <img 
                         src={image} 
@@ -354,53 +464,128 @@ export default function PropertyDetailsPage() {
                           +{property.images.length - 6}
                         </div>
                       )}
-                    </button>
+                    </motion.button>
                   ))}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
-            {/* Información básica */}
-            <div className="bg-white border rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Características principales</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
+            {/* Información básica animada */}
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <motion.h2 
+                className="text-xl font-semibold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                Características principales
+              </motion.h2>
+              <motion.div 
+                className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, staggerChildren: 0.1 }}
+              >
+                <motion.div 
+                  className="text-center p-4 bg-gray-50 rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
                   <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
                   <div className="text-sm text-gray-600">Dormitorios</div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                </motion.div>
+                <motion.div 
+                  className="text-center p-4 bg-gray-50 rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
                   <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
                   <div className="text-sm text-gray-600">Baños</div>
-                </div>
-                                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                   <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                   <div className="text-2xl font-bold text-gray-900">{property.area_m2 || 'N/A'}</div>
-                   <div className="text-sm text-gray-600">m² Totales</div>
-                 </div>
-                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                   <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                   <div className="text-2xl font-bold text-gray-900">{property.lot_area_m2 || property.area_m2 || 'N/A'}</div>
-                   <div className="text-sm text-gray-600">m² Cubiertos</div>
-                 </div>
-              </div>
-            </div>
+                </motion.div>
+                <motion.div 
+                  className="text-center p-4 bg-gray-50 rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-900">{property.area_m2 || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">m² Totales</div>
+                </motion.div>
+                <motion.div 
+                  className="text-center p-4 bg-gray-50 rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                >
+                  <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-900">{property.lot_area_m2 || property.area_m2 || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">m² Cubiertos</div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
-            {/* Descripción */}
-            <div className="bg-white border rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Descripción de la Propiedad</h2>
-              <div className="prose prose-gray max-w-none">
+            {/* Descripción animada */}
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <motion.h2 
+                className="text-xl font-semibold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                Descripción de la Propiedad
+              </motion.h2>
+              <motion.div 
+                className="prose prose-gray max-w-none"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
                 <p className="text-gray-600 leading-relaxed">
                   {property.description || 'Hermosa casa en alquiler temporario (Estancia Mínima 3 noches) para 6 personas compuesta por: Galería cubierta, Living comedor, Cocina con mesada y bajo mesada, Baño completo, Asador, Dos dormitorios. Uno con cama matrimonial y el otro con cuatro camas individuales.'}
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Características y amenidades */}
-            <div className="bg-white border rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Características</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {/* Características y amenidades animadas */}
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <motion.h2 
+                className="text-xl font-semibold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                Características
+              </motion.h2>
+              <motion.div 
+                className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, staggerChildren: 0.1 }}
+              >
                 {property.features && property.features.length > 0 ? (
                   property.features.map((feature, index) => {
                     let IconComponent = Building;
@@ -421,87 +606,153 @@ export default function PropertyDetailsPage() {
                     }
 
                     return (
-                      <div key={index} className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                      <motion.div 
+                        key={index} 
+                        className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 + index * 0.1 }}
+                        whileHover={{ scale: 1.05, x: 5 }}
+                      >
                         <IconComponent className="w-5 h-5 text-primary-600 mr-3" />
                         <span className="text-sm font-medium text-primary-700">{feature}</span>
-                      </div>
+                      </motion.div>
                     );
                   })
                 ) : (
                   <>
-                    <div className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    <motion.div 
+                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, x: 5 }}
+                    >
                       <Car className="w-5 h-5 text-primary-600 mr-3" />
                       <span className="text-sm font-medium text-primary-700">Garaje</span>
-                    </div>
-                    <div className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, x: 5 }}
+                    >
                       <TreePine className="w-5 h-5 text-primary-600 mr-3" />
                       <span className="text-sm font-medium text-primary-700">Jardín</span>
-                    </div>
-                    <div className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.9 }}
+                      whileHover={{ scale: 1.05, x: 5 }}
+                    >
                       <Wifi className="w-5 h-5 text-primary-600 mr-3" />
                       <span className="text-sm font-medium text-primary-700">WiFi</span>
-                    </div>
-                    <div className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 1.0 }}
+                      whileHover={{ scale: 1.05, x: 5 }}
+                    >
                       <Shield className="w-5 h-5 text-primary-600 mr-3" />
                       <span className="text-sm font-medium text-primary-700">Seguridad</span>
-                    </div>
+                    </motion.div>
                   </>
                 )}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
-          {/* Columna derecha - Mapa y contacto */}
-          <div className="space-y-6">
+          {/* Columna derecha - Mapa y contacto animada */}
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             
             {/* Ubicación y mapa */}
-            <div className="bg-white border rounded-lg overflow-hidden">
-              <div className="p-4 border-b">
+            <motion.div 
+              className="bg-white border rounded-lg overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <motion.div 
+                className="p-4 border-b"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Ubicación</h3>
-                                 <div className="flex items-center text-gray-600">
-                   <MapPin className="w-4 h-4 mr-2" />
-                   <span className="text-sm">{property.address || property.neighborhood || 'Ubicación no especificada'}</span>
-                 </div>
-              </div>
+                <div className="flex items-center text-gray-600">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  <span className="text-sm">{property.address || property.neighborhood || 'Ubicación no especificada'}</span>
+                </div>
+              </motion.div>
               
-                             {/* Mapa interactivo */}
-               <div className="h-64 bg-gray-100 relative overflow-hidden">
-                 <div className="absolute inset-0">
-                   <iframe
-                     src={`https://www.google.com/maps?q=${encodeURIComponent(
-                       `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
-                     )}&output=embed`}
-                     width="100%"
-                     height="100%"
-                     style={{ border: 0 }}
-                     allowFullScreen
-                     loading="lazy"
-                     referrerPolicy="no-referrer-when-downgrade"
-                     title={`Ubicación de ${property.title}`}
-                     className="w-full h-full"
-                   />
-                 </div>
-                 
-                 {/* Enlace para abrir en Google Maps */}
-                 <div className="absolute bottom-2 right-2">
-                   <a
-                     href={`https://www.google.com/maps/search/${encodeURIComponent(
-                       `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
-                     )}`}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="inline-flex items-center bg-white/90 hover:bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-md transition-colors"
-                   >
-                     <MapPin className="w-3 h-3 mr-1" />
-                     Ver en Google Maps
-                   </a>
-                 </div>
-               </div>
-            </div>
+              {/* Mapa interactivo */}
+              <motion.div 
+                className="h-64 bg-gray-100 relative overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                <div className="absolute inset-0">
+                  <iframe
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(
+                      `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
+                    )}&output=embed`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Ubicación de ${property.title}`}
+                    className="w-full h-full"
+                  />
+                </div>
+                
+                {/* Enlace para abrir en Google Maps */}
+                <motion.div 
+                  className="absolute bottom-2 right-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <a
+                    href={`https://www.google.com/maps/search/${encodeURIComponent(
+                      `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center bg-white/90 hover:bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-md transition-colors"
+                  >
+                    <MapPin className="w-3 h-3 mr-1" />
+                    Ver en Google Maps
+                  </a>
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
             {/* Información del agente */}
-            <div className="bg-white border rounded-lg p-6">
-              <div className="flex items-center mb-4">
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <motion.div 
+                className="flex items-center mb-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
                 <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
                   <User className="w-6 h-6 text-primary-600" />
                 </div>
@@ -509,41 +760,93 @@ export default function PropertyDetailsPage() {
                   <h3 className="font-semibold text-gray-900">Silvino Hilt</h3>
                   <p className="text-sm text-gray-600">Agente inmobiliario</p>
                   <div className="flex items-center text-xs text-green-600 mt-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                    <motion.div 
+                      className="w-2 h-2 bg-green-500 rounded-full mr-1"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
                     Conectado
                   </div>
                 </div>
-              </div>
+              </motion.div>
               
-                             <div className="space-y-3 mb-4">
-                 <div className="flex items-center text-sm text-gray-600">
-                   <Phone className="w-4 h-4 mr-2" />
-                   <span>+54 381 506-3361</span>
-                 </div>
-                 <div className="flex items-center text-sm text-gray-600">
-                   <Mail className="w-4 h-4 mr-2" />
-                   <span>info@inmobiliaria.com</span>
-                 </div>
-               </div>
+              <motion.div 
+                className="space-y-3 mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, staggerChildren: 0.1 }}
+              >
+                <motion.div 
+                  className="flex items-center text-sm text-gray-600"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <Phone className="w-4 h-4 mr-2" />
+                  <span>+54 381 506-3361</span>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center text-sm text-gray-600"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <Mail className="w-4 h-4 mr-2" />
+                  <span>info@inmobiliaria.com</span>
+                </motion.div>
+              </motion.div>
 
-              <Button className="w-full bg-primary-400 hover:bg-primary-500 text-white mb-3">
-                <Phone className="w-4 h-4 mr-2" />
-                Llamar ahora
-              </Button>
-              <Button variant="outline" className="w-full border-primary-400 text-primary-400 hover:bg-primary-50">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Enviar WhatsApp
-              </Button>
-            </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="w-full bg-primary-400 hover:bg-primary-500 text-white mb-3">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Llamar ahora
+                  </Button>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-primary-400 text-primary-400 hover:bg-primary-50"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Enviar WhatsApp
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
             {/* Formulario de contacto */}
-            <div className="bg-white border rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <motion.h3 
+                className="text-lg font-semibold text-gray-900 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
                 Contactar agente
-              </h3>
+              </motion.h3>
               
               <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
                   <Input
                     type="text"
                     name="name"
@@ -553,9 +856,13 @@ export default function PropertyDetailsPage() {
                     required
                     className="w-full"
                   />
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
                   <Input
                     type="email"
                     name="email"
@@ -565,9 +872,13 @@ export default function PropertyDetailsPage() {
                     required
                     className="w-full"
                   />
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 }}
+                >
                   <Input
                     type="tel"
                     name="phone"
@@ -576,9 +887,13 @@ export default function PropertyDetailsPage() {
                     onChange={handleContactFormChange}
                     className="w-full"
                   />
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.0 }}
+                >
                   <Textarea
                     name="message"
                     placeholder="Hola, me interesa esta propiedad y quiero que me contacten. Gracias."
@@ -587,30 +902,58 @@ export default function PropertyDetailsPage() {
                     rows={4}
                     className="w-full resize-none"
                   />
-                </div>
+                </motion.div>
                 
-                <Button 
-                  type="submit"
-                  className="w-full bg-primary-400 hover:bg-primary-500 text-white"
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <Mail className="w-4 h-4 mr-2" />
-                  Enviar Mensaje
-                </Button>
+                  <Button 
+                    type="submit"
+                    className="w-full bg-primary-400 hover:bg-primary-500 text-white"
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Enviar Mensaje
+                  </Button>
+                </motion.div>
               </form>
-            </div>
+            </motion.div>
 
             {/* Precio de la propiedad */}
-            <div className="bg-white border rounded-lg p-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-800 mb-2">
+            <motion.div 
+              className="bg-white border rounded-lg p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <motion.div 
+                className="text-center"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
+              >
+                <motion.div 
+                  className="text-2xl font-bold text-gray-800 mb-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
                   {property.currency} {property.price.toLocaleString()}{property.operation_type === 'alquiler' ? '/mes' : ''}
-                </div>
-                <div className="text-sm text-gray-600">
+                </motion.div>
+                <motion.div 
+                  className="text-sm text-gray-600"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 }}
+                >
                   {property.operation_type === 'venta' ? 'Precio de venta' : 'Precio de alquiler'}
-                </div>
-              </div>
-            </div>
-          </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
