@@ -1,13 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { name: 'Ventas', href: '/ventas' },
@@ -24,13 +35,32 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <motion.header 
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          : 'bg-white shadow-md'
+      }`}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-2 md:py-3">
           {/* Logo */}
-          <div className="flex items-center">
+          <motion.div 
+            className="flex items-center"
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          >
             <Link href="/" className="flex items-center">
-              <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-100">
+              <motion.div 
+                className="bg-white p-2 rounded-lg shadow-sm border border-gray-100"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
                 <Image
                   src="/logo.svg"
                   alt="GROUP Inmobiliaria Logo"
@@ -39,77 +69,166 @@ const Header = () => {
                   className="h-12 w-auto md:h-12"
                   priority
                 />
-              </div>
+              </motion.div>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
+          <motion.nav 
+            className="hidden md:flex space-x-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            {navItems.map((item, index) => (
+              <motion.div
                 key={item.name}
-                href={item.href}
-                className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-lg"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: 0.4 + (index * 0.1),
+                  ease: "easeOut" 
+                }}
               >
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-lg relative group"
+                >
+                  {item.name}
+                  <motion.div
+                    className="absolute -bottom-1 left-0 h-0.5 bg-[#ff8425] origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </Link>
+              </motion.div>
             ))}
-          </nav>
+          </motion.nav>
 
           {/* Contact Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            <Button 
-              onClick={handleWhatsAppClick}
-              className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-6 py-2.5 font-medium transition-colors"
+          <motion.div 
+            className="hidden md:flex items-center space-x-3"
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Phone className="w-4 h-4 mr-2" />
-              Contactar por WhatsApp
-            </Button>
-          </div>
+              <Button 
+                onClick={handleWhatsAppClick}
+                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-6 py-2.5 font-medium transition-colors animate-pulse-glow"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                >
+                  <Phone className="w-4 h-4 mr-2" />
+                </motion.div>
+                Contactar por WhatsApp
+              </Button>
+            </motion.div>
+          </motion.div>
 
           {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2"
+          <motion.button
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+            whileTap={{ scale: 0.9 }}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            <AnimatePresence mode="wait">
+              {isMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="w-6 h-6" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="w-6 h-6" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-3 border-t">
-            <nav className="flex flex-col space-y-3">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-base"
-                  onClick={() => setIsMenuOpen(false)}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              className="md:hidden py-3 border-t overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <nav className="flex flex-col space-y-3">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ 
+                      duration: 0.3, 
+                      delay: index * 0.1,
+                      ease: "easeOut" 
+                    }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-base block py-2 px-4 rounded-lg hover:bg-gray-50"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div 
+                  className="flex flex-col space-y-2 pt-3"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
                 >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="flex flex-col space-y-2 pt-3">
-                <Button 
-                  onClick={handleWhatsAppClick}
-                  className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors"
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  WhatsApp
-                </Button>
-                <Link href="/contacto">
-                  <Button className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Consultar
-                  </Button>
-                </Link>
-              </div>
-            </nav>
-          </div>
-        )}
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      onClick={handleWhatsAppClick}
+                      className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      WhatsApp
+                    </Button>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <Link href="/contacto">
+                      <Button className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors">
+                        <Mail className="w-4 h-4 mr-2" />
+                        Consultar
+                      </Button>
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </header>
+    </motion.header>
   );
 };
 

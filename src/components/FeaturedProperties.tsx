@@ -5,14 +5,13 @@ import PropertyCard from './PropertyCard';
 import { Loader2, Home, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/utils';
 
 const FeaturedProperties = () => {
   const { featuredProperties, isLoading, error } = useFeaturedProperties(6);
   const router = useRouter();
-
-
 
   // Función para formatear la ubicación
   const formatLocation = (address: string, neighborhood: string) => {
@@ -26,6 +25,8 @@ const FeaturedProperties = () => {
   const formatArea = (area: number | null) => {
     return area ? `${area}m²` : 'N/A';
   };
+
+
 
   if (error) {
     return (
@@ -45,14 +46,19 @@ const FeaturedProperties = () => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Propiedades destacadas
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Descubre las mejores oportunidades inmobiliarias seleccionadas especialmente para ti
           </p>
-        </div>
+        </motion.div>
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
@@ -76,7 +82,7 @@ const FeaturedProperties = () => {
               </p>
               <button
                 onClick={() => router.push('/admin/dashboard')}
-                className="inline-flex items-center gap-2 bg-primary-400 hover:bg-primary-500 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                className="inline-flex items-center gap-2 bg-[#ff8425] hover:bg-[#e6741f] text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
                 <ExternalLink className="h-4 w-4" />
                 Ir al panel de administración
@@ -85,34 +91,54 @@ const FeaturedProperties = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProperties.map((property) => (
-                <PropertyCard
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {featuredProperties.map((property, index) => (
+                <motion.div
                   key={property.id}
-                  id={property.id}
-                  title={property.title}
-                  price={formatPrice(property.price, property.currency)}
-                  location={formatLocation(property.address, property.neighborhood)}
-                  bedrooms={property.bedrooms}
-                  bathrooms={property.bathrooms}
-                  area={formatArea(property.area_m2)}
-                  image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
-                  type={property.operation_type}
-                  propertyType={property.property_type}
-                  images={property.images.length > 0 ? property.images : ['/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png']}
-                />
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: 0.4 + (index * 0.1),
+                    ease: "easeOut" 
+                  }}
+                >
+                  <PropertyCard
+                    id={property.id}
+                    title={property.title}
+                    price={formatPrice(property.price, property.currency)}
+                    location={formatLocation(property.address, property.neighborhood)}
+                    bedrooms={property.bedrooms}
+                    bathrooms={property.bathrooms}
+                    area={formatArea(property.area_m2)}
+                    image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
+                    type={property.operation_type}
+                    propertyType={property.property_type}
+                    images={property.images.length > 0 ? property.images : ['/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png']}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="text-center mt-12">
+            <motion.div 
+              className="text-center mt-12"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
               <button 
                 onClick={() => router.push('/propiedades')}
-                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2 hover:scale-105 transform transition-transform duration-200"
               >
                 Ver todas las propiedades
                 <ExternalLink className="h-4 w-4" />
               </button>
-            </div>
+            </motion.div>
           </>
         )}
       </div>

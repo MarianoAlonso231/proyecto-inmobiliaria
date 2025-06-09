@@ -1,13 +1,25 @@
+'use client';
+
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, } from 'lucide-react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useScrollAnimation, fadeInUp, staggerContainer, staggerItem } from '@/hooks/useScrollAnimation';
 
 const Footer = () => {
+  const { ref: footerRef, controls: footerControls } = useScrollAnimation();
+  
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div 
+          ref={footerRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          initial="hidden"
+          animate={footerControls}
+          variants={staggerContainer}
+        >
           {/* Company Info - Mejorado */}
-          <div>
+          <motion.div variants={staggerItem}>
             <div className="mb-6">
               <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 inline-block">
                 <Image
@@ -23,17 +35,17 @@ const Footer = () => {
               Tu socio de confianza en el mercado inmobiliario. Más de 10 años ayudando a familias a encontrar su hogar ideal en Tucumán.
             </p>
             <div className="flex space-x-3">
-              <a href="https://www.facebook.com/profile.php?id=100063511333401&mibextid=wwXIfr&rdid=XS58cjdPJU3DF053&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12MUEDoV4A4%2F%3Fmibextid%3DwwXIfr" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.facebook.com/groupadministraciones/" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm" target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-5 h-5 text-gray-600 group-hover:text-white" />
               </a>
               <a href="https://www.instagram.com/groupadministraciones/" className="p-2 bg-white border border-gray-200 rounded-full hover:bg-[#ff8425] hover:border-[#ff8425] transition-colors group shadow-sm" target="_blank" rel="noopener noreferrer">
                 <Instagram className="w-5 h-5 text-gray-600 group-hover:text-white" />
               </a>            
             </div>
-          </div>
+          </motion.div>
 
           {/* Services */}
-          <div>
+          <motion.div variants={staggerItem}>
             <h3 className="text-lg font-semibold mb-4 text-gray-800">Servicios</h3>
             <ul className="space-y-3">
               <li>
@@ -61,10 +73,10 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Property Types */}
-          <div>
+          <motion.div variants={staggerItem}>
             <h3 className="text-lg font-semibold mb-4 text-gray-800">Tipos de propiedad</h3>
             <ul className="space-y-3">
               <li className="text-gray-600 flex items-center">
@@ -88,10 +100,10 @@ const Footer = () => {
                 Terrenos
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact */}
-          <div>
+          <motion.div variants={staggerItem}>
             <h3 className="text-lg font-semibold mb-4 text-gray-800">Contacto</h3>
             <div className="space-y-4">
               <div className="flex items-center group">
@@ -124,8 +136,8 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <div className="border-t border-gray-200 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">

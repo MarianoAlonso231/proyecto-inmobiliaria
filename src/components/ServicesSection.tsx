@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Home, Key, Calculator, Phone } from 'lucide-react';
+
 
 const ServicesSection = () => {
   const services = [
@@ -42,43 +46,68 @@ const ServicesSection = () => {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Nuestros servicios
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Te acompañamos en cada etapa de tu experiencia inmobiliaria
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service) => {
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
-              <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <CardContent className="p-6 text-center">
-                  <div className={`${service.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                  <Link href={service.href}>
-                    <Button 
-                      variant="outline" 
-                      className="border-[#ff8425] text-[#ff8425] hover:bg-[#ff8425] hover:text-white transition-colors w-full"
+              <motion.div 
+                key={service.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: 0.4 + (index * 0.1),
+                  ease: "easeOut" 
+                }}
+              >
+                <Card className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full">
+                  <CardContent className="p-6 text-center h-full flex flex-col">
+                    <motion.div 
+                      className={`${service.color} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
                     >
-                      Más información
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </motion.div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 mb-6 text-sm leading-relaxed flex-grow">
+                      {service.description}
+                    </p>
+                    <Link href={service.href}>
+                      <Button 
+                        variant="outline" 
+                        className="border-[#ff8425] text-[#ff8425] hover:bg-[#ff8425] hover:text-white transition-colors w-full"
+                      >
+                        Más información
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, Bed, Bath, Square } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
+import { motion } from 'framer-motion';
 interface PropertyCardProps {
   id: string;
   title: string;
@@ -57,13 +57,19 @@ const PropertyCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative">
-        <img 
-          src={image} 
-          alt={title}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+    <motion.div
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="relative overflow-hidden">
+          <motion.img 
+            src={image} 
+            alt={title}
+            className="w-full h-48 object-cover"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          />
         <div className="absolute top-3 left-3">
           <Badge 
             variant={type === 'venta' ? 'default' : 'secondary'}
@@ -127,6 +133,7 @@ const PropertyCard = ({
         </div>
       </CardContent>
     </Card>
+    </motion.div>
   );
 };
 
