@@ -5,13 +5,61 @@ import PropertyCard from './PropertyCard';
 import { Loader2, Home, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/utils';
 
 const FeaturedProperties = () => {
   const { featuredProperties, isLoading, error } = useFeaturedProperties(6);
   const router = useRouter();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Variantes de animación
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 60,
+      scale: 0.8
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.25, 0.25, 0.75] // Bezier curve para suavidad
+      }
+    }
+  };
+
+  const headerVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: -30 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
   // Función para formatear la ubicación
   const formatLocation = (address: string, neighborhood: string) => {
@@ -44,20 +92,30 @@ const FeaturedProperties = () => {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section ref={ref} className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          variants={headerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold text-gray-800 mb-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             Propiedades destacadas
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Descubre las mejores oportunidades inmobiliarias seleccionadas especialmente para ti
-          </p>
+          </motion.p>
         </motion.div>
 
         {isLoading ? (
@@ -93,19 +151,17 @@ const FeaturedProperties = () => {
           <>
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
             >
               {featuredProperties.map((property, index) => (
                 <motion.div
                   key={property.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.5, 
-                    delay: 0.4 + (index * 0.1),
-                    ease: "easeOut" 
+                  variants={itemVariants}
+                  whileHover={{ 
+                    y: -8, 
+                    transition: { duration: 0.3, ease: "easeOut" } 
                   }}
                 >
                   <PropertyCard
@@ -127,17 +183,42 @@ const FeaturedProperties = () => {
 
             <motion.div 
               className="text-center mt-12"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={isInView ? { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1 
+              } : { 
+                opacity: 0, 
+                y: 30, 
+                scale: 0.9 
+              }}
+              transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
             >
-              <button 
+              <motion.button 
                 onClick={() => router.push('/propiedades')}
-                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2 hover:scale-105 transform transition-transform duration-200"
+                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 10px 30px rgba(255, 132, 37, 0.3)",
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.95 }}
               >
-                Ver todas las propiedades
-                <ExternalLink className="h-4 w-4" />
-              </button>
+                <motion.span
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Ver todas las propiedades
+                </motion.span>
+                <motion.div
+                  animate={{ x: [0, 3, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </motion.div>
+              </motion.button>
             </motion.div>
           </>
         )}
