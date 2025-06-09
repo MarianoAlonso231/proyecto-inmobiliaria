@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -51,17 +52,27 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat flex items-center" style={{ backgroundImage: 'url(/imagen-hero-section.jpg)' }}>
+    <section className="relative min-h-screen overflow-hidden flex items-center">
+      {/* Background Image */}
+      <Image
+        src="/imagen-hero-section.jpg"
+        alt="Hero background - Beautiful real estate properties"
+        fill
+        priority
+        className="object-cover object-center"
+        quality={90}
+      />
+      
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/40 z-10"></div>
       
       {/* Background Pattern - opcional, se puede eliminar si interfiere con la imagen */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-5 z-20">
         <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-xl"></div>
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-white rounded-full blur-xl"></div>
       </div>
 
-      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-30">
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 50 }}
