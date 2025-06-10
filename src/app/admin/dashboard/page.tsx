@@ -10,8 +10,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { PropertyForm } from '@/components/PropertyForm';
+import { StorageManager } from '@/components/admin/StorageManager';
+import { StorageHealthWidget } from '@/components/admin/StorageHealthWidget';
 import { useRouter } from 'next/navigation';
-import { Loader2, Shield, AlertTriangle, Plus, Home, Building, DollarSign, MapPin, Edit, Trash2, Eye, Image } from 'lucide-react';
+import { Loader2, Shield, AlertTriangle, Plus, Home, Building, DollarSign, MapPin, Edit, Trash2, Eye, Image, HardDrive } from 'lucide-react';
 import { useProperties, PropertyFormData, initialFormData, Property } from '@/hooks/useProperties';
 
 interface AdminUser {
@@ -169,7 +171,7 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = async (propertyId: string, propertyTitle: string) => {
-    if (!confirm(`¿Estás seguro de que quieres eliminar la propiedad "${propertyTitle}"?`)) {
+    if (!confirm(`¿Estás seguro de que quieres eliminar la propiedad "${propertyTitle}"?\n\nEsto eliminará tanto la propiedad como sus imágenes del Storage.`)) {
       return;
     }
 
@@ -307,7 +309,7 @@ export default function AdminDashboard() {
 
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white border border-gray-200">
+          <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:border-blue-200"
@@ -319,6 +321,13 @@ export default function AdminDashboard() {
               className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:border-blue-200"
             >
               Propiedades
+            </TabsTrigger>
+            <TabsTrigger 
+              value="storage"
+              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:border-blue-200"
+            >
+              <HardDrive className="w-4 h-4 mr-1" />
+              Storage
             </TabsTrigger>
             <TabsTrigger 
               value="profile"
@@ -440,8 +449,12 @@ export default function AdminDashboard() {
               </Card>
             </div>
 
-            {/* Welcome Card */}
-            <Card className="bg-white border border-gray-200 shadow-sm">
+            {/* Storage Health Widget */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <StorageHealthWidget onViewDetails={() => setActiveTab('storage')} />
+              
+              {/* Welcome Card */}
+              <Card className="bg-white border border-gray-200 shadow-sm md:col-span-1">
               <CardHeader className="border-b border-gray-100">
                 <CardTitle className="flex items-center gap-2">
                   <div className="p-2 bg-green-100 rounded-lg">
@@ -473,6 +486,7 @@ export default function AdminDashboard() {
                 </div>
               </CardContent>
             </Card>
+            </div>
           </TabsContent>
 
           {/* Properties Tab */}
@@ -660,6 +674,17 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Storage Tab */}
+          <TabsContent value="storage" className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Gestión de Storage de Imágenes</h2>
+              <p className="text-sm text-gray-600">
+                Administra las imágenes del bucket de Supabase, identifica y limpia archivos huérfanos
+              </p>
+            </div>
+            <StorageManager />
           </TabsContent>
 
           {/* Profile Tab */}

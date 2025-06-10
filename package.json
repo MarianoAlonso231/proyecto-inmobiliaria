@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storage:analyze": "tsx src/scripts/storage-cleanup.ts analyze",
+    "storage:cleanup:dry": "tsx src/scripts/storage-cleanup.ts cleanup --dry-run",
+    "storage:cleanup:run": "tsx src/scripts/storage-cleanup.ts cleanup --real",
+    "storage:stats": "tsx src/scripts/storage-cleanup.ts stats",
+    "storage:maintenance": "tsx src/scripts/storage-cleanup.ts maintenance --real",
+    "storage:debug": "tsx src/scripts/debug-storage.ts",
+    "storage:test": "tsx src/scripts/test-fixed-algorithm.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -72,6 +79,7 @@
     "eslint-config-next": "14.1.0",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.4",
     "typescript": "^5.3.3"
   }
 }

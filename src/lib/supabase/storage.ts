@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { deletePropertySafely } from './cleanup';
 
 const BUCKET_NAME = 'properties-images';
 
@@ -37,4 +38,12 @@ export async function uploadImage(file: File): Promise<{ success: boolean; url?:
   } catch (error) {
     return { success: false, error: 'Error al subir la imagen' };
   }
-} 
+}
+
+/**
+ * Función para eliminar una propiedad de forma segura
+ * Elimina tanto la propiedad de la DB como sus imágenes del Storage
+ */
+export async function deleteProperty(propertyId: string): Promise<{ success: boolean; error?: string; deletedImages?: number }> {
+  return await deletePropertySafely(propertyId);
+}

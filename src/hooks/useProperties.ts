@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { deletePropertySafely } from '@/lib/supabase/cleanup';
 
 export interface Property {
   id: string;
@@ -207,13 +208,11 @@ export function useProperties() {
     try {
       setError(null);
 
-      const { error } = await supabase
-        .from('properties')
-        .delete()
-        .eq('id', id);
+      // Usar eliminación segura que incluye imágenes del Storage
+      const result = await deletePropertySafely(id);
 
-      if (error) {
-        throw error;
+      if (!result.success) {
+        throw new Error(result.error || 'Error al eliminar la propiedad');
       }
 
       await loadProperties(); // Recargar las propiedades
@@ -221,7 +220,7 @@ export function useProperties() {
       
     } catch (error) {
       console.error('Error al eliminar propiedad:', error);
-      setError('Error al eliminar la propiedad');
+      setError(error instanceof Error ? error.message : 'Error al eliminar la propiedad');
       return false;
     }
   };
