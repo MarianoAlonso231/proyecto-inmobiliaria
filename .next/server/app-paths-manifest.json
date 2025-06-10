@@ -1,4 +1,7 @@
 {
-  "/ventas/page": "app/ventas/page.js",
+  "/contacto/page": "app/contacto/page.js",
+  "/alquileres/page": "app/alquileres/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/propiedades/[id]/page": "app/propiedades/[id]/page.js"
 }

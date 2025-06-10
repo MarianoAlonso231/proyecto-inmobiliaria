@@ -149,6 +149,27 @@ export default function PropertyDetailsPage() {
     setContactForm({ name: '', email: '', phone: '', message: '' });
   };
 
+  const handleWhatsAppClick = () => {
+    if (!property) return;
+    
+    const message = `¡Hola Gabriel! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
+
+🏠 Características:
+• ${property.bedrooms} dormitorios
+• ${property.bathrooms} baños
+• ${property.area_m2 || 'N/A'} m²
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}
+
+¿Podrías darme más información?
+
+¡Gracias!`;
+
+    const phoneNumber = '5493815063361'; // Formato internacional sin espacios ni signos
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+  };
+
   // Lightbox component
   const LightboxComponent = () => (
     <motion.div 
@@ -757,7 +778,7 @@ export default function PropertyDetailsPage() {
                   <User className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Silvino Hilt</h3>
+                  <h3 className="font-semibold text-gray-900">Gabriel Navarro</h3>
                   <p className="text-sm text-gray-600">Agente inmobiliario</p>
                   <div className="flex items-center text-xs text-green-600 mt-1">
                     <motion.div 
@@ -792,7 +813,7 @@ export default function PropertyDetailsPage() {
                   transition={{ delay: 0.8 }}
                 >
                   <Mail className="w-4 h-4 mr-2" />
-                  <span>info@inmobiliaria.com</span>
+                  <span>Admgrouptuc@gmail.com</span>
                 </motion.div>
               </motion.div>
 
@@ -804,11 +825,7 @@ export default function PropertyDetailsPage() {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                >
-                  <Button className="w-full bg-primary-400 hover:bg-primary-500 text-white mb-3">
-                    <Phone className="w-4 h-4 mr-2" />
-                    Llamar ahora
-                  </Button>
+                >                 
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -817,6 +834,7 @@ export default function PropertyDetailsPage() {
                   <Button 
                     variant="outline" 
                     className="w-full border-primary-400 text-primary-400 hover:bg-primary-50"
+                    onClick={handleWhatsAppClick}
                   >
                     <MessageSquare className="w-4 h-4 mr-2" />
                     Enviar WhatsApp
@@ -826,102 +844,7 @@ export default function PropertyDetailsPage() {
             </motion.div>
 
             {/* Formulario de contacto */}
-            <motion.div 
-              className="bg-white border rounded-lg p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <motion.h3 
-                className="text-lg font-semibold text-gray-900 mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                Contactar agente
-              </motion.h3>
-              
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                >
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Ingrese su Nombre"
-                    value={contactForm.name}
-                    onChange={handleContactFormChange}
-                    required
-                    className="w-full"
-                  />
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Ingrese su Email"
-                    value={contactForm.email}
-                    onChange={handleContactFormChange}
-                    required
-                    className="w-full"
-                  />
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 }}
-                >
-                  <Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Teléfono"
-                    value={contactForm.phone}
-                    onChange={handleContactFormChange}
-                    className="w-full"
-                  />
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.0 }}
-                >
-                  <Textarea
-                    name="message"
-                    placeholder="Hola, me interesa esta propiedad y quiero que me contacten. Gracias."
-                    value={contactForm.message}
-                    onChange={handleContactFormChange}
-                    rows={4}
-                    className="w-full resize-none"
-                  />
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    type="submit"
-                    className="w-full bg-primary-400 hover:bg-primary-500 text-white"
-                  >
-                    <Mail className="w-4 h-4 mr-2" />
-                    Enviar Mensaje
-                  </Button>
-                </motion.div>
-              </form>
-            </motion.div>
-
+            
             {/* Precio de la propiedad */}
             <motion.div 
               className="bg-white border rounded-lg p-6"

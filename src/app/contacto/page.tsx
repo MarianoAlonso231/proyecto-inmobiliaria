@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight, staggerContainer, staggerItem } from '@/hooks/useScrollAnimation';
@@ -20,7 +20,6 @@ export default function ContactoPage() {
     asunto: '',
     mensaje: ''
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Animation hooks
   const { ref: headerRef, controls: headerControls } = useScrollAnimation();
@@ -30,10 +29,16 @@ export default function ContactoPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validar campos obligatorios
+    if (!formData.nombre || !formData.email || !formData.asunto || !formData.mensaje) {
+      alert('Por favor, completa todos los campos obligatorios (*)');
+      return;
+    }
+    
     // Determinar el número de WhatsApp según el asunto
     const phoneNumber = formData.asunto === 'administracion' 
-      ? '5493814404335'  // +54 9 3814 40-4335 para Administración
-      : '5493816080780'; // +54 9 3816 08-0780 para otros asuntos
+      ? '5493812231989'  // +54 9 3812 23-1989 para Administración
+      : '5493815063361'; // +54 9 3815 06-3361 para otros asuntos (Ventas)
     
     // Crear el mensaje para WhatsApp
     const asuntoText = {
@@ -48,14 +53,14 @@ export default function ContactoPage() {
     
     const whatsappMessage = `¡Hola! Me pongo en contacto desde el sitio web.
 
-*Datos de contacto:*
+📋 *Datos de contacto:*
 • Nombre: ${formData.nombre}
 • Email: ${formData.email}
 ${formData.telefono ? `• Teléfono: ${formData.telefono}` : ''}
 
-*Asunto:* ${asuntoText}
+📌 *Asunto:* ${asuntoText}
 
-*Mensaje:*
+💬 *Mensaje:*
 ${formData.mensaje}
 
 ¡Espero su respuesta!`;
@@ -63,8 +68,6 @@ ${formData.mensaje}
     // Abrir WhatsApp con el mensaje
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(whatsappUrl, '_blank');
-    
-    setIsSubmitted(true);
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -73,34 +76,6 @@ ${formData.mensaje}
       [field]: value
     }));
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-white">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <Card className="text-center">
-            <CardContent className="p-8">
-              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                ¡Mensaje enviado por WhatsApp!
-              </h1>
-              <p className="text-gray-600 mb-6">
-                Tu mensaje se ha abierto en WhatsApp. Gracias por contactarnos, nos pondremos en contacto contigo lo antes posible.
-              </p>
-              <Button 
-                onClick={() => setIsSubmitted(false)}
-                className="bg-green-500 hover:bg-green-600 text-white"
-              >
-                Enviar otro mensaje por WhatsApp
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -300,6 +275,12 @@ ${formData.mensaje}
                         <SelectItem value="administracion">Administración</SelectItem>
                       </SelectContent>
                     </Select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formData.asunto === 'administracion' 
+                        ? 'Se enviará al número de administración: +54 9 3812 23-1989'
+                        : 'Se enviará al número de ventas: +54 9 3815 06-3361'
+                      }
+                    </p>
                   </div>
 
                   <div>
@@ -315,9 +296,13 @@ ${formData.mensaje}
                   </div>
 
                   <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
-                    <Phone className="w-4 h-4 mr-2" />
+                    <MessageCircle className="w-4 h-4 mr-2" />
                     Enviar por WhatsApp
                   </Button>
+                  
+                  <p className="text-sm text-gray-500 text-center">
+                    Al hacer clic, se abrirá WhatsApp con tu mensaje pre-cargado
+                  </p>
                 </form>
               </CardContent>
             </Card>

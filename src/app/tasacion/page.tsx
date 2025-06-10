@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calculator, Home, FileText, CheckCircle } from 'lucide-react';
+import { Calculator, Home, FileText, CheckCircle, MessageCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useScrollAnimation, fadeInUp, fadeInLeft, staggerContainer, staggerItem } from '@/hooks/useScrollAnimation';
@@ -26,17 +26,55 @@ export default function TasacionPage() {
     estado: '',
     descripcion: ''
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Animation hooks
   const { ref: headerRef, controls: headerControls } = useScrollAnimation();
   const { ref: cardsRef, controls: cardsControls } = useScrollAnimation();
   const { ref: formRef, controls: formControls } = useScrollAnimation();
 
+  // Número de WhatsApp (reemplaza con tu número real)
+  const WHATSAPP_NUMBER = "5493812231989"; // Formato: código país + número sin espacios ni símbolos
+
+  const generateWhatsAppMessage = () => {
+    const message = `¡Hola! Me interesa solicitar una tasación gratuita de mi propiedad.
+
+📋 *DATOS PERSONALES:*
+• Nombre: ${formData.nombre || 'No especificado'}
+• Email: ${formData.email || 'No especificado'}
+• Teléfono: ${formData.telefono || 'No especificado'}
+
+🏠 *DATOS DE LA PROPIEDAD:*
+• Dirección: ${formData.direccion || 'No especificado'}
+• Tipo: ${formData.tipoPropiedad || 'No especificado'}
+• Dormitorios: ${formData.dormitorios || 'No especificado'}
+• Baños: ${formData.banos || 'No especificado'}
+• Superficie: ${formData.superficie ? formData.superficie + ' m²' : 'No especificado'}
+• Antigüedad: ${formData.antiguedad || 'No especificado'}
+• Estado: ${formData.estado || 'No especificado'}
+
+💬 *INFORMACIÓN ADICIONAL:*
+${formData.descripcion || 'Sin descripción adicional'}
+
+¿Podrían contactarme para coordinar la visita? ¡Gracias!`;
+
+    return encodeURIComponent(message);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Solicitud de tasación:', formData);
-    setIsSubmitted(true);
+    
+    // Validar campos obligatorios
+    if (!formData.nombre || !formData.email || !formData.telefono || !formData.direccion || !formData.tipoPropiedad) {
+      alert('Por favor, completa todos los campos obligatorios (*)');
+      return;
+    }
+
+    // Generar mensaje y abrir WhatsApp
+    const message = generateWhatsAppMessage();
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    
+    // Abrir WhatsApp en una nueva ventana/pestaña
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -45,34 +83,6 @@ export default function TasacionPage() {
       [field]: value
     }));
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-white">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <Card className="text-center">
-            <CardContent className="p-8">
-              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                ¡Solicitud enviada exitosamente!
-              </h1>
-              <p className="text-gray-600 mb-6">
-                Hemos recibido tu solicitud de tasación. Nuestro equipo se pondrá en contacto contigo en las próximas 24 horas para coordinar la visita.
-              </p>
-              <Button 
-                onClick={() => setIsSubmitted(false)}
-                className="bg-primary-400 hover:bg-primary-500"
-              >
-                Enviar otra solicitud
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -91,7 +101,7 @@ export default function TasacionPage() {
             Tasación de Propiedades
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Obtén una valuación profesional de tu propiedad de forma gratuita. Nuestros expertos te ayudarán a conocer el valor real de tu inmueble.
+          Obtén una evaluación profesional de tu propiedad realizada por expertos. Nuestro equipo te ayudará a conocer el valor real de tu inmueble, brindándote información clave para tomar decisiones informadas.
           </p>
         </motion.div>
 
@@ -109,7 +119,7 @@ export default function TasacionPage() {
                 <Calculator className="w-12 h-12 text-primary-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Valuación Profesional</h3>
                 <p className="text-gray-600 text-sm">
-                  Análisis detallado del mercado y características únicas de tu propiedad
+                Análisis detallado del mercado y características únicas de tu propiedad.
                 </p>
               </CardContent>
             </Card>
@@ -121,7 +131,7 @@ export default function TasacionPage() {
                 <Home className="w-12 h-12 text-primary-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Visita sin compromiso</h3>
                 <p className="text-gray-600 text-sm">
-                  Nuestros expertos visitarán tu propiedad para una evaluación presencial
+                  Nuestros expertos visitarán tu propiedad para una evaluación presencial.
                 </p>
               </CardContent>
             </Card>
@@ -133,7 +143,7 @@ export default function TasacionPage() {
                 <FileText className="w-12 h-12 text-primary-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Informe Detallado</h3>
                 <p className="text-gray-600 text-sm">
-                  Recibirás un reporte completo con el valor estimado y recomendaciones
+                Recibirás un reporte completo con el valor estimado y recomendaciones personalizadas.
                 </p>
               </CardContent>
             </Card>
@@ -149,7 +159,10 @@ export default function TasacionPage() {
         >
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl text-center">Solicitar Tasación Gratuita</CardTitle>
+              <CardTitle className="text-2xl text-center">Solicitar Tasación</CardTitle>
+              <p className="text-center text-gray-600 mt-2">
+                Completa el formulario y te contactaremos por WhatsApp
+              </p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -297,9 +310,17 @@ export default function TasacionPage() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-primary-400 hover:bg-primary-500">
-                  Solicitar Tasación
+                <Button 
+                  type="submit" 
+                  className="w-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Enviar por WhatsApp
                 </Button>
+                
+                <p className="text-sm text-gray-500 text-center">
+                  Al hacer clic, se abrirá WhatsApp con tu información pre-cargada
+                </p>
               </form>
             </CardContent>
           </Card>
