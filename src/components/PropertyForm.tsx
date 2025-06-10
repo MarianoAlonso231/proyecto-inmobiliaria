@@ -8,11 +8,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
 import { PropertyFormData } from '@/hooks/useProperties';
-import { ImageUploader } from '@/components/ImageUploader';
+import { ImageUploaderDeferred, ImageItem } from '@/components/ImageUploaderDeferred';
 
 interface PropertyFormProps {
   formData: PropertyFormData;
-  onInputChange: (field: keyof PropertyFormData, value: string | boolean) => void;
+  onInputChange: (field: keyof PropertyFormData, value: string | boolean | ImageItem[]) => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
   isEditing: boolean;
@@ -222,9 +222,9 @@ export function PropertyForm({
 
           <div>
             <Label className="text-gray-700 font-medium">Imágenes de la Propiedad</Label>
-            <ImageUploader
+            <ImageUploaderDeferred
               value={formData.images}
-              onChange={(urls) => onInputChange('images', urls)}
+              onChange={(imageItems) => onInputChange('images', imageItems)}
             />
           </div>
 

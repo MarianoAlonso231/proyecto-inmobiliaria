@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { deletePropertySafely } from '@/lib/supabase/cleanup';
+import { uploadImage } from '@/lib/supabase/storage';
+import { ImageItem } from '@/components/ImageUploaderDeferred';
 
 export interface Property {
   id: string;
@@ -46,7 +48,7 @@ export interface PropertyFormData {
   province: string;
   country: string;
   features: string;
-  images: string;
+  images: ImageItem[]; // Cambiado de string a ImageItem[]
   featured: boolean;
   status: string;
 }
@@ -68,7 +70,7 @@ export const initialFormData: PropertyFormData = {
   province: 'Tucumán',
   country: 'Argentina',
   features: '',
-  images: '',
+  images: [],
   featured: false,
   status: 'disponible'
 };
@@ -111,7 +113,35 @@ export function useProperties() {
         return false;
       }
 
-      // Preparar datos para envío
+      // 1. Subir imágenes nuevas primero
+      const uploadedImageUrls: string[] = [];
+      const filesToUpload = formData.images.filter(item => item.type === 'file' && item.file);
+      
+      if (filesToUpload.length > 0) {
+        console.log(`📤 Subiendo ${filesToUpload.length} imágenes nuevas...`);
+        
+        for (const imageItem of filesToUpload) {
+          if (imageItem.file) {
+            const uploadResult = await uploadImage(imageItem.file);
+            if (uploadResult.success && uploadResult.url) {
+              uploadedImageUrls.push(uploadResult.url);
+            } else {
+              console.error(`Error subiendo imagen:`, uploadResult.error);
+              setError(`Error al subir imagen: ${uploadResult.error}`);
+              return false;
+            }
+          }
+        }
+      }
+
+      // 2. Combinar URLs existentes con las recién subidas
+      const existingUrls = formData.images
+        .filter(item => item.type === 'url' && item.url)
+        .map(item => item.url!);
+      
+      const allImageUrls = [...existingUrls, ...uploadedImageUrls];
+
+      // 3. Preparar datos para envío
       const propertyData = {
         title: formData.title,
         description: formData.description,
@@ -128,8 +158,8 @@ export function useProperties() {
         city: formData.city,
         province: formData.province,
         country: formData.country,
-        features: formData.features ? formData.features.split(',').map(f => f.trim()) : [],
-        images: formData.images ? formData.images.split(',').map(f => f.trim()) : [],
+        features: formData.features ? formData.features.split(',').map((f: string) => f.trim()) : [],
+        images: allImageUrls,
         featured: formData.featured,
         status: formData.status
       };
@@ -162,7 +192,35 @@ export function useProperties() {
         return false;
       }
 
-      // Preparar datos para envío
+      // 1. Subir imágenes nuevas primero
+      const uploadedImageUrls: string[] = [];
+      const filesToUpload = formData.images.filter(item => item.type === 'file' && item.file);
+      
+      if (filesToUpload.length > 0) {
+        console.log(`📤 Subiendo ${filesToUpload.length} imágenes nuevas...`);
+        
+        for (const imageItem of filesToUpload) {
+          if (imageItem.file) {
+            const uploadResult = await uploadImage(imageItem.file);
+            if (uploadResult.success && uploadResult.url) {
+              uploadedImageUrls.push(uploadResult.url);
+            } else {
+              console.error(`Error subiendo imagen:`, uploadResult.error);
+              setError(`Error al subir imagen: ${uploadResult.error}`);
+              return false;
+            }
+          }
+        }
+      }
+
+      // 2. Combinar URLs existentes con las recién subidas
+      const existingUrls = formData.images
+        .filter(item => item.type === 'url' && item.url)
+        .map(item => item.url!);
+      
+      const allImageUrls = [...existingUrls, ...uploadedImageUrls];
+
+      // 3. Preparar datos para envío
       const propertyData = {
         title: formData.title,
         description: formData.description,
@@ -179,8 +237,8 @@ export function useProperties() {
         city: formData.city,
         province: formData.province,
         country: formData.country,
-        features: formData.features ? formData.features.split(',').map(f => f.trim()) : [],
-        images: formData.images ? formData.images.split(',').map(f => f.trim()) : [],
+        features: formData.features ? formData.features.split(',').map((f: string) => f.trim()) : [],
+        images: allImageUrls,
         featured: formData.featured,
         status: formData.status
       };
@@ -226,6 +284,14 @@ export function useProperties() {
   };
 
   const propertyToFormData = (property: Property): PropertyFormData => {
+    // Convertir URLs de imágenes a ImageItem[]
+    const imageItems: ImageItem[] = property.images.map(url => ({
+      id: `url_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type: 'url' as const,
+      url,
+      preview: url
+    }));
+
     return {
       title: property.title,
       description: property.description || '',
@@ -243,7 +309,7 @@ export function useProperties() {
       province: property.province,
       country: property.country,
       features: property.features.join(', '),
-      images: property.images.join(', '),
+      images: imageItems,
       featured: property.featured,
       status: property.status
     };

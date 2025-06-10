@@ -15,6 +15,7 @@ import { StorageHealthWidget } from '@/components/admin/StorageHealthWidget';
 import { useRouter } from 'next/navigation';
 import { Loader2, Shield, AlertTriangle, Plus, Home, Building, DollarSign, MapPin, Edit, Trash2, Eye, Image, HardDrive } from 'lucide-react';
 import { useProperties, PropertyFormData, initialFormData, Property } from '@/hooks/useProperties';
+import { ImageItem } from '@/components/ImageUploaderDeferred';
 
 interface AdminUser {
   id: string;
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
     };
   }, [router]);
 
-  const handleInputChange = (field: keyof PropertyFormData, value: string | boolean) => {
+  const handleInputChange = (field: keyof PropertyFormData, value: string | boolean | ImageItem[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
