@@ -14,10 +14,10 @@ export interface Property {
   property_type: 'casa' | 'apartamento' | 'oficina' | 'local' | 'terreno';
   bedrooms: number;
   bathrooms: number;
-  area_m2: number;
-  lot_area_m2?: number;
+  construccion: number;
+  terreno?: number;
   address: string;
-  neighborhood: string;
+  neighborhood?: string;
   city: string;
   province: string;
   country: string;
@@ -40,15 +40,15 @@ export interface PropertyFormData {
   property_type: string;
   bedrooms: string;
   bathrooms: string;
-  area_m2: string;
-  lot_area_m2: string;
+  construccion: string;
+  terreno: string;
   address: string;
   neighborhood: string;
   city: string;
   province: string;
   country: string;
   features: string;
-  images: ImageItem[]; // Cambiado de string a ImageItem[]
+  images: ImageItem[];
   featured: boolean;
   status: string;
 }
@@ -62,8 +62,8 @@ export const initialFormData: PropertyFormData = {
   property_type: '',
   bedrooms: '0',
   bathrooms: '0',
-  area_m2: '',
-  lot_area_m2: '',
+  construccion: '',
+  terreno: '',
   address: '',
   neighborhood: '',
   city: 'San Miguel de Tucumán',
@@ -151,8 +151,8 @@ export function useProperties() {
         property_type: formData.property_type,
         bedrooms: parseInt(formData.bedrooms),
         bathrooms: parseInt(formData.bathrooms),
-        area_m2: parseFloat(formData.area_m2) || null,
-        lot_area_m2: formData.lot_area_m2 ? parseFloat(formData.lot_area_m2) : null,
+        construccion: parseFloat(formData.construccion) || null,
+        terreno: formData.terreno ? parseFloat(formData.terreno) : null,
         address: formData.address,
         neighborhood: formData.neighborhood,
         city: formData.city,
@@ -230,8 +230,8 @@ export function useProperties() {
         property_type: formData.property_type,
         bedrooms: parseInt(formData.bedrooms),
         bathrooms: parseInt(formData.bathrooms),
-        area_m2: parseFloat(formData.area_m2) || null,
-        lot_area_m2: formData.lot_area_m2 ? parseFloat(formData.lot_area_m2) : null,
+        construccion: parseFloat(formData.construccion) || null,
+        terreno: formData.terreno ? parseFloat(formData.terreno) : null,
         address: formData.address,
         neighborhood: formData.neighborhood,
         city: formData.city,
@@ -301,8 +301,8 @@ export function useProperties() {
       property_type: property.property_type,
       bedrooms: property.bedrooms.toString(),
       bathrooms: property.bathrooms.toString(),
-      area_m2: property.area_m2?.toString() || '',
-      lot_area_m2: property.lot_area_m2?.toString() || '',
+      construccion: property.construccion?.toString() || '',
+      terreno: property.terreno?.toString() || '',
       address: property.address || '',
       neighborhood: property.neighborhood || '',
       city: property.city,

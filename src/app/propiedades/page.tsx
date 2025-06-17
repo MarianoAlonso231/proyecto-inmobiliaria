@@ -269,7 +269,7 @@ function PropiedadesContent() {
                 location={`${property.address}, ${property.neighborhood}`}
                 bedrooms={property.bedrooms}
                 bathrooms={property.bathrooms}
-                area={`${property.area_m2} m²`}
+                area={`${property.construccion} m²`}
                 image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                 type={property.operation_type}
                 propertyType={property.property_type}

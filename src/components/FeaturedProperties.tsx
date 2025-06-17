@@ -62,7 +62,7 @@ const FeaturedProperties = () => {
   };
 
   // Función para formatear la ubicación
-  const formatLocation = (address: string, neighborhood: string) => {
+  const formatLocation = (address: string, neighborhood?: string) => {
     if (address && neighborhood) {
       return `${neighborhood} - ${address}`;
     }
@@ -70,7 +70,7 @@ const FeaturedProperties = () => {
   };
 
   // Función para formatear el área
-  const formatArea = (area: number | null) => {
+  const formatArea = (area: number | null | undefined) => {
     return area ? `${area}m²` : 'N/A';
   };
 
@@ -171,7 +171,7 @@ const FeaturedProperties = () => {
                     location={formatLocation(property.address, property.neighborhood)}
                     bedrooms={property.bedrooms}
                     bathrooms={property.bathrooms}
-                    area={formatArea(property.area_m2)}
+                    area={formatArea(property.construccion)}
                     image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                     type={property.operation_type}
                     propertyType={property.property_type}

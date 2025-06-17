@@ -133,27 +133,27 @@ export function PropertyForm({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="area_m2" className="text-gray-700 font-medium">Área (m²)</Label>
+              <Label htmlFor="construccion" className="text-gray-700 font-medium">Construcción (m²)</Label>
               <Input
-                id="area_m2"
+                id="construccion"
                 type="number"
                 step="0.01"
                 min="0"
-                value={formData.area_m2}
-                onChange={(e) => onInputChange('area_m2', e.target.value)}
+                value={formData.construccion}
+                onChange={(e) => onInputChange('construccion', e.target.value)}
                 placeholder="150.5"
                 className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />
             </div>
             <div>
-              <Label htmlFor="lot_area_m2" className="text-gray-700 font-medium">Área del Lote (m²)</Label>
+              <Label htmlFor="terreno" className="text-gray-700 font-medium">Terreno (m²)</Label>
               <Input
-                id="lot_area_m2"
+                id="terreno"
                 type="number"
                 step="0.01"
                 min="0"
-                value={formData.lot_area_m2}
-                onChange={(e) => onInputChange('lot_area_m2', e.target.value)}
+                value={formData.terreno}
+                onChange={(e) => onInputChange('terreno', e.target.value)}
                 placeholder="200.0"
                 className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-primary-400 focus:ring-primary-400"
               />

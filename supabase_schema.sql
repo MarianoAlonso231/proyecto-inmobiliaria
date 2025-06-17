@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS properties (
     property_type VARCHAR(50) NOT NULL CHECK (property_type IN ('casa', 'apartamento', 'oficina', 'local', 'terreno')),
     bedrooms INTEGER DEFAULT 0,
     bathrooms INTEGER DEFAULT 0,
-    area_m2 DECIMAL(8, 2),
-    lot_area_m2 DECIMAL(8, 2),
+    construccion DECIMAL(8, 2),
+    terreno DECIMAL(8, 2),
     address VARCHAR(255),
     neighborhood VARCHAR(100),
     city VARCHAR(100) DEFAULT 'San Miguel de Tucumán',
@@ -93,7 +93,7 @@ CREATE INDEX IF NOT EXISTS idx_client_inquiries_status ON client_inquiries(statu
 -- Insertar datos de ejemplo
 INSERT INTO properties (
     title, description, price, operation_type, property_type, 
-    bedrooms, bathrooms, area_m2, address, neighborhood, 
+    bedrooms, bathrooms, construccion, address, neighborhood, 
     features, images, featured
 ) VALUES 
     (

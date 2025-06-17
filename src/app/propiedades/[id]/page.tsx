@@ -157,7 +157,7 @@ export default function PropertyDetailsPage() {
 🏠 Características:
 • ${property.bedrooms} dormitorios
 • ${property.bathrooms} baños
-• ${property.area_m2 || 'N/A'} m²
+• ${property.construccion || 'N/A'} m² construcción
 • Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}
 
 ¿Podrías darme más información?
@@ -542,8 +542,8 @@ export default function PropertyDetailsPage() {
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.area_m2 || 'N/A'}</div>
-                  <div className="text-sm text-gray-600">m² Totales</div>
+                  <div className="text-2xl font-bold text-gray-900">{property.construccion || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">m² Construcción</div>
                 </motion.div>
                 <motion.div 
                   className="text-center p-4 bg-gray-50 rounded-lg"
@@ -553,8 +553,8 @@ export default function PropertyDetailsPage() {
                   whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.lot_area_m2 || property.area_m2 || 'N/A'}</div>
-                  <div className="text-sm text-gray-600">m² Cubiertos</div>
+                  <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                  <div className="text-sm text-gray-600">m² Terreno</div>
                 </motion.div>
               </motion.div>
             </motion.div>

@@ -1,12 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/contacto/page": "app/contacto/page.js",
-  "/alquileres/page": "app/alquileres/page.js",
   "/page": "app/page.js",
   "/propiedades/[id]/page": "app/propiedades/[id]/page.js",
-  "/propiedades/page": "app/propiedades/page.js",
-  "/tasacion/page": "app/tasacion/page.js",
-  "/ventas/page": "app/ventas/page.js"
+  "/ventas/page": "app/ventas/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js"
 }

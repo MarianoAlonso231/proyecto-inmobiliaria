@@ -638,9 +638,9 @@ export default function AdminDashboard() {
                             </div>
                           )}
 
-                          {property.area_m2 && (
+                          {property.construccion && (
                             <div className="text-xs text-gray-500">
-                              Área: {property.area_m2} m²
+                              Construcción: {property.construccion} m²
                             </div>
                           )}
                         </div>
