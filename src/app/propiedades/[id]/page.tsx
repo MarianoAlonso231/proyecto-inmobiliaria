@@ -778,16 +778,8 @@ export default function PropertyDetailsPage() {
                   <User className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Gabriel Navarro</h3>
-                  <p className="text-sm text-gray-600">Agente inmobiliario</p>
-                  <div className="flex items-center text-xs text-green-600 mt-1">
-                    <motion.div 
-                      className="w-2 h-2 bg-green-500 rounded-full mr-1"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                    Conectado
-                  </div>
+                  <h3 className="font-semibold text-gray-900">Julieta Navarro</h3>
+                  <p className="text-sm text-gray-600">Agente inmobiliario</p>                
                 </div>
               </motion.div>
               

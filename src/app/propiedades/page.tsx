@@ -83,6 +83,11 @@ function PropiedadesContent() {
     applyFiltersWithParams();
   };
 
+  // Función para formatear el área
+  const formatArea = (area: number | null | undefined) => {
+    return area ? `${area}m²` : 'N/A';
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -269,7 +274,7 @@ function PropiedadesContent() {
                 location={`${property.address}, ${property.neighborhood}`}
                 bedrooms={property.bedrooms}
                 bathrooms={property.bathrooms}
-                area={`${property.construccion} m²`}
+                area={formatArea(property.construccion)}
                 image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                 type={property.operation_type}
                 propertyType={property.property_type}
