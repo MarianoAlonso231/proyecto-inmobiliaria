@@ -41,3 +41,27 @@ export function formatPriceWithSymbol(price: number, currency: string = 'USD'): 
   
   return `${symbol} ${formattedNumber}`;
 }
+
+// Función para formatear tipos de propiedad
+export function formatPropertyType(type: string): string {
+  const typeMap: { [key: string]: string } = {
+    'casa': 'Casa',
+    'apartamento': 'Departamento',
+    'oficina': 'Oficina',
+    'local': 'Local',
+    'terreno': 'Terreno'
+  };
+  
+  return typeMap[type.toLowerCase()] || type;
+}
+
+// Función para obtener el área correcta según el tipo de propiedad
+export function getPropertyArea(propertyType: string, construccion?: number | null, terreno?: number | null): string {
+  // Para terrenos, mostrar el área del terreno
+  if (propertyType.toLowerCase() === 'terreno') {
+    return terreno ? `${terreno}m²` : 'N/A';
+  }
+  
+  // Para otros tipos de propiedad, mostrar la construcción
+  return construccion ? `${construccion}m²` : 'N/A';
+}

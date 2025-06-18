@@ -85,7 +85,7 @@ const Footer = () => {
               </li>
               <li className="text-gray-600 flex items-center">
                 <span className="w-2 h-2 bg-[#ff8425] rounded-full mr-3"></span>
-                Apartamentos
+                Departamentos
               </li>
               <li className="text-gray-600 flex items-center">
                 <span className="w-2 h-2 bg-[#ff8425] rounded-full mr-3"></span>

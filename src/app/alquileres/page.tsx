@@ -13,7 +13,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useProperties, Property } from '@/hooks/useProperties';
 import PropertyCard from '@/components/PropertyCard';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getPropertyArea } from '@/lib/utils';
 
 
 function AlquileresContent() {
@@ -152,7 +152,7 @@ function AlquileresContent() {
                   <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="todos">Todos</SelectItem>
                     <SelectItem value="casa">Casa</SelectItem>
-                    <SelectItem value="apartamento">Apartamento</SelectItem>
+                    <SelectItem value="apartamento">Departamento</SelectItem>
                     <SelectItem value="oficina">Oficina</SelectItem>
                     <SelectItem value="local">Local</SelectItem>
                     <SelectItem value="terreno">Terreno</SelectItem>
@@ -257,11 +257,14 @@ function AlquileresContent() {
                 location={`${property.address}, ${property.neighborhood}`}
                 bedrooms={property.bedrooms}
                 bathrooms={property.bathrooms}
-                area={formatArea(property.construccion)}
+                area={getPropertyArea(property.property_type, property.construccion, property.terreno)}
                 image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                 type={property.operation_type}
                 propertyType={property.property_type}
                 images={property.images}
+                barrio_cerrado={property.barrio_cerrado}
+                es_country={property.es_country}
+                paga_expensas={property.paga_expensas}
               />
             </motion.div>
           ))}

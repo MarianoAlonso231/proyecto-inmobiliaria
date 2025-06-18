@@ -56,19 +56,14 @@ const Header = () => {
           >
             <Link href="/" className="flex items-center">
               <motion.div 
-                className="bg-white p-2 rounded-lg shadow-sm border border-gray-100"
+                className="bg-white p-3 rounded-lg shadow-sm border border-gray-100"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Image
-                  src="/logo.svg"
-                  alt="GROUP Inmobiliaria Logo"
-                  width={180}
-                  height={90}
-                  className="h-12 w-auto md:h-12"
-                  priority
-                />
+                <h1 className="text-gradient text-2xl md:text-3xl font-bold tracking-tight">
+                  Group Inmobiliaria
+                </h1>
               </motion.div>
             </Link>
           </motion.div>

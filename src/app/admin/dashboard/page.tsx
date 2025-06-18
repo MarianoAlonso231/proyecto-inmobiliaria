@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2, Shield, AlertTriangle, Plus, Home, Building, DollarSign, MapPin, Edit, Trash2, Eye, Image, HardDrive } from 'lucide-react';
 import { useProperties, PropertyFormData, initialFormData, Property } from '@/hooks/useProperties';
 import { ImageItem } from '@/components/ImageUploaderDeferred';
+import { formatPropertyType } from '@/lib/utils';
 
 interface AdminUser {
   id: string;
@@ -620,12 +621,15 @@ export default function AdminDashboard() {
 
                           <div className="flex items-center gap-1">
                             <Building className="h-4 w-4" />
-                            <span>{property.property_type}</span>
-                            {property.bedrooms > 0 && (
+                            <span>{formatPropertyType(property.property_type)}</span>
+                            {property.property_type !== 'local' && property.bedrooms > 0 && (
                               <span className="ml-2">{property.bedrooms} dorm.</span>
                             )}
-                            {property.bathrooms > 0 && (
+                            {property.property_type !== 'local' && property.bathrooms > 0 && (
                               <span className="ml-1">{property.bathrooms} baños</span>
+                            )}
+                            {property.property_type === 'local' && property.paga_expensas && (
+                              <span className="ml-2">C/Expensas</span>
                             )}
                           </div>
 

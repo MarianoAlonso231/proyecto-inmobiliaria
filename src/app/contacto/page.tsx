@@ -121,7 +121,8 @@ ${formData.mensaje}
                   <div>
                     <h3 className="font-semibold text-gray-800">Teléfono</h3>
                     <p className="text-gray-600">+54 9 3815 06-3361 (Ventas)</p>
-                    <p className="text-gray-600">+54 9 3812 23-1989 (administración)</p>
+                    <p className="text-gray-600">+54 9 3814 67-0607 (Ventas)</p>
+                    <p className="text-gray-600">+54 9 3812 23-1989 (Administración)</p>
                   </div>
                 </motion.div>
 

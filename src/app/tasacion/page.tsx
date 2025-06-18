@@ -216,7 +216,7 @@ ${formData.descripcion || 'Sin descripción adicional'}
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="casa">Casa</SelectItem>
-                        <SelectItem value="apartamento">Apartamento</SelectItem>
+                        <SelectItem value="apartamento">Departamento</SelectItem>
                         <SelectItem value="terreno">Terreno</SelectItem>
                         <SelectItem value="oficina">Oficina</SelectItem>
                         <SelectItem value="local">Local comercial</SelectItem>

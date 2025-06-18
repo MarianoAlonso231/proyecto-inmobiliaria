@@ -68,7 +68,7 @@ const ServicesSection = () => {
     {
       id: 'ventas',
       title: 'Ventas',
-      description: 'Encuentra la propiedad perfecta para comprar. Tenemos una amplia selección de casas, apartamentos y locales comerciales.',
+              description: 'Encuentra la propiedad perfecta para comprar. Tenemos una amplia selección de casas, departamentos y locales comerciales.',
       icon: Home,
       color: 'bg-[#ff8425]',
       href: '/ventas'

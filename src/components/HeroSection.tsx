@@ -85,9 +85,16 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Encuentra tu
             <motion.span 
-              className="text-[#ff8425] block"
+              className="text-gradient block"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+            >
+              Encontrá tu
+            </motion.span>
+            <motion.span 
+              className="text-gradient block"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
@@ -124,7 +131,7 @@ const HeroSection = () => {
                 <SelectContent className="bg-white z-50">
                   <SelectItem value="cualquier_tipo">Cualquier tipo</SelectItem>
                   <SelectItem value="casa">Casa</SelectItem>
-                  <SelectItem value="apartamento">Apartamento</SelectItem>
+                  <SelectItem value="apartamento">Departamento</SelectItem>
                   <SelectItem value="oficina">Oficina</SelectItem>
                   <SelectItem value="local">Local Comercial</SelectItem>
                   <SelectItem value="terreno">Terreno</SelectItem>

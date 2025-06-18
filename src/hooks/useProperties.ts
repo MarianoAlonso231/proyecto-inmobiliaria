@@ -27,6 +27,10 @@ export interface Property {
   images: string[];
   featured: boolean;
   status: 'disponible' | 'vendido' | 'alquilado' | 'reservado';
+  // Campos específicos para terrenos
+  barrio_cerrado?: boolean;
+  es_country?: boolean;
+  paga_expensas?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -51,6 +55,10 @@ export interface PropertyFormData {
   images: ImageItem[];
   featured: boolean;
   status: string;
+  // Campos específicos para terrenos
+  barrio_cerrado: boolean;
+  es_country: boolean;
+  paga_expensas: boolean;
 }
 
 export const initialFormData: PropertyFormData = {
@@ -72,7 +80,11 @@ export const initialFormData: PropertyFormData = {
   features: '',
   images: [],
   featured: false,
-  status: 'disponible'
+  status: 'disponible',
+  // Campos específicos para terrenos
+  barrio_cerrado: false,
+  es_country: false,
+  paga_expensas: false
 };
 
 export function useProperties() {
@@ -161,7 +173,11 @@ export function useProperties() {
         features: formData.features ? formData.features.split(',').map((f: string) => f.trim()) : [],
         images: allImageUrls,
         featured: formData.featured,
-        status: formData.status
+        status: formData.status,
+        // Campos específicos para terrenos
+        barrio_cerrado: formData.barrio_cerrado,
+        es_country: formData.es_country,
+        paga_expensas: formData.paga_expensas
       };
 
       const { error } = await supabase
@@ -240,7 +256,11 @@ export function useProperties() {
         features: formData.features ? formData.features.split(',').map((f: string) => f.trim()) : [],
         images: allImageUrls,
         featured: formData.featured,
-        status: formData.status
+        status: formData.status,
+        // Campos específicos para terrenos
+        barrio_cerrado: formData.barrio_cerrado,
+        es_country: formData.es_country,
+        paga_expensas: formData.paga_expensas
       };
 
       const { error } = await supabase
@@ -311,7 +331,11 @@ export function useProperties() {
       features: property.features.join(', '),
       images: imageItems,
       featured: property.featured,
-      status: property.status
+      status: property.status,
+      // Campos específicos para terrenos
+      barrio_cerrado: property.barrio_cerrado || false,
+      es_country: property.es_country || false,
+      paga_expensas: property.paga_expensas || false
     };
   };
 

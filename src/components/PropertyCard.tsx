@@ -3,9 +3,10 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Bed, Bath, Square } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Shield, TreePine, DollarSign } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { formatPropertyType } from '@/lib/utils';
 interface PropertyCardProps {
   id: string;
   title: string;
@@ -35,6 +36,10 @@ interface PropertyCardProps {
   contactPhone?: string;
   contactEmail?: string;
   images?: string[];
+  // Campos específicos para terrenos
+  barrio_cerrado?: boolean;
+  es_country?: boolean;
+  paga_expensas?: boolean;
 }
 
 const PropertyCard = ({ 
@@ -48,7 +53,10 @@ const PropertyCard = ({
   image, 
   type, 
   propertyType,
-  images
+  images,
+  barrio_cerrado,
+  es_country,
+  paga_expensas
 }: PropertyCardProps) => {
   const router = useRouter();
 
@@ -80,7 +88,7 @@ const PropertyCard = ({
         </div>
         <div className="absolute bottom-3 left-3">
           <Badge variant="outline" className="bg-white/90 text-gray-900 border-gray-300">
-            {propertyType}
+            {formatPropertyType(propertyType)}
           </Badge>
         </div>
         {/* Indicador de múltiples imágenes */}
@@ -103,29 +111,119 @@ const PropertyCard = ({
         </div>
 
         <div className="flex items-center justify-between mb-4 text-gray-700">
-          <div className="flex items-center space-x-1">
-            <Bed className="w-5 h-5 text-gray-500" />
-            <span className="text-sm font-medium">{bedrooms}</span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <Bath className="w-5 h-5 text-gray-500" />
-            <span className="text-sm font-medium">{bathrooms}</span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <Square className="w-5 h-5 text-gray-500" />
-            <span className="text-sm font-medium">{area}</span>
-          </div>
+          {propertyType === 'terreno' ? (
+            // Características específicas para terrenos
+            <>
+              <div className="flex items-center space-x-1">
+                <Shield className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{barrio_cerrado ? 'B. Cerrado' : 'No B.C.'}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <TreePine className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{es_country ? 'Country' : 'No Country'}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{paga_expensas ? 'C/Expensas' : 'S/Expensas'}</span>
+              </div>
+            </>
+          ) : propertyType === 'local' ? (
+            // Características específicas para locales
+            <>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{paga_expensas ? 'C/Expensas' : 'S/Expensas'}</span>
+              </div>
+            </>
+          ) : propertyType === 'oficina' ? (
+            // Características específicas para oficinas
+            <>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Bath className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bathrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{paga_expensas ? 'C/Expensas' : 'S/Expensas'}</span>
+              </div>
+            </>
+          ) : propertyType === 'casa' ? (
+            // Características específicas para casas
+            <>
+              <div className="flex items-center space-x-1">
+                <Bed className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bedrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Bath className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bathrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{paga_expensas ? 'C/Exp' : 'S/Exp'}</span>
+              </div>
+            </>
+          ) : propertyType === 'apartamento' ? (
+            // Características específicas para departamentos
+            <>
+              <div className="flex items-center space-x-1">
+                <Bed className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bedrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Bath className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bathrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <DollarSign className="w-5 h-5 text-gray-500" />
+                <span className="text-xs font-medium">{paga_expensas ? 'C/Exp' : 'S/Exp'}</span>
+              </div>
+            </>
+          ) : (
+            // Características tradicionales para otros tipos de propiedades
+            <>
+              <div className="flex items-center space-x-1">
+                <Bed className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bedrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Bath className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{bathrooms}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="bg-[#ff8425] text-white px-4 py-2 rounded-lg shadow-md">
-            <div className="text-lg font-bold leading-tight">
+          <div className="bg-[#ff8425] px-4 py-2 rounded-lg shadow-md" style={{ color: '#ffffff' }}>
+            <div className="text-lg font-bold leading-tight" style={{ color: '#ffffff' }}>
               {price}
             </div>
           </div>
           <Button 
             size="sm" 
-            className="bg-[#ff8425] hover:bg-[#e6741f] text-white"
+            className="bg-[#ff8425] hover:bg-[#e6741f]"
+            style={{ color: '#ffffff' }}
             onClick={handleViewDetails}
           >
             Ver detalles

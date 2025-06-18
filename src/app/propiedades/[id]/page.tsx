@@ -28,13 +28,15 @@ import {
   Maximize2,
   ArrowLeft,
   User,
-  MessageSquare
+  MessageSquare,
+  DollarSign
 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useProperties } from '@/hooks/useProperties';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Loader2 } from 'lucide-react';
+import { formatPropertyType, getPropertyArea } from '@/lib/utils';
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -152,13 +154,73 @@ export default function PropertyDetailsPage() {
   const handleWhatsAppClick = () => {
     if (!property) return;
     
-    const message = `¡Hola Gabriel! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
-
-🏠 Características:
+    let characteristicsText = '';
+    
+    if (property.property_type === 'terreno') {
+      const characteristics = [];
+      if (property.barrio_cerrado) characteristics.push('Barrio Cerrado');
+      if (property.es_country) characteristics.push('Country Club');
+      if (property.paga_expensas) characteristics.push('Paga Expensas');
+      
+      characteristicsText = `🏠 Características:
+• Tipo: ${formatPropertyType(property.property_type)}
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else if (property.property_type === 'local') {
+      const characteristics = [];
+      if (property.paga_expensas) characteristics.push('Paga Expensas');
+      
+      characteristicsText = `🏠 Características:
+• Tipo: ${formatPropertyType(property.property_type)}
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else if (property.property_type === 'oficina') {
+      const characteristics = [];
+      if (property.paga_expensas) characteristics.push('Paga Expensas');
+      
+      characteristicsText = `🏠 Características:
+• Tipo: ${formatPropertyType(property.property_type)}
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• ${property.bathrooms} baños
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else if (property.property_type === 'casa') {
+      const characteristics = [];
+      if (property.paga_expensas) characteristics.push('Paga Expensas');
+      if (property.barrio_cerrado) characteristics.push('Barrio Privado');
+      if (property.es_country) characteristics.push('Country Club');
+      
+      characteristicsText = `🏠 Características:
+• Tipo: ${formatPropertyType(property.property_type)}
 • ${property.bedrooms} dormitorios
 • ${property.bathrooms} baños
-• ${property.construccion || 'N/A'} m² construcción
-• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else if (property.property_type === 'apartamento') {
+      const characteristics = [];
+      if (property.paga_expensas) characteristics.push('Paga Expensas');
+      
+      characteristicsText = `🏠 Características:
+• Tipo: ${formatPropertyType(property.property_type)}
+• ${property.bedrooms} dormitorios
+• ${property.bathrooms} baños
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else {
+      characteristicsText = `🏠 Características:
+• ${property.bedrooms} dormitorios
+• ${property.bathrooms} baños
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}`;
+    }
+
+    const message = `¡Hola Gabriel! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
+
+${characteristicsText}
 
 ¿Podrías darme más información?
 
@@ -372,7 +434,7 @@ export default function PropertyDetailsPage() {
                   En {property.operation_type}
                 </Badge>
                 <Badge variant="outline" className="text-sm px-3 py-1 bg-gray-100 text-gray-900 border-gray-300">
-                  {property.property_type}
+                  {formatPropertyType(property.property_type)}
                 </Badge>
               </motion.div>
             </motion.div>
@@ -506,57 +568,512 @@ export default function PropertyDetailsPage() {
               >
                 Características principales
               </motion.h2>
-              <motion.div 
-                className="grid grid-cols-2 md:grid-cols-4 gap-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, staggerChildren: 0.1 }}
-              >
+              
+              {property.property_type === 'terreno' ? (
+                /* Características específicas para terrenos */
                 <motion.div 
-                  className="text-center p-4 bg-gray-50 rounded-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
-                  <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
-                  <div className="text-sm text-gray-600">Dormitorios</div>
+                  {/* Área del terreno */}
+                  <motion.div 
+                    className="text-center p-6 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
+                    <div className="text-3xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                    <div className="text-sm text-gray-600">m² de Terreno</div>
+                  </motion.div>
+
+                  {/* Características especiales del terreno */}
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.barrio_cerrado 
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Shield className={`w-8 h-8 mx-auto mb-2 ${
+                        property.barrio_cerrado ? 'text-orange-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.barrio_cerrado ? 'text-orange-700' : 'text-gray-500'
+                      }`}>
+                        Barrio Cerrado
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.barrio_cerrado ? 'text-orange-600' : 'text-gray-400'
+                      }`}>
+                        {property.barrio_cerrado ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.es_country 
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <TreePine className={`w-8 h-8 mx-auto mb-2 ${
+                        property.es_country ? 'text-orange-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.es_country ? 'text-orange-700' : 'text-gray-500'
+                      }`}>
+                        Country Club
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.es_country ? 'text-orange-600' : 'text-gray-400'
+                      }`}>
+                        {property.es_country ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.paga_expensas 
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                        property.paga_expensas ? 'text-orange-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.paga_expensas ? 'text-orange-700' : 'text-gray-500'
+                      }`}>
+                        Paga Expensas
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.paga_expensas ? 'text-orange-600' : 'text-gray-400'
+                      }`}>
+                        {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
+              ) : property.property_type === 'local' ? (
+                /* Características específicas para locales */
                 <motion.div 
-                  className="text-center p-4 bg-gray-50 rounded-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
-                  <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
-                  <div className="text-sm text-gray-600">Baños</div>
+                  {/* Área del local */}
+                  <motion.div 
+                    className="text-center p-6 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
+                    <div className="text-3xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                    <div className="text-sm text-gray-600">m² de Construcción</div>
+                  </motion.div>
+
+                  {/* Características del local */}
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-1 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.paga_expensas 
+                          ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                        property.paga_expensas ? 'text-blue-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.paga_expensas ? 'text-blue-700' : 'text-gray-500'
+                      }`}>
+                        Paga Expensas
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.paga_expensas ? 'text-blue-600' : 'text-gray-400'
+                      }`}>
+                        {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
+              ) : property.property_type === 'oficina' ? (
+                /* Características específicas para oficinas */
                 <motion.div 
-                  className="text-center p-4 bg-gray-50 rounded-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
-                  <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.construccion || 'N/A'}</div>
-                  <div className="text-sm text-gray-600">m² Construcción</div>
+                  {/* Área de la oficina */}
+                  <motion.div 
+                    className="text-center p-6 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
+                    <div className="text-3xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                    <div className="text-sm text-gray-600">m² de Construcción</div>
+                  </motion.div>
+
+                  {/* Características de la oficina */}
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-sm text-gray-600">Baños</div>
+                    </motion.div>
+
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.paga_expensas 
+                          ? 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                        property.paga_expensas ? 'text-purple-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.paga_expensas ? 'text-purple-700' : 'text-gray-500'
+                      }`}>
+                        Paga Expensas
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.paga_expensas ? 'text-purple-600' : 'text-gray-400'
+                      }`}>
+                        {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
+              ) : property.property_type === 'casa' ? (
+                /* Características específicas para casas */
                 <motion.div 
-                  className="text-center p-4 bg-gray-50 rounded-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
-                  <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
-                  <div className="text-sm text-gray-600">m² Terreno</div>
+                  {/* Características básicas de la casa */}
+                  <motion.div 
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
+                      <div className="text-sm text-gray-600">Dormitorios</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-sm text-gray-600">Baños</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                      <div className="text-sm text-gray-600">m² Construcción</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                      <div className="text-sm text-gray-600">m² Terreno</div>
+                    </motion.div>
+                  </motion.div>
+
+                  {/* Características especiales de la casa */}
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.paga_expensas 
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                        property.paga_expensas ? 'text-green-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.paga_expensas ? 'text-green-700' : 'text-gray-500'
+                      }`}>
+                        Paga Expensas
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.paga_expensas ? 'text-green-600' : 'text-gray-400'
+                      }`}>
+                        {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.barrio_cerrado 
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.0 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Shield className={`w-8 h-8 mx-auto mb-2 ${
+                        property.barrio_cerrado ? 'text-green-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.barrio_cerrado ? 'text-green-700' : 'text-gray-500'
+                      }`}>
+                        Barrio Privado
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.barrio_cerrado ? 'text-green-600' : 'text-gray-400'
+                      }`}>
+                        {property.barrio_cerrado ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.es_country 
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.1 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <TreePine className={`w-8 h-8 mx-auto mb-2 ${
+                        property.es_country ? 'text-green-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.es_country ? 'text-green-700' : 'text-gray-500'
+                      }`}>
+                        Country Club
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.es_country ? 'text-green-600' : 'text-gray-400'
+                      }`}>
+                        {property.es_country ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+              ) : property.property_type === 'apartamento' ? (
+                /* Características específicas para departamentos */
+                <motion.div 
+                  className="space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
+                >
+                  {/* Características básicas del departamento */}
+                  <motion.div 
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
+                      <div className="text-sm text-gray-600">Dormitorios</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-sm text-gray-600">Baños</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                      <div className="text-sm text-gray-600">m² Construcción</div>
+                    </motion.div>
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border-2 ${
+                        property.paga_expensas 
+                          ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200' 
+                          : 'bg-gray-50 border-gray-200'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                        property.paga_expensas ? 'text-indigo-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-sm font-medium ${
+                        property.paga_expensas ? 'text-indigo-700' : 'text-gray-500'
+                      }`}>
+                        Paga Expensas
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.paga_expensas ? 'text-indigo-600' : 'text-gray-400'
+                      }`}>
+                        {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                /* Características tradicionales para otros tipos de propiedades */
+                <motion.div 
+                  className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
+                >
+                  <motion.div 
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
+                    <div className="text-sm text-gray-600">Dormitorios</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
+                    <div className="text-sm text-gray-600">Baños</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                    <div className="text-sm text-gray-600">m² Construcción</div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                    <div className="text-sm text-gray-600">m² Terreno</div>
+                  </motion.div>
+                </motion.div>
+              )}
             </motion.div>
 
             {/* Descripción animada */}

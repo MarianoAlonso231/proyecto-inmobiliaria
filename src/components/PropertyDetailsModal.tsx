@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { formatPropertyType } from '@/lib/utils';
 
 export interface PropertyDetails {
   id: string;
@@ -374,7 +375,7 @@ const PropertyDetailsModal = ({ property, isOpen, onClose }: PropertyDetailsModa
                     {property.type === 'venta' ? 'Venta' : 'Alquiler'}
                   </Badge>
                   <Badge variant="outline" className="bg-gray-100 text-gray-900 border-gray-300">
-                    {property.propertyType}
+                    {formatPropertyType(property.propertyType)}
                   </Badge>
                 </div>
               </div>

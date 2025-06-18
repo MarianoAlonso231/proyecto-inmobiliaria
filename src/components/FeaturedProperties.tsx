@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getPropertyArea } from '@/lib/utils';
 
 const FeaturedProperties = () => {
   const { featuredProperties, isLoading, error } = useFeaturedProperties(6);
@@ -69,10 +69,10 @@ const FeaturedProperties = () => {
     return neighborhood || address || 'Ubicación no especificada';
   };
 
-  // Función para formatear el área
-  const formatArea = (area: number | null | undefined) => {
-    return area ? `${area}m²` : 'N/A';
-  };
+  // Función para formatear el área (ya no necesaria, se usa getPropertyArea)
+  // const formatArea = (area: number | null | undefined) => {
+  //   return area ? `${area}m²` : 'N/A';
+  // };
 
 
 
@@ -171,11 +171,14 @@ const FeaturedProperties = () => {
                     location={formatLocation(property.address, property.neighborhood)}
                     bedrooms={property.bedrooms}
                     bathrooms={property.bathrooms}
-                    area={formatArea(property.construccion)}
+                    area={getPropertyArea(property.property_type, property.construccion, property.terreno)}
                     image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                     type={property.operation_type}
                     propertyType={property.property_type}
                     images={property.images.length > 0 ? property.images : ['/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png']}
+                    barrio_cerrado={property.barrio_cerrado}
+                    es_country={property.es_country}
+                    paga_expensas={property.paga_expensas}
                   />
                 </motion.div>
               ))}
@@ -197,7 +200,8 @@ const FeaturedProperties = () => {
             >
               <motion.button 
                 onClick={() => router.push('/propiedades')}
-                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                className="bg-[#ff8425] hover:bg-[#e6741f] px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+                style={{ color: '#ffffff' }}
                 whileHover={{ 
                   scale: 1.05,
                   boxShadow: "0 10px 30px rgba(255, 132, 37, 0.3)",
@@ -209,12 +213,14 @@ const FeaturedProperties = () => {
                   initial={{ x: 0 }}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
+                  style={{ color: '#ffffff' }}
                 >
                   Ver todas las propiedades
                 </motion.span>
                 <motion.div
                   animate={{ x: [0, 3, 0] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  style={{ color: '#ffffff' }}
                 >
                   <ExternalLink className="h-4 w-4" />
                 </motion.div>

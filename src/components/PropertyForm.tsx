@@ -96,7 +96,7 @@ export function PropertyForm({
               </SelectTrigger>
               <SelectContent className="bg-white border border-gray-200">
                 <SelectItem value="casa">Casa</SelectItem>
-                <SelectItem value="apartamento">Apartamento</SelectItem>
+                                  <SelectItem value="apartamento">Departamento</SelectItem>
                 <SelectItem value="oficina">Oficina</SelectItem>
                 <SelectItem value="local">Local</SelectItem>
                 <SelectItem value="terreno">Terreno</SelectItem>
@@ -159,6 +159,163 @@ export function PropertyForm({
               />
             </div>
           </div>
+
+          {/* Campos específicos para terrenos */}
+          {formData.property_type === 'terreno' && (
+            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características del Terreno</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="barrio_cerrado"
+                    checked={formData.barrio_cerrado}
+                    onChange={(e) => onInputChange('barrio_cerrado', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-orange-400 focus:ring-orange-400"
+                  />
+                  <Label htmlFor="barrio_cerrado" className="text-sm font-medium text-gray-700">
+                    Barrio Cerrado
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="es_country"
+                    checked={formData.es_country}
+                    onChange={(e) => onInputChange('es_country', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-orange-400 focus:ring-orange-400"
+                  />
+                  <Label htmlFor="es_country" className="text-sm font-medium text-gray-700">
+                    Country Club
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="paga_expensas"
+                    checked={formData.paga_expensas}
+                    onChange={(e) => onInputChange('paga_expensas', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-orange-400 focus:ring-orange-400"
+                  />
+                  <Label htmlFor="paga_expensas" className="text-sm font-medium text-gray-700">
+                    Paga Expensas
+                  </Label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Campos específicos para locales */}
+          {formData.property_type === 'local' && (
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características del Local</h4>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="paga_expensas_local"
+                    checked={formData.paga_expensas}
+                    onChange={(e) => onInputChange('paga_expensas', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-blue-400 focus:ring-blue-400"
+                  />
+                  <Label htmlFor="paga_expensas_local" className="text-sm font-medium text-gray-700">
+                    Paga Expensas
+                  </Label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Campos específicos para oficinas */}
+          {formData.property_type === 'oficina' && (
+            <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características de la Oficina</h4>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="paga_expensas_oficina"
+                    checked={formData.paga_expensas}
+                    onChange={(e) => onInputChange('paga_expensas', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-purple-400 focus:ring-purple-400"
+                  />
+                  <Label htmlFor="paga_expensas_oficina" className="text-sm font-medium text-gray-700">
+                    Paga Expensas
+                  </Label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Campos específicos para casas */}
+          {formData.property_type === 'casa' && (
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características de la Casa</h4>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="paga_expensas_casa"
+                    checked={formData.paga_expensas}
+                    onChange={(e) => onInputChange('paga_expensas', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-green-400 focus:ring-green-400"
+                  />
+                  <Label htmlFor="paga_expensas_casa" className="text-sm font-medium text-gray-700">
+                    Paga Expensas
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="barrio_cerrado_casa"
+                    checked={formData.barrio_cerrado}
+                    onChange={(e) => onInputChange('barrio_cerrado', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-green-400 focus:ring-green-400"
+                  />
+                  <Label htmlFor="barrio_cerrado_casa" className="text-sm font-medium text-gray-700">
+                    Barrio Privado
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="es_country_casa"
+                    checked={formData.es_country}
+                    onChange={(e) => onInputChange('es_country', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-green-400 focus:ring-green-400"
+                  />
+                  <Label htmlFor="es_country_casa" className="text-sm font-medium text-gray-700">
+                    Country Club
+                  </Label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Campos específicos para departamentos */}
+          {formData.property_type === 'apartamento' && (
+            <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características del Departamento</h4>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="paga_expensas_departamento"
+                    checked={formData.paga_expensas}
+                    onChange={(e) => onInputChange('paga_expensas', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-indigo-400 focus:ring-indigo-400"
+                  />
+                  <Label htmlFor="paga_expensas_departamento" className="text-sm font-medium text-gray-700">
+                    Paga Expensas
+                  </Label>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Ubicación y Detalles */}
