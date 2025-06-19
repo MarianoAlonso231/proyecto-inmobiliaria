@@ -13,7 +13,8 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      // Cambiado de 10 a 100 para que se active después de hacer más scroll
+      setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -36,9 +37,9 @@ const Header = () => {
 
   return (
     <motion.header 
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          ? 'bg-white/95 backdrop-blur-md shadow-xl' 
           : 'bg-white shadow-md'
       }`}
       initial={{ y: -100, opacity: 0 }}
@@ -46,7 +47,9 @@ const Header = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-2 md:py-3">
+        <div className={`flex justify-between items-center transition-all duration-500 ${
+          isScrolled ? 'py-1 md:py-2' : 'py-2 md:py-3'
+        }`}>
           {/* Logo */}
           <motion.div 
             className="flex items-center"
@@ -56,12 +59,18 @@ const Header = () => {
           >
             <Link href="/" className="flex items-center">
               <motion.div 
-                className="bg-white p-3 rounded-lg shadow-sm border border-gray-100"
+                className={`bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-500 ${
+                  isScrolled ? 'p-2' : 'p-3'
+                }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <h1 className="text-gradient text-2xl md:text-3xl font-bold tracking-tight">
+                <h1 className={`text-gradient font-bold tracking-tight transition-all duration-500 ${
+                  isScrolled 
+                    ? 'text-lg md:text-xl' 
+                    : 'text-2xl md:text-3xl'
+                }`}>
                   Group Inmobiliaria
                 </h1>
               </motion.div>
@@ -70,7 +79,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <motion.nav 
-            className="hidden md:flex space-x-8"
+            className="hidden md:flex space-x-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -88,7 +97,9 @@ const Header = () => {
               >
                 <Link
                   href={item.href}
-                  className="text-gray-700 hover:text-[#ff8425] transition-colors duration-200 font-medium text-lg relative group"
+                  className={`text-gray-700 hover:text-[#ff8425] transition-all duration-300 font-medium relative group ${
+                    isScrolled ? 'text-base' : 'text-lg'
+                  }`}
                 >
                   {item.name}
                   <motion.div
@@ -102,7 +113,7 @@ const Header = () => {
             ))}
           </motion.nav>
 
-          {/* Contact Buttons */}
+          {/* Contact Buttons Desktop */}
           <motion.div 
             className="hidden md:flex items-center space-x-3"
             initial={{ x: 50, opacity: 0 }}
@@ -115,22 +126,30 @@ const Header = () => {
             >
               <Button 
                 onClick={handleWhatsAppClick}
-                className="bg-[#ff8425] hover:bg-[#e6741f] text-white px-6 py-2.5 font-medium transition-colors animate-pulse-glow"
+                className={`bg-[#ff8425] hover:bg-[#e6741f] text-white font-medium transition-all duration-300 ${
+                  isScrolled 
+                    ? 'px-4 py-2 text-sm' 
+                    : 'px-6 py-2.5 text-base animate-pulse-glow'
+                }`}
               >
                 <motion.div
-                  animate={{ rotate: [0, 5, -5, 0] }}
+                  animate={!isScrolled ? { rotate: [0, 5, -5, 0] } : {}}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                 >
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className={`mr-2 transition-all duration-300 ${
+                    isScrolled ? 'w-3 h-3' : 'w-4 h-4'
+                  }`} />
                 </motion.div>
-                Contactar por WhatsApp
+                {isScrolled ? 'WhatsApp' : 'Contactar por WhatsApp'}
               </Button>
             </motion.div>
           </motion.div>
 
           {/* Mobile menu button */}
           <motion.button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className={`md:hidden rounded-lg hover:bg-gray-100 transition-all duration-300 ${
+              isScrolled ? 'p-1.5' : 'p-2'
+            }`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -146,7 +165,9 @@ const Header = () => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X className="w-6 h-6" />
+                  <X className={`transition-all duration-300 ${
+                    isScrolled ? 'w-5 h-5' : 'w-6 h-6'
+                  }`} />
                 </motion.div>
               ) : (
                 <motion.div
@@ -156,7 +177,9 @@ const Header = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu className="w-6 h-6" />
+                  <Menu className={`transition-all duration-300 ${
+                    isScrolled ? 'w-5 h-5' : 'w-6 h-6'
+                  }`} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -202,7 +225,10 @@ const Header = () => {
                 >
                   <motion.div whileTap={{ scale: 0.95 }}>
                     <Button 
-                      onClick={handleWhatsAppClick}
+                      onClick={() => {
+                        handleWhatsAppClick();
+                        setIsMenuOpen(false);
+                      }}
                       className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors"
                     >
                       <Phone className="w-4 h-4 mr-2" />
@@ -210,7 +236,7 @@ const Header = () => {
                     </Button>
                   </motion.div>
                   <motion.div whileTap={{ scale: 0.95 }}>
-                    <Link href="/contacto">
+                    <Link href="/contacto" onClick={() => setIsMenuOpen(false)}>
                       <Button className="bg-[#ff8425] hover:bg-[#e6741f] text-white w-full py-2 text-sm transition-colors">
                         <Mail className="w-4 h-4 mr-2" />
                         Consultar
