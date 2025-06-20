@@ -169,8 +169,8 @@ ${formData.mensaje}
                   <div>
                     <h3 className="font-semibold text-gray-800">Horarios de Atención</h3>
                     <p className="text-gray-600">
-                      Lunes a Viernes: 9:30 - 13:00<br />
-                      Martes y Jueves: 14:30 - 16:00<br />
+                      Lunes a viernes: 9:30 - 13:00<br />
+                      Martes y jueves: 14:30 - 16:00<br />
                       Domingos y sábados: Cerrado
                     </p>
                   </div>

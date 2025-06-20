@@ -218,9 +218,16 @@ export default function PropertyDetailsPage() {
 • Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}`;
     }
 
+    // Agregar ubicación precisa si hay coordenadas disponibles
+    const locationText = property.latitude && property.longitude 
+      ? `📍 Ubicación exacta: https://www.google.com/maps?q=${property.latitude},${property.longitude}`
+      : '';
+
     const message = `¡Hola Gabriel! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
 
-${characteristicsText}
+${characteristicsText}${locationText ? `
+
+${locationText}` : ''}
 
 ¿Podrías darme más información?
 
@@ -235,7 +242,7 @@ ${characteristicsText}
   // Lightbox component
   const LightboxComponent = () => (
     <motion.div 
-      className="fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]"
+      className="fixed inset-0 bg-black/90 flex items-center justify-center z-[9999] p-4"
       onClick={closeLightbox}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -243,17 +250,28 @@ ${characteristicsText}
       transition={{ duration: 0.3 }}
     >
       <motion.div 
-        className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+        className="relative w-full h-full flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
+        style={{ 
+          maxWidth: 'calc(100vw - 2rem)', 
+          maxHeight: 'calc(100vh - 2rem)',
+          minHeight: '0'
+        }}
       >
         <img 
           src={property?.images[currentImageIndex]} 
           alt={`${property?.title} - Imagen ${currentImageIndex + 1}`}
-          className="max-w-full max-h-full object-contain"
+          className="max-w-full max-h-full object-contain block"
+          style={{
+            maxWidth: 'calc(100vw - 8rem)',
+            maxHeight: 'calc(100vh - 8rem)',
+            width: 'auto',
+            height: 'auto'
+          }}
           onError={(e) => {
             e.currentTarget.src = '/placeholder.svg';
           }}
@@ -262,7 +280,7 @@ ${characteristicsText}
         {/* Botón cerrar */}
         <motion.button
           onClick={closeLightbox}
-          className="absolute top-4 right-4 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+          className="absolute top-2 right-2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors shadow-lg z-10"
           whileHover={{ scale: 1.1, rotate: 90 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -274,7 +292,7 @@ ${characteristicsText}
           <>
             <motion.button
               onClick={prevImage}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors shadow-lg z-10"
               whileHover={{ scale: 1.1, x: -5 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -282,7 +300,7 @@ ${characteristicsText}
             </motion.button>
             <motion.button
               onClick={nextImage}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors shadow-lg z-10"
               whileHover={{ scale: 1.1, x: 5 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -293,7 +311,7 @@ ${characteristicsText}
         
         {/* Contador */}
         <motion.div 
-          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full"
+          className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full shadow-lg z-10"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -523,7 +541,7 @@ ${characteristicsText}
                     <motion.button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
-                      className={`aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
+                      className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
                         index === currentImageIndex 
                           ? 'border-primary-400 ring-2 ring-primary-200' 
                           : 'border-gray-200 hover:border-gray-300'
@@ -543,7 +561,7 @@ ${characteristicsText}
                         }}
                       />
                       {index === 5 && property.images.length > 6 && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-medium">
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-medium text-sm">
                           +{property.images.length - 6}
                         </div>
                       )}
@@ -1092,14 +1110,26 @@ ${characteristicsText}
                 Descripción de la Propiedad
               </motion.h2>
               <motion.div 
-                className="prose prose-gray max-w-none"
+                className="space-y-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <p className="text-gray-600 leading-relaxed">
-                  {property.description || 'Hermosa casa en alquiler temporario (Estancia Mínima 3 noches) para 6 personas compuesta por: Galería cubierta, Living comedor, Cocina con mesada y bajo mesada, Baño completo, Asador, Dos dormitorios. Uno con cama matrimonial y el otro con cuatro camas individuales.'}
-                </p>
+                {(property.description || 'Hermosa casa en alquiler temporario (Estancia Mínima 3 noches) para 6 personas compuesta por:\nGalería cubierta, Living comedor\nCocina con mesada y bajo mesada\nBaño completo, Asador\nDos dormitorios. Uno con cama matrimonial y el otro con cuatro camas individuales.')
+                  .split('\n')
+                  .filter(line => line.trim() !== '')
+                  .map((line, index) => (
+                    <motion.div
+                      key={index}
+                      className="text-gray-600 leading-relaxed"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.6 + index * 0.1 }}
+                    >
+                      • {line.trim()}
+                    </motion.div>
+                  ))
+                }
               </motion.div>
             </motion.div>
 
@@ -1226,11 +1256,34 @@ ${characteristicsText}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ubicación</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900">Ubicación</h3>
+                  {property.latitude && property.longitude && (
+                    <motion.div 
+                      className="flex items-center text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-1" />
+                      Coordenadas precisas
+                    </motion.div>
+                  )}
+                </div>
                 <div className="flex items-center text-gray-600">
                   <MapPin className="w-4 h-4 mr-2" />
                   <span className="text-sm">{property.address || property.neighborhood || 'Ubicación no especificada'}</span>
                 </div>
+                {property.latitude && property.longitude && (
+                  <motion.div 
+                    className="mt-2 text-xs text-gray-500 font-mono"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    {property.latitude.toFixed(6)}, {property.longitude.toFixed(6)}
+                  </motion.div>
+                )}
               </motion.div>
               
               {/* Mapa interactivo */}
@@ -1242,9 +1295,14 @@ ${characteristicsText}
               >
                 <div className="absolute inset-0">
                   <iframe
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(
-                      `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
-                    )}&output=embed`}
+                    src={
+                      // Usar coordenadas precisas si están disponibles, sino búsqueda por texto
+                      property.latitude && property.longitude
+                        ? `https://www.google.com/maps?q=${property.latitude},${property.longitude}&output=embed&z=16`
+                        : `https://www.google.com/maps?q=${encodeURIComponent(
+                            `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
+                          )}&output=embed`
+                    }
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -1264,15 +1322,20 @@ ${characteristicsText}
                   transition={{ delay: 0.7 }}
                 >
                   <a
-                    href={`https://www.google.com/maps/search/${encodeURIComponent(
-                      `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
-                    )}`}
+                    href={
+                      // Usar coordenadas precisas si están disponibles, sino búsqueda por texto
+                      property.latitude && property.longitude
+                        ? `https://www.google.com/maps?q=${property.latitude},${property.longitude}&z=16`
+                        : `https://www.google.com/maps/search/${encodeURIComponent(
+                            `${property.address || ''} ${property.neighborhood || ''} ${property.city || ''} ${property.province || ''}`
+                          )}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center bg-white/90 hover:bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-md transition-colors"
                   >
                     <MapPin className="w-3 h-3 mr-1" />
-                    Ver en Google Maps
+                    {property.latitude && property.longitude ? 'Ver ubicación exacta' : 'Ver en Google Maps'}
                   </a>
                 </motion.div>
               </motion.div>
@@ -1295,7 +1358,7 @@ ${characteristicsText}
                   <User className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Julieta Navarro</h3>
+                  <h3 className="font-semibold text-gray-900">María Julieta Navarro</h3>
                   <p className="text-sm text-gray-600">Agente inmobiliario</p>                
                 </div>
               </motion.div>
@@ -1313,7 +1376,8 @@ ${characteristicsText}
                   transition={{ delay: 0.7 }}
                 >
                   <Phone className="w-4 h-4 mr-2" />
-                  <span>+54 381 506-3361</span>
+                  <span>+54 381 506-3361 (Ventas)</span>
+                  <span>+54 9 3814 67-0607 (Ventas)</span>
                 </motion.div>
                 <motion.div 
                   className="flex items-center text-sm text-gray-600"

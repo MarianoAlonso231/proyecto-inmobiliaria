@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2 } from 'lucide-react';
 import { PropertyFormData } from '@/hooks/useProperties';
 import { ImageUploaderDeferred, ImageItem } from '@/components/ImageUploaderDeferred';
+import { LoadingTimeoutWarning } from '@/components/LoadingTimeoutWarning';
+import { CoordinateConverter } from '@/components/CoordinateConverter';
 
 interface PropertyFormProps {
   formData: PropertyFormData;
@@ -363,6 +365,13 @@ export function PropertyForm({
             </div>
           </div>
 
+          <CoordinateConverter
+            latitude={formData.latitude}
+            longitude={formData.longitude}
+            onLatitudeChange={(value) => onInputChange('latitude', value)}
+            onLongitudeChange={(value) => onInputChange('longitude', value)}
+          />
+
           <div>
             <Label htmlFor="features" className="text-gray-700 font-medium">Características (separadas por comas)</Label>
             <Input
@@ -427,6 +436,15 @@ export function PropertyForm({
           className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 resize-none"
         />
       </div>
+
+      {/* Warning de timeout si la operación tarda demasiado */}
+      <LoadingTimeoutWarning 
+        isLoading={isLoading}
+        timeoutSeconds={15}
+        onTimeout={() => {
+          console.warn('⏰ Operación de formulario tardando más de 15 segundos');
+        }}
+      />
 
       <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
         <Button

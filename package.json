@@ -13,7 +13,8 @@
     "storage:stats": "tsx src/scripts/storage-cleanup.ts stats",
     "storage:maintenance": "tsx src/scripts/storage-cleanup.ts maintenance --real",
     "storage:debug": "tsx src/scripts/debug-storage.ts",
-    "storage:test": "tsx src/scripts/test-fixed-algorithm.ts"
+    "storage:test": "tsx src/scripts/test-fixed-algorithm.ts",
+    "debug:session": "tsx src/scripts/debug-session.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -71,6 +72,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "@types/google.maps": "^3.58.1",
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.52",
     "@types/react-dom": "^18.2.18",

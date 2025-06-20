@@ -17,6 +17,9 @@ import { Loader2, Shield, AlertTriangle, Plus, Home, Building, DollarSign, MapPi
 import { useProperties, PropertyFormData, initialFormData, Property } from '@/hooks/useProperties';
 import { ImageItem } from '@/components/ImageUploaderDeferred';
 import { formatPropertyType } from '@/lib/utils';
+import { useToast } from '@/components/ui/toast-notification';
+import { LoadingTimeoutWarning } from '@/components/LoadingTimeoutWarning';
+import { SessionExpiryAlert } from '@/components/SessionExpiryAlert';
 
 interface AdminUser {
   id: string;
@@ -41,8 +44,9 @@ export default function AdminDashboard() {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  // Hook personalizado para propiedades
+  // Hook personalizado para propiedades y notificaciones
   const { properties, isLoading: isLoadingProperties, error: propertiesError, stats, createProperty, updateProperty, deleteProperty, propertyToFormData, clearError } = useProperties();
+  const { showToast, ToastContainer } = useToast();
 
   useEffect(() => {
     const initializeDashboard = async () => {
@@ -146,22 +150,63 @@ export default function AdminDashboard() {
     
     try {
       setIsFormLoading(true);
+      console.log('🚀 Iniciando submit del formulario...');
       
       let success = false;
       if (editingProperty) {
+        console.log('✏️ Actualizando propiedad existente:', editingProperty.id);
         success = await updateProperty(editingProperty.id, formData);
       } else {
+        console.log('🆕 Creando nueva propiedad...');
+        console.log('📋 Datos del formulario para creación:', {
+          title: formData.title,
+          price: formData.price,
+          operation_type: formData.operation_type,
+          property_type: formData.property_type,
+          images_count: formData.images.length,
+          hasImages: formData.images.some(img => img.file || img.url)
+        });
         success = await createProperty(formData);
       }
 
+      console.log('📋 Resultado de la operación:', success);
+
       if (success) {
+        console.log('✅ Operación exitosa, cerrando modal...');
+        const operationType = editingProperty ? 'actualizada' : 'creada';
+        showToast('success', `Propiedad ${operationType} exitosamente`);
         setIsDialogOpen(false);
         resetForm();
+      } else {
+        console.log('❌ Operación falló');
+        const operationType = editingProperty ? 'actualizar' : 'crear';
+        if (propertiesError) {
+          showToast('error', propertiesError);
+        } else {
+          showToast('error', `No se pudo ${operationType} la propiedad. Intenta nuevamente.`);
+        }
       }
       
     } catch (error) {
-      console.error('Error al guardar propiedad:', error);
+      console.error('💥 Error crítico en handleSubmit:', error);
+      const operationType = editingProperty ? 'actualizar' : 'crear';
+      
+      // Manejo de errores específicos con toasts
+      if (error instanceof Error) {
+        if (error.message.includes('timeout')) {
+          showToast('error', `La operación tardó demasiado tiempo. Intenta nuevamente.`);
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          showToast('error', `Error de conexión. Verifica tu internet e intenta nuevamente.`);
+        } else {
+          showToast('error', `Error inesperado al ${operationType} la propiedad: ${error.message}`);
+        }
+      } else {
+        showToast('error', `Error inesperado al ${operationType} la propiedad`);
+      }
+      
+      setError('Error inesperado al procesar el formulario');
     } finally {
+      console.log('🏁 Finalizando submit, desactivando loading...');
       setIsFormLoading(false);
     }
   };
@@ -278,6 +323,7 @@ export default function AdminDashboard() {
   // Main dashboard
   return (
     <div className="min-h-screen bg-gray-50">
+      <ToastContainer />
       <div className="container mx-auto p-6">
         {/* Header */}
         <div className="mb-8">
@@ -726,6 +772,9 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+      
+              {/* Session Expiry Alert */}
+        <SessionExpiryAlert />
+      </div>
   );
 }

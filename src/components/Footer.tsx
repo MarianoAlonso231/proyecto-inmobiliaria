@@ -111,8 +111,9 @@ const Footer = () => {
                   <Phone className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">+54 9 3815 06-3361</p>
-                  <p className="text-gray-600 text-sm">+54 9 3812 23-1989</p>
+                  <p className="text-gray-600 text-sm font-medium">+54 9 3815 06-3361 (Ventas)</p>
+                  <p className="text-gray-600 text-sm font-medium">+54 9 3814 67-0607 (Ventas)</p>
+                  <p className="text-gray-600 text-sm font-medium">+54 9 3812 23-1989 (Administración)</p>
                 </div>
               </div>
               <div className="flex items-center group">
