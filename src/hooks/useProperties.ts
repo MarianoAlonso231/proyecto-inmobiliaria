@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { deletePropertySafely } from '@/lib/supabase/cleanup';
+import { logger } from '@/lib/logger';
 import { uploadImage } from '@/lib/supabase/storage';
 import { ImageItem } from '@/components/ImageUploaderDeferred';
 import { withSupabaseTimeout } from '@/lib/timeout-helper';
@@ -92,13 +93,21 @@ export const initialFormData: PropertyFormData = {
   paga_expensas: false
 };
 
-// Función para validar y renovar sesión antes de operaciones críticas
+// Función con timeout para evitar colgadas
 async function ensureValidSession(): Promise<{ isValid: boolean; error?: string }> {
   try {
     console.log('🔐 Validando sesión antes de operación...');
     
-    // Obtener sesión actual
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    // Timeout de 10 segundos para getSession
+    const sessionPromise = supabase.auth.getSession();
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Timeout al obtener sesión')), 10000)
+    );
+    
+    const { data: { session }, error: sessionError } = await Promise.race([
+      sessionPromise, 
+      timeoutPromise
+    ]) as any;
     
     if (sessionError) {
       console.error('❌ Error al obtener sesión:', sessionError);
@@ -110,18 +119,25 @@ async function ensureValidSession(): Promise<{ isValid: boolean; error?: string 
       return { isValid: false, error: 'No hay sesión activa' };
     }
     
-    // Verificar si el token está próximo a expirar (dentro de los próximos 5 minutos)
     const now = Math.floor(Date.now() / 1000);
     const expiresAt = session.expires_at || 0;
     const timeToExpiry = expiresAt - now;
     
     console.log('⏰ Token expira en:', timeToExpiry, 'segundos');
     
-    // Si el token expira en menos de 5 minutos (300 segundos), renovarlo
     if (timeToExpiry < 300) {
       console.log('🔄 Token próximo a expirar, renovando sesión...');
       
-      const { data: refreshData, error: refreshError } = await supabase.auth.refreshSession();
+      // Timeout de 15 segundos para refreshSession
+      const refreshPromise = supabase.auth.refreshSession();
+      const refreshTimeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout al renovar sesión')), 15000)
+      );
+      
+      const { data: refreshData, error: refreshError } = await Promise.race([
+        refreshPromise, 
+        refreshTimeoutPromise
+      ]) as any;
       
       if (refreshError || !refreshData.session) {
         console.error('❌ Error al renovar sesión:', refreshError);
@@ -145,21 +161,41 @@ export function useProperties() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Agregar ref para evitar race conditions y múltiples llamadas simultáneas
+  const loadingRef = useRef(false);
 
   const loadProperties = async () => {
+    // Prevenir múltiples llamadas simultáneas
+    if (loadingRef.current) {
+      logger.warn('⚠️ loadProperties ya está ejecutándose, ignorando llamada duplicada');
+      return;
+    }
+
     try {
+      loadingRef.current = true;
       setIsLoading(true);
       setError(null);
+      logger.admin('📊 Cargando propiedades...');
       
-      const { data, error } = await supabase
+      // Timeout de 12 segundos para cargar propiedades
+      const propertiesPromise = supabase
         .from('properties')
         .select('*')
         .order('created_at', { ascending: false });
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout al cargar propiedades')), 12000)
+      );
+      
+      const { data, error } = await Promise.race([
+        propertiesPromise, 
+        timeoutPromise
+      ]) as any;
 
       if (error) {
         // Detectar errores de autenticación específicos
         if (error.message.includes('JWT') || error.message.includes('expired') || error.message.includes('unauthorized')) {
-          console.error('Error de autenticación detectado:', error);
+          logger.error('❌ Error de autenticación detectado:', error);
           setError('Sesión expirada. Por favor, inicia sesión nuevamente.');
           // Redirigir al login después de un breve delay
           setTimeout(() => {
@@ -170,11 +206,13 @@ export function useProperties() {
         throw error;
       }
 
+      logger.admin(`✅ Propiedades cargadas: ${data?.length || 0}`);
       setProperties(data || []);
     } catch (error) {
-      console.error('Error al cargar propiedades:', error);
+      logger.error('❌ Error al cargar propiedades:', error);
       setError('Error al cargar las propiedades');
     } finally {
+      loadingRef.current = false;
       setIsLoading(false);
     }
   };
@@ -550,6 +588,10 @@ export function useProperties() {
       // 4. Intentar actualizar con manejo de errores de autenticación
       console.log('🔄 Ejecutando update en Supabase...');
       
+      // Agrega esto ANTES de cualquier operación de actualización
+      console.log('=== ANTES DE ACTUALIZAR ===');
+      console.log('Session:', (await supabase.auth.getSession()).data.session?.user?.id);
+      
       let updateResult;
       try {
         updateResult = await Promise.race([
@@ -566,6 +608,10 @@ export function useProperties() {
         setError('La actualización tardó demasiado tiempo. Verifica tu conexión e intenta nuevamente.');
         return false;
       }
+      
+      // Y después de la operación
+      console.log('=== DESPUÉS DE ACTUALIZAR ===');
+      console.log('Session:', (await supabase.auth.getSession()).data.session?.user?.id);
       
       const { error } = updateResult as { error: any };
       
@@ -669,6 +715,29 @@ export function useProperties() {
     loadProperties();
   }, []);
 
+  // Hook adicional para forzar recarga en desarrollo si hay problemas
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && properties.length === 0 && !isLoading) {
+        logger.admin('🔄 Página visible sin propiedades, recargando...');
+        loadProperties();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [properties.length, isLoading]);
+
+  // Cleanup al desmontar el componente
+  useEffect(() => {
+    return () => {
+      // Limpiar refs
+      loadingRef.current = false;
+    };
+  }, []);
+
   // Estadísticas derivadas
   const stats = {
     total: properties.length,
@@ -700,11 +769,22 @@ export function useFeaturedProperties(limit = 6) {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Protección contra race conditions
+  const loadingRef = useRef(false);
 
   const loadFeaturedProperties = async () => {
+    // Prevenir múltiples llamadas simultáneas
+    if (loadingRef.current) {
+      logger.public('⚠️ loadFeaturedProperties ya está ejecutándose, ignorando llamada duplicada');
+      return;
+    }
+
     try {
+      loadingRef.current = true;
       setIsLoading(true);
       setError(null);
+      logger.public('📊 Cargando propiedades destacadas...');
       
       const { data, error } = await supabase
         .from('properties')
@@ -715,14 +795,20 @@ export function useFeaturedProperties(limit = 6) {
         .limit(limit);
 
       if (error) {
+        logger.critical('❌ Error en consulta de propiedades destacadas:', error);
         throw error;
       }
 
+      logger.public(`✅ Propiedades destacadas cargadas: ${data?.length || 0}`);
+      if (data && data.length > 0) {
+        logger.public('🏠 Primeras propiedades destacadas:', data.slice(0, 2).map(p => ({ id: p.id, title: p.title, featured: p.featured })));
+      }
       setFeaturedProperties(data || []);
     } catch (error) {
-      console.error('Error al cargar propiedades destacadas:', error);
+      logger.critical('❌ Error al cargar propiedades destacadas:', error);
       setError('Error al cargar las propiedades destacadas');
     } finally {
+      loadingRef.current = false;
       setIsLoading(false);
     }
   };
@@ -730,6 +816,13 @@ export function useFeaturedProperties(limit = 6) {
   useEffect(() => {
     loadFeaturedProperties();
   }, [limit]);
+
+  // Cleanup al desmontar
+  useEffect(() => {
+    return () => {
+      loadingRef.current = false;
+    };
+  }, []);
 
   return {
     featuredProperties,

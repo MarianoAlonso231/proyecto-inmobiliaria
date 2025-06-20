@@ -49,10 +49,14 @@ export default function AdminDashboard() {
   const { showToast, ToastContainer } = useToast();
 
   useEffect(() => {
+    let isMounted = true; // Flag para evitar actualizaciones de estado si el componente se desmonta
+    
     const initializeDashboard = async () => {
       try {
         // 1. Verificar usuario (método seguro)
         const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (!isMounted) return; // Salir si el componente se desmontó
         
         if (userError || !user) {
           console.error('No hay usuario válido:', userError);
@@ -67,6 +71,8 @@ export default function AdminDashboard() {
           .eq('email', user.email)
           .single();
 
+        if (!isMounted) return; // Salir si el componente se desmontó
+
         if (adminError || !adminUser) {
           console.error('Usuario no es administrador:', adminError);
           await supabase.auth.signOut();
@@ -75,21 +81,34 @@ export default function AdminDashboard() {
         }
 
         // 3. Si todo está bien, establecer los datos
-        setUser(user);
-        setAdminData(adminUser);
+        if (isMounted) {
+          setUser(user);
+          setAdminData(adminUser);
+        }
         
       } catch (error) {
+        if (!isMounted) return; // Salir si el componente se desmontó
+        
         console.error('Error al inicializar dashboard:', error);
         setError('Error al cargar el panel de administración');
         setTimeout(() => {
-          router.replace('/admin/login');
+          if (isMounted) {
+            router.replace('/admin/login');
+          }
         }, 2000);
       } finally {
-        setIsPageLoading(false);
+        if (isMounted) {
+          setIsPageLoading(false);
+        }
       }
     };
 
     initializeDashboard();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
 
     // Suscribirse a cambios en la autenticación
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {

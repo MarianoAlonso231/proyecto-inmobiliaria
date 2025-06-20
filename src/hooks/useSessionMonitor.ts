@@ -112,9 +112,15 @@ export function useSessionMonitor() {
     checkSessionStatus();
 
     // Verificar cada 30 segundos
-    const interval = setInterval(checkSessionStatus, 30000);
+    const interval = setInterval(() => {
+      // Verificar si el componente sigue montado antes de ejecutar
+      checkSessionStatus().catch(console.error);
+    }, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      console.log('🧹 Limpiando interval de monitoreo de sesión');
+    };
   }, [checkSessionStatus]);
 
   // Auto-renovar sesión cuando esté próxima a expirar
