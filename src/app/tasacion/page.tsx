@@ -231,6 +231,7 @@ ${formData.descripcion || 'Sin descripción adicional'}
                         <SelectValue placeholder="Cantidad" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="0">0</SelectItem>
                         <SelectItem value="1">1</SelectItem>
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
@@ -247,6 +248,7 @@ ${formData.descripcion || 'Sin descripción adicional'}
                         <SelectValue placeholder="Cantidad" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="0">0</SelectItem>
                         <SelectItem value="1">1</SelectItem>
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
