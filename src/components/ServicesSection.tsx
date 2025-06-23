@@ -210,8 +210,7 @@ const ServicesSection = () => {
                         whileTap={{ scale: 0.95 }}
                       >
                         <Button 
-                          variant="outline" 
-                          className="border-[#ff8425] text-[#ff8425] hover:bg-[#ff8425] hover:text-white transition-all duration-300 w-full hover:shadow-lg"
+                          className="bg-[#ff8425] hover:bg-[#e6741f] text-white transition-all duration-300 w-full hover:shadow-lg"
                         >
                           Más información
                         </Button>
