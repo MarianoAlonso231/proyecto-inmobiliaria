@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { generateSEOMetadata } from "@/lib/seo";
 
 const montserrat = Montserrat({ 
   subsets: ["latin"],
@@ -15,10 +16,10 @@ const openSans = Open_Sans({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: "Group Inmobiliaria",
-  description: "Tu inmobiliaria de confianza",
-};
+// SEO optimizado para la página principal
+export const metadata: Metadata = generateSEOMetadata({
+  pageType: 'home'
+});
 
 export default function RootLayout({
   children,

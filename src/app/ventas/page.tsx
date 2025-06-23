@@ -14,6 +14,7 @@ import Footer from '@/components/Footer';
 import { useProperties, Property } from '@/hooks/useProperties';
 import PropertyCard from '@/components/PropertyCard';
 import { formatPrice, getPropertyArea } from '@/lib/utils';
+import SEOHead, { SEOBreadcrumbs, usePropertyImageAlt } from '@/components/SEOHead';
 
 
 function VentasContent() {
@@ -114,7 +115,21 @@ function VentasContent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header animado */}
+      {/* SEO y Breadcrumbs */}
+      <SEOHead 
+        pageType="ventas" 
+        operation="venta"
+        propertyType={filters.tipo !== 'todos' ? filters.tipo as any : undefined}
+        location={filters.barrio || undefined}
+      />
+      <SEOBreadcrumbs 
+        pageType="ventas" 
+        operation="venta"
+        propertyType={filters.tipo !== 'todos' ? filters.tipo : undefined}
+        location={filters.barrio || undefined}
+      />
+
+      {/* Header animado con SEO optimizado */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -122,10 +137,20 @@ function VentasContent() {
         className="mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Propiedades en Venta
+          {filters.tipo !== 'todos' && filters.barrio 
+            ? `${filters.tipo === 'casa' ? 'Casas' : filters.tipo === 'departamento' ? 'Departamentos' : filters.tipo === 'terreno' ? 'Terrenos' : 'Propiedades'} en Venta ${filters.barrio} Tucumán`
+            : filters.tipo !== 'todos'
+            ? `${filters.tipo === 'casa' ? 'Casas' : filters.tipo === 'departamento' ? 'Departamentos' : filters.tipo === 'terreno' ? 'Terrenos' : 'Propiedades'} en Venta Tucumán`
+            : filters.barrio
+            ? `Propiedades en Venta ${filters.barrio} Tucumán`
+            : 'Casas en Venta Tucumán - Propiedades Nuevas y Usadas'
+          }
         </h1>
         <p className="text-lg text-gray-600">
-          Encuentra la propiedad perfecta para comprar
+          {filters.barrio 
+            ? `Descubrí las mejores propiedades en venta en ${filters.barrio}, Tucumán. Inmobiliaria confiable con asesoramiento personalizado y financiación disponible.`
+            : 'Encontrá tu casa ideal en Tucumán. Propiedades nuevas y usadas en Yerba Buena, San Miguel de Tucumán y más ubicaciones. Inmobiliaria recomendada con asesoramiento legal.'
+          }
         </p>
       </motion.div>
 

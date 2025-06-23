@@ -7,6 +7,7 @@ import { MapPin, Bed, Bath, Square, Shield, TreePine, DollarSign } from 'lucide-
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { formatPropertyType } from '@/lib/utils';
+import { usePropertyImageAlt } from '@/components/SEOHead';
 interface PropertyCardProps {
   id: string;
   title: string;
@@ -59,6 +60,13 @@ const PropertyCard = ({
   paga_expensas
 }: PropertyCardProps) => {
   const router = useRouter();
+  
+  // Generar alt text optimizado para SEO
+  const imageAlt = usePropertyImageAlt(
+    formatPropertyType(propertyType), 
+    type, 
+    location
+  );
 
   const handleViewDetails = () => {
     router.push(`/propiedades/${id}`);
@@ -73,10 +81,11 @@ const PropertyCard = ({
         <div className="relative overflow-hidden">
           <motion.img 
             src={image} 
-            alt={title}
+            alt={imageAlt}
             className="w-full h-48 object-cover"
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
+            loading="lazy"
           />
         <div className="absolute top-3 left-3">
           <Badge 
