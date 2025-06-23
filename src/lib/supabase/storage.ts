@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { deletePropertySafely } from './cleanup';
+import { convertImageToWebP } from '@/lib/image-converter';
 
 const BUCKET_NAME = 'properties-images';
 
@@ -13,7 +14,7 @@ export async function uploadImage(file: File): Promise<{ success: boolean; url?:
       return { success: false, error: 'El archivo debe ser una imagen' };
     }
 
-    // Validar tamaño (5MB máximo)
+    // Validar tamaño (5MB máximo antes de conversión)
     if (file.size > 5 * 1024 * 1024) {
       console.warn('⚠️ Archivo demasiado grande:', `${(file.size / 1024 / 1024).toFixed(2)}MB`);
       return { success: false, error: 'La imagen es demasiado grande (máximo 5MB)' };
@@ -21,16 +22,34 @@ export async function uploadImage(file: File): Promise<{ success: boolean; url?:
 
     console.log('✅ Validaciones de archivo pasadas');
 
-    // Generar nombre único
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+    // Convertir imagen a WebP para optimización
+    console.log('🔄 Convirtiendo imagen a WebP...');
+    const conversionResult = await convertImageToWebP(file, {
+      quality: 0.85, // Calidad alta pero optimizada
+      maxWidth: 1920, // Máximo 1920px de ancho
+      maxHeight: 1080 // Máximo 1080px de alto
+    });
+
+    if (!conversionResult.success || !conversionResult.file) {
+      console.warn('⚠️ Error en conversión a WebP, usando archivo original:', conversionResult.error);
+      // Si falla la conversión, usar el archivo original
+      var finalFile = file;
+    } else {
+      console.log('✅ Imagen convertida a WebP exitosamente');
+      var finalFile = conversionResult.file;
+    }
+
+    // Generar nombre único (siempre con extensión .webp si la conversión fue exitosa)
+    const originalName = file.name.split('.').slice(0, -1).join('');
+    const fileExtension = finalFile.type === 'image/webp' ? 'webp' : file.name.split('.').pop();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}_${originalName}.${fileExtension}`;
     console.log('📁 Nombre de archivo generado:', fileName);
 
     // Subir archivo con mejor manejo de errores
     console.log('🔄 Ejecutando upload a Storage...');
     const { data, error } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(fileName, file);
+      .upload(fileName, finalFile);
 
     if (error) {
       console.error('❌ Error en upload:', error);

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { convertMultipleImagesToWebP } from '@/lib/image-converter';
 
 // Tipo para representar una imagen que puede ser un archivo local o una URL existente
 export interface ImageItem {
@@ -27,6 +28,7 @@ export function ImageUploaderDeferred({
   disabled = false 
 }: ImageUploaderDeferredProps) {
   const [error, setError] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Limpiar URLs de objeto cuando el componente se desmonta
@@ -45,46 +47,74 @@ export function ImageUploaderDeferred({
     if (files.length === 0) return;
 
     setError('');
+    setIsProcessing(true);
 
-    // Verificar límite de imágenes
-    if (value.length + files.length > maxImages) {
-      setError(`Máximo ${maxImages} imágenes permitidas`);
-      return;
-    }
-
-    // Validar archivos
-    const validFiles: File[] = [];
-    const errors: string[] = [];
-
-    files.forEach(file => {
-      if (!file.type.startsWith('image/')) {
-        errors.push(`${file.name}: No es una imagen válida`);
-      } else if (file.size > 5 * 1024 * 1024) { // 5MB máximo
-        errors.push(`${file.name}: Archivo muy grande (máximo 5MB)`);
-      } else {
-        validFiles.push(file);
+    try {
+      // Verificar límite de imágenes
+      if (value.length + files.length > maxImages) {
+        setError(`Máximo ${maxImages} imágenes permitidas`);
+        return;
       }
-    });
 
-    if (errors.length > 0) {
-      setError(errors.join(', '));
-    }
+      // Validar archivos
+      const validFiles: File[] = [];
+      const errors: string[] = [];
 
-    if (validFiles.length === 0) return;
+      files.forEach(file => {
+        if (!file.type.startsWith('image/')) {
+          errors.push(`${file.name}: No es una imagen válida`);
+        } else if (file.size > 5 * 1024 * 1024) { // 5MB máximo
+          errors.push(`${file.name}: Archivo muy grande (máximo 5MB)`);
+        } else {
+          validFiles.push(file);
+        }
+      });
 
-    // Crear ImageItems para los archivos válidos
-    const newImageItems: ImageItem[] = validFiles.map(file => ({
-      id: `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      type: 'file',
-      file,
-      preview: URL.createObjectURL(file)
-    }));
+      if (errors.length > 0) {
+        setError(errors.join(', '));
+      }
 
-    onChange([...value, ...newImageItems]);
+      if (validFiles.length === 0) return;
 
-    // Limpiar input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      // Convertir archivos a WebP para optimización
+      console.log(`🔄 Procesando ${validFiles.length} imágenes para WebP...`);
+      const conversionResult = await convertMultipleImagesToWebP(validFiles, {
+        quality: 0.85,
+        maxWidth: 1920,
+        maxHeight: 1080
+      });
+
+      // Usar archivos convertidos si fue exitoso, sino usar originales
+      const finalFiles = conversionResult.success && conversionResult.convertedFiles.length > 0
+        ? conversionResult.convertedFiles
+        : validFiles;
+
+      // Mostrar advertencias de conversión si las hay
+      if (conversionResult.errors.length > 0) {
+        console.warn('⚠️ Algunas imágenes no se pudieron convertir a WebP:', conversionResult.errors);
+        setError(`Algunas imágenes mantuvieron su formato original: ${conversionResult.errors.join(', ')}`);
+      }
+
+      // Crear ImageItems para los archivos finales
+      const newImageItems: ImageItem[] = finalFiles.map((file, index) => ({
+        id: `file_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 9)}`,
+        type: 'file',
+        file,
+        preview: URL.createObjectURL(file)
+      }));
+
+      console.log(`✅ ${newImageItems.length} imágenes procesadas y listas`);
+      onChange([...value, ...newImageItems]);
+
+    } catch (error) {
+      console.error('❌ Error procesando imágenes:', error);
+      setError('Error al procesar las imágenes. Intenta nuevamente.');
+    } finally {
+      setIsProcessing(false);
+      // Limpiar input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -110,11 +140,20 @@ export function ImageUploaderDeferred({
           type="button"
           variant="outline"
           onClick={() => fileInputRef.current?.click()}
-          disabled={disabled || value.length >= maxImages}
+          disabled={disabled || value.length >= maxImages || isProcessing}
           className="bg-white hover:bg-gray-50"
         >
-          <Upload className="h-4 w-4 mr-2" />
-          {value.length === 0 ? 'Seleccionar Imágenes' : 'Agregar Más'}
+          {isProcessing ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Optimizando...
+            </>
+          ) : (
+            <>
+              <Upload className="h-4 w-4 mr-2" />
+              {value.length === 0 ? 'Seleccionar Imágenes' : 'Agregar Más'}
+            </>
+          )}
         </Button>
         
         <input
@@ -140,7 +179,7 @@ export function ImageUploaderDeferred({
             </span>
           </div>
           <p className="text-xs text-blue-600">
-            Estas imágenes se subirán cuando guardes la propiedad
+            Estas imágenes se subirán optimizadas en formato WebP cuando guardes la propiedad
           </p>
         </div>
       )}
@@ -176,7 +215,7 @@ export function ImageUploaderDeferred({
                 <div className="absolute top-1 left-1">
                   {imageItem.type === 'file' ? (
                     <div className="bg-blue-500 text-white text-xs px-1 py-0.5 rounded">
-                      Nuevo
+                      {imageItem.file?.type === 'image/webp' ? 'WebP ✨' : 'Nuevo'}
                     </div>
                   ) : (
                     <div className="bg-green-500 text-white text-xs px-1 py-0.5 rounded">
@@ -206,7 +245,7 @@ export function ImageUploaderDeferred({
           <ImageIcon className="mx-auto h-12 w-12 text-gray-400 mb-2" />
           <p className="text-sm text-gray-500">No hay imágenes seleccionadas</p>
           <p className="text-xs text-gray-400 mt-1">
-            Las imágenes se subirán al Storage cuando guardes la propiedad
+            Las imágenes se optimizarán automáticamente a formato WebP para mejor rendimiento
           </p>
         </div>
       )}

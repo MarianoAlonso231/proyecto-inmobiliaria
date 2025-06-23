@@ -374,12 +374,13 @@ export function PropertyForm({
 
           <div>
             <Label htmlFor="features" className="text-gray-700 font-medium">Características (separadas por comas)</Label>
-            <Input
+            <Textarea
               id="features"
               value={formData.features}
               onChange={(e) => onInputChange('features', e.target.value)}
-              placeholder="garage, jardín, piscina, aire acondicionado"
-              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              placeholder="garage, jardín, piscina, aire acondicionado, cocina equipada, seguridad 24h, quincho, parrilla, wifi, calefacción"
+              rows={3}
+              className="mt-1 bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">
               Ejemplos: garage, jardín, piscina, aire acondicionado, cocina equipada, seguridad 24h
