@@ -22,47 +22,7 @@ function LocalSEOContent() {
           </p>
         </div>
 
-        {/* Grid de ubicaciones principales */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Casas en Venta Yerba Buena Tucumán
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Descubrí las mejores <strong>casas en venta en Yerba Buena</strong>, la zona más exclusiva de Tucumán. 
-              Propiedades con jardín, pileta y excelente conectividad.
-            </p>
-            <a href="/ventas/casas/yerba-buena" className="text-blue-600 hover:text-blue-800 font-medium">
-              Ver casas en Yerba Buena →
-            </a>
-          </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Alquileres en San Miguel de Tucumán
-            </h3>
-            <p className="text-gray-600 mb-4">
-              <strong>Alquileres en el centro de Tucumán</strong> para estudiantes y familias. 
-              Departamentos amueblados y casas cerca de universidades y centros comerciales.
-            </p>
-            <a href="/alquileres?ubicacion=san-miguel-de-tucuman" className="text-blue-600 hover:text-blue-800 font-medium">
-              Ver alquileres en el centro →
-            </a>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Terrenos en Tafí Viejo Tucumán
-            </h3>
-            <p className="text-gray-600 mb-4">
-              <strong>Terrenos económicos en Tafí Viejo</strong> para construcción e inversión. 
-              Lotes con servicios y ubicación estratégica en zona de crecimiento.
-            </p>
-            <a href="/ventas/terrenos/tafi-viejo" className="text-blue-600 hover:text-blue-800 font-medium">
-              Ver terrenos en Tafí Viejo →
-            </a>
-          </div>
-        </div>
 
         {/* Servicios destacados */}
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -110,7 +70,7 @@ function LocalSEOContent() {
             ¿Buscás comprar, vender o alquilar en Tucumán?
           </h4>
           <p className="text-gray-600 mb-6">
-            Contactanos hoy mismo. Somos la <strong>inmobiliaria recomendada en Tucumán</strong> 
+            Contactanos hoy mismo. Somos la <strong>inmobiliaria recomendada en Tucumán </strong> 
             para todas tus necesidades inmobiliarias.
           </p>
           <div className="space-x-4">
@@ -124,7 +84,7 @@ function LocalSEOContent() {
               href="/tasacion" 
               className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors"
             >
-              Tasación Gratuita
+              Tasación
             </a>
           </div>
         </div>

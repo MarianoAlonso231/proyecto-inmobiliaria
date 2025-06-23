@@ -1,6 +1,4 @@
 {
-  "/propiedades/[id]/page": "app/propiedades/[id]/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/alquileres/page": "app/alquileres/page.js"
+  "/page": "app/page.js",
+  "/tasacion/page": "app/tasacion/page.js"
 }
