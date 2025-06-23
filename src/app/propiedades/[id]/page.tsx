@@ -365,14 +365,14 @@ ${locationText}` : ''}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <motion.h1 
-              className="text-2xl font-bold text-gray-900 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Propiedad no encontrada
-            </motion.h1>
+                        <motion.h1 
+                className="text-2xl font-bold text-gray-900 mb-4 font-heading"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                Propiedad no encontrada
+              </motion.h1>
             <motion.p 
               className="text-gray-600 mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -419,7 +419,7 @@ ${locationText}` : ''}
               transition={{ duration: 0.6 }}
             >
               <motion.h1 
-                className="text-3xl font-bold text-gray-900 mb-2"
+                className="text-3xl font-bold text-gray-900 mb-2 font-heading"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -433,7 +433,7 @@ ${locationText}` : ''}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <MapPin className="w-5 h-5 mr-2" />
-                <span className="text-lg">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
+                <span className="text-lg font-body">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
               </motion.div>
               <motion.div 
                 className="flex items-center gap-3"
@@ -616,10 +616,10 @@ ${locationText}` : ''}
                     transition={{ delay: 0.6, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.barrio_cerrado 
-                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -642,10 +642,10 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.es_country 
-                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -668,10 +668,10 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.paga_expensas 
-                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -723,10 +723,10 @@ ${locationText}` : ''}
                     transition={{ delay: 0.6, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.paga_expensas 
-                          ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -790,10 +790,10 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.paga_expensas 
-                          ? 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-purple-50 to-violet-50 border-purple-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -861,8 +861,8 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
                       <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
-                      <div className="text-sm text-gray-600">m² Construcción</div>
+                      <div className="text-2xl font-bold text-gray-900 font-heading">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                      <div className="text-sm text-gray-600 font-body">m² Construcción</div>
                     </motion.div>
                     <motion.div 
                       className="text-center p-4 bg-gray-50 rounded-lg"
@@ -872,8 +872,8 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
                       <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
-                      <div className="text-sm text-gray-600">m² Terreno</div>
+                      <div className="text-2xl font-bold text-gray-900 font-heading">{property.terreno || 'N/A'}</div>
+                      <div className="text-sm text-gray-600 font-body">m² Terreno</div>
                     </motion.div>
                   </motion.div>
 
@@ -885,10 +885,10 @@ ${locationText}` : ''}
                     transition={{ delay: 0.8, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.paga_expensas 
-                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -911,10 +911,10 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.barrio_cerrado 
-                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -937,10 +937,10 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.es_country 
-                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -1012,10 +1012,10 @@ ${locationText}` : ''}
                       <div className="text-sm text-gray-600">m² Construcción</div>
                     </motion.div>
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border-2 ${
+                      className={`text-center p-4 rounded-lg border ${
                         property.paga_expensas 
-                          ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-100' 
+                          : 'bg-gray-50 border-gray-100'
                       }`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -1102,7 +1102,7 @@ ${locationText}` : ''}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <motion.h2 
-                className="text-xl font-semibold text-gray-900 mb-4"
+                className="text-xl font-semibold text-gray-900 mb-4 font-heading"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -1121,7 +1121,7 @@ ${locationText}` : ''}
                   .map((line, index) => (
                     <motion.div
                       key={index}
-                      className="text-gray-600 leading-relaxed"
+                      className="text-gray-600 leading-relaxed font-body"
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 + index * 0.1 }}
@@ -1141,7 +1141,7 @@ ${locationText}` : ''}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <motion.h2 
-                className="text-xl font-semibold text-gray-900 mb-4"
+                className="text-xl font-semibold text-gray-900 mb-4 font-heading"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
@@ -1183,7 +1183,7 @@ ${locationText}` : ''}
                         whileHover={{ scale: 1.05, x: 5 }}
                       >
                         <IconComponent className="w-5 h-5 text-primary-600 mr-3" />
-                        <span className="text-sm font-medium text-primary-700">{feature}</span>
+                        <span className="text-sm font-medium text-primary-700 font-body">{feature}</span>
                       </motion.div>
                     );
                   })
@@ -1197,7 +1197,7 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, x: 5 }}
                     >
                       <Car className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700">Garaje</span>
+                      <span className="text-sm font-medium text-primary-700 font-body">Garaje</span>
                     </motion.div>
                     <motion.div 
                       className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
@@ -1207,7 +1207,7 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, x: 5 }}
                     >
                       <TreePine className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700">Jardín</span>
+                      <span className="text-sm font-medium text-primary-700 font-body">Jardín</span>
                     </motion.div>
                     <motion.div 
                       className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
@@ -1217,7 +1217,7 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, x: 5 }}
                     >
                       <Wifi className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700">WiFi</span>
+                      <span className="text-sm font-medium text-primary-700 font-body">WiFi</span>
                     </motion.div>
                     <motion.div 
                       className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
@@ -1227,7 +1227,7 @@ ${locationText}` : ''}
                       whileHover={{ scale: 1.05, x: 5 }}
                     >
                       <Shield className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700">Seguridad</span>
+                      <span className="text-sm font-medium text-primary-700 font-body">Seguridad</span>
                     </motion.div>
                   </>
                 )}
@@ -1257,7 +1257,7 @@ ${locationText}` : ''}
                 transition={{ delay: 0.4 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900">Ubicación</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 font-heading">Ubicación</h3>
                   {property.latitude && property.longitude && (
                     <motion.div 
                       className="flex items-center text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full"
@@ -1272,7 +1272,7 @@ ${locationText}` : ''}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <MapPin className="w-4 h-4 mr-2" />
-                  <span className="text-sm">{property.address || property.neighborhood || 'Ubicación no especificada'}</span>
+                  <span className="text-sm font-body">{property.address || property.neighborhood || 'Ubicación no especificada'}</span>
                 </div>
                 {property.latitude && property.longitude && (
                   <motion.div 
@@ -1358,8 +1358,8 @@ ${locationText}` : ''}
                   <User className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">María Julieta Navarro</h3>
-                  <p className="text-sm text-gray-600">Agente inmobiliario</p>                
+                  <h3 className="font-semibold text-gray-900 font-heading">María Julieta Navarro</h3>
+                  <p className="text-sm text-gray-600 font-body">Agente inmobiliario</p>                
                 </div>
               </motion.div>
               
@@ -1370,7 +1370,7 @@ ${locationText}` : ''}
                 transition={{ delay: 0.6, staggerChildren: 0.1 }}
               >
                 <motion.div 
-                  className="flex items-center text-sm text-gray-600"
+                  className="flex items-center text-sm text-gray-600 font-body"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.7 }}
@@ -1380,7 +1380,7 @@ ${locationText}` : ''}
                   <span>+54 9 3814 67-0607 (Ventas)</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center text-sm text-gray-600"
+                  className="flex items-center text-sm text-gray-600 font-body"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 }}
@@ -1432,7 +1432,7 @@ ${locationText}` : ''}
                 transition={{ delay: 0.7, duration: 0.6 }}
               >
                 <motion.div 
-                  className="text-2xl font-bold text-gray-800 mb-2"
+                  className="text-2xl font-bold text-gray-800 mb-2 font-heading"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
@@ -1440,7 +1440,7 @@ ${locationText}` : ''}
                   {property.currency} {property.price.toLocaleString()}{property.operation_type === 'alquiler' ? '/mes' : ''}
                 </motion.div>
                 <motion.div 
-                  className="text-sm text-gray-600"
+                  className="text-sm text-gray-600 font-body"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 }}

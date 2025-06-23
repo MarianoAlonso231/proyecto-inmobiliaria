@@ -18,6 +18,11 @@ const config: Config = {
       }
     },
     extend: {
+      fontFamily: {
+        'heading': ['var(--font-heading)', 'Montserrat', 'sans-serif'],
+        'body': ['var(--font-body)', 'Open Sans', 'sans-serif'],
+        'sans': ['var(--font-body)', 'Open Sans', 'sans-serif'], // Mantener Open Sans como fuente por defecto
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
