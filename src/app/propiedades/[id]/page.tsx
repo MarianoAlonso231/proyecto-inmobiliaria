@@ -223,7 +223,7 @@ export default function PropertyDetailsPage() {
       ? `📍 Ubicación exacta: https://www.google.com/maps?q=${property.latitude},${property.longitude}`
       : '';
 
-    const message = `¡Hola Gabriel! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
+    const message = `¡Hola! Me interesa la propiedad "${property.title}" que está en ${property.operation_type} por ${property.currency} ${property.price.toLocaleString()}${property.operation_type === 'alquiler' ? '/mes' : ''}. 
 
 ${characteristicsText}${locationText ? `
 
