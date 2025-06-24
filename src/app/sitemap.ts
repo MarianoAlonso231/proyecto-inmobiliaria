@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { TUCUMAN_LOCATIONS, PROPERTY_TYPES } from '@/lib/seo';
+import { supabase } from '@/lib/supabase';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://grupoinmobiliaria.com.ar';
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = 'https://groupinmobiliaria.com.ar';
   
   const routes: MetadataRoute.Sitemap = [
     // Páginas principales
@@ -43,6 +44,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
   ];
+
+  // Agregar propiedades dinámicas (rutas [id])
+  try {
+    const { data: properties, error } = await supabase
+      .from('properties')
+      .select('id, updated_at, status')
+      .eq('status', 'disponible'); // Solo propiedades disponibles
+
+    if (!error && properties) {
+      for (const property of properties) {
+        routes.push({
+          url: `${baseUrl}/propiedades/${property.id}`,
+          lastModified: new Date(property.updated_at),
+          changeFrequency: 'weekly',
+          priority: 0.8,
+        });
+      }
+    }
+  } catch (error) {
+    console.warn('⚠️ No se pudieron cargar las propiedades para el sitemap:', error);
+  }
 
   // Generar URLs para combinaciones de tipo de propiedad + operación
   const operations = ['ventas', 'alquileres'];

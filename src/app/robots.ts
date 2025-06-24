@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://grupoinmobiliaria.com.ar';
+  const baseUrl = 'https://groupinmobiliaria.com.ar';
   
   return {
     rules: [
