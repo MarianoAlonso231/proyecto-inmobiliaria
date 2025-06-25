@@ -270,41 +270,41 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     icons: {
       icon: [
         {
-          url: '/favicon.ico',
+          url: '/logo-new.png',
           sizes: '32x32',
-          type: 'image/x-icon',
+          type: 'image/png',
         },
         {
-          url: '/favicon.ico',
+          url: '/logo-new.png',
           sizes: '16x16',
-          type: 'image/x-icon',
+          type: 'image/png',
         }
       ],
-      shortcut: '/favicon.ico',
+      shortcut: '/logo-new.png',
       apple: [
         {
-          url: '/favicon.ico',
+          url: '/logo-new.png',
           sizes: '180x180',
-          type: 'image/x-icon',
+          type: 'image/png',
         }
       ],
       other: [
         {
           rel: 'icon',
-          type: 'image/x-icon',
+          type: 'image/png',
           sizes: '32x32',
-          url: '/favicon.ico',
+          url: '/logo-new.png',
         },
         {
           rel: 'icon',
-          type: 'image/x-icon',
+          type: 'image/png',
           sizes: '16x16',
-          url: '/favicon.ico',
+          url: '/logo-new.png',
         },
         {
           rel: 'apple-touch-icon',
           sizes: '180x180',
-          url: '/favicon.ico',
+          url: '/logo-new.png',
         }
       ]
     },
