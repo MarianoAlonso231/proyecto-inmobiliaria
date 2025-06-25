@@ -266,6 +266,48 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     authors: [{ name: BRAND_NAME }],
     creator: BRAND_NAME,
     publisher: BRAND_NAME,
+    // Configuración completa de favicon
+    icons: {
+      icon: [
+        {
+          url: '/favicon.ico',
+          sizes: '32x32',
+          type: 'image/x-icon',
+        },
+        {
+          url: '/favicon.ico',
+          sizes: '16x16',
+          type: 'image/x-icon',
+        }
+      ],
+      shortcut: '/favicon.ico',
+      apple: [
+        {
+          url: '/favicon.ico',
+          sizes: '180x180',
+          type: 'image/x-icon',
+        }
+      ],
+      other: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          sizes: '32x32',
+          url: '/favicon.ico',
+        },
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          sizes: '16x16',
+          url: '/favicon.ico',
+        },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          url: '/favicon.ico',
+        }
+      ]
+    },
     robots: {
       index: true,
       follow: true,

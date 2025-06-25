@@ -406,11 +406,11 @@ ${locationText}` : ''}
       <Header />
 
       {/* Contenido principal */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Columna izquierda - Contenido principal */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             
             {/* Título animado */}
             <motion.div
@@ -419,7 +419,7 @@ ${locationText}` : ''}
               transition={{ duration: 0.6 }}
             >
               <motion.h1 
-                className="text-3xl font-bold text-gray-900 mb-2 font-heading"
+                className="text-2xl font-bold text-gray-900 mb-2 font-heading"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -427,13 +427,13 @@ ${locationText}` : ''}
                 {property.title}
               </motion.h1>
               <motion.div 
-                className="flex items-center text-gray-600 mb-4"
+                className="flex items-center text-gray-600 mb-3"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <MapPin className="w-5 h-5 mr-2" />
-                <span className="text-lg font-body">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
+                <MapPin className="w-4 h-4 mr-2" />
+                <span className="text-base font-body">{property.neighborhood || property.address || 'Ubicación no especificada'}</span>
               </motion.div>
               <motion.div 
                 className="flex items-center gap-3"
@@ -443,7 +443,7 @@ ${locationText}` : ''}
               >
                 <Badge 
                   variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
-                  className={`text-sm px-3 py-1 ${
+                  className={`text-xs px-2 py-1 ${
                     property.operation_type === 'venta' 
                       ? 'bg-green-500 hover:bg-green-600' 
                       : 'bg-blue-500 hover:bg-blue-600'
@@ -451,7 +451,7 @@ ${locationText}` : ''}
                 >
                   En {property.operation_type}
                 </Badge>
-                <Badge variant="outline" className="text-sm px-3 py-1 bg-gray-100 text-gray-900 border-gray-300">
+                <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-100 text-gray-900 border-gray-300">
                   {formatPropertyType(property.property_type)}
                 </Badge>
               </motion.div>
@@ -466,7 +466,7 @@ ${locationText}` : ''}
             >
               {/* Imagen principal */}
               <motion.div 
-                className="relative h-96 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
+                className="relative h-72 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
                 onClick={openLightbox}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
@@ -573,13 +573,13 @@ ${locationText}` : ''}
 
             {/* Información básica animada */}
             <motion.div 
-              className="bg-white border rounded-lg p-6"
+              className="bg-white border rounded-lg p-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <motion.h2 
-                className="text-xl font-semibold text-gray-900 mb-4"
+                className="text-lg font-semibold text-gray-900 mb-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -589,24 +589,24 @@ ${locationText}` : ''}
               
               {property.property_type === 'terreno' ? (
                 /* Características específicas para terrenos */
-                <motion.div 
-                  className="space-y-6"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
-                >
-                  {/* Área del terreno */}
-                  <motion.div 
-                    className="text-center p-6 bg-gray-50 rounded-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
+                                  <motion.div 
+                    className="space-y-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, staggerChildren: 0.1 }}
                   >
-                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
-                    <div className="text-sm text-gray-600">m² de Terreno</div>
-                  </motion.div>
+                    {/* Área del terreno */}
+                    <motion.div 
+                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                      <div className="text-xs text-gray-600">m² de Terreno</div>
+                    </motion.div>
 
                   {/* Características especiales del terreno */}
                   <motion.div 
@@ -626,10 +626,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.7 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Shield className={`w-8 h-8 mx-auto mb-2 ${
+                      <Shield className={`w-6 h-6 mx-auto mb-2 ${
                         property.barrio_cerrado ? 'text-orange-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.barrio_cerrado ? 'text-orange-700' : 'text-gray-500'
                       }`}>
                         Barrio Cerrado
@@ -652,10 +652,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.8 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <TreePine className={`w-8 h-8 mx-auto mb-2 ${
+                      <TreePine className={`w-6 h-6 mx-auto mb-2 ${
                         property.es_country ? 'text-orange-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.es_country ? 'text-orange-700' : 'text-gray-500'
                       }`}>
                         Country Club
@@ -678,10 +678,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.9 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                      <DollarSign className={`w-6 h-6 mx-auto mb-2 ${
                         property.paga_expensas ? 'text-orange-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.paga_expensas ? 'text-orange-700' : 'text-gray-500'
                       }`}>
                         Paga Expensas
@@ -697,22 +697,22 @@ ${locationText}` : ''}
               ) : property.property_type === 'local' ? (
                 /* Características específicas para locales */
                 <motion.div 
-                  className="space-y-6"
+                  className="space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
                   {/* Área del local */}
                   <motion.div 
-                    className="text-center p-6 bg-gray-50 rounded-lg"
+                    className="text-center p-4 bg-gray-50 rounded-lg"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                     whileHover={{ scale: 1.05, y: -5 }}
                   >
-                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
-                    <div className="text-sm text-gray-600">m² de Construcción</div>
+                    <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                    <div className="text-xs text-gray-600">m² de Construcción</div>
                   </motion.div>
 
                   {/* Características del local */}
@@ -733,10 +733,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.7 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                      <DollarSign className={`w-6 h-6 mx-auto mb-2 ${
                         property.paga_expensas ? 'text-blue-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.paga_expensas ? 'text-blue-700' : 'text-gray-500'
                       }`}>
                         Paga Expensas
@@ -752,22 +752,22 @@ ${locationText}` : ''}
               ) : property.property_type === 'oficina' ? (
                 /* Características específicas para oficinas */
                 <motion.div 
-                  className="space-y-6"
+                  className="space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
                   {/* Área de la oficina */}
                   <motion.div 
-                    className="text-center p-6 bg-gray-50 rounded-lg"
+                    className="text-center p-4 bg-gray-50 rounded-lg"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                     whileHover={{ scale: 1.05, y: -5 }}
                   >
-                    <Square className="w-12 h-12 text-primary-400 mx-auto mb-3" />
-                    <div className="text-3xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
-                    <div className="text-sm text-gray-600">m² de Construcción</div>
+                    <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                    <div className="text-xs text-gray-600">m² de Construcción</div>
                   </motion.div>
 
                   {/* Características de la oficina */}
@@ -778,15 +778,15 @@ ${locationText}` : ''}
                     transition={{ delay: 0.6, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
-                      <div className="text-sm text-gray-600">Baños</div>
+                      <Bath className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-xs text-gray-600">Baños</div>
                     </motion.div>
 
                     <motion.div 
@@ -800,10 +800,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.8 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                      <DollarSign className={`w-6 h-6 mx-auto mb-2 ${
                         property.paga_expensas ? 'text-purple-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.paga_expensas ? 'text-purple-700' : 'text-gray-500'
                       }`}>
                         Paga Expensas
@@ -819,73 +819,73 @@ ${locationText}` : ''}
               ) : property.property_type === 'casa' ? (
                 /* Características específicas para casas */
                 <motion.div 
-                  className="space-y-6"
+                  className="space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
                   {/* Características básicas de la casa */}
                   <motion.div 
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                    className="grid grid-cols-2 md:grid-cols-4 gap-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
-                      <div className="text-sm text-gray-600">Dormitorios</div>
+                      <Bed className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{property.bedrooms}</div>
+                      <div className="text-xs text-gray-600">Dormitorios</div>
                     </motion.div>
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
-                      <div className="text-sm text-gray-600">Baños</div>
+                      <Bath className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-xs text-gray-600">Baños</div>
                     </motion.div>
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.8 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900 font-heading">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
-                      <div className="text-sm text-gray-600 font-body">m² Construcción</div>
+                      <Square className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900 font-heading">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                      <div className="text-xs text-gray-600 font-body">m² Construcción</div>
                     </motion.div>
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.9 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Building className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900 font-heading">{property.terreno || 'N/A'}</div>
-                      <div className="text-sm text-gray-600 font-body">m² Terreno</div>
+                      <Building className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900 font-heading">{property.terreno || 'N/A'}</div>
+                      <div className="text-xs text-gray-600 font-body">m² Terreno</div>
                     </motion.div>
                   </motion.div>
 
                   {/* Características especiales de la casa */}
                   <motion.div 
-                    className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.8, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border ${
+                      className={`text-center p-3 rounded-lg border ${
                         property.paga_expensas 
                           ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
                           : 'bg-gray-50 border-gray-100'
@@ -895,10 +895,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.9 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                      <DollarSign className={`w-6 h-6 mx-auto mb-2 ${
                         property.paga_expensas ? 'text-green-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.paga_expensas ? 'text-green-700' : 'text-gray-500'
                       }`}>
                         Paga Expensas
@@ -911,7 +911,7 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border ${
+                      className={`text-center p-3 rounded-lg border ${
                         property.barrio_cerrado 
                           ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
                           : 'bg-gray-50 border-gray-100'
@@ -921,10 +921,10 @@ ${locationText}` : ''}
                       transition={{ delay: 1.0 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Shield className={`w-8 h-8 mx-auto mb-2 ${
+                      <Shield className={`w-6 h-6 mx-auto mb-2 ${
                         property.barrio_cerrado ? 'text-green-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.barrio_cerrado ? 'text-green-700' : 'text-gray-500'
                       }`}>
                         Barrio Privado
@@ -937,7 +937,7 @@ ${locationText}` : ''}
                     </motion.div>
 
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border ${
+                      className={`text-center p-3 rounded-lg border ${
                         property.es_country 
                           ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-100' 
                           : 'bg-gray-50 border-gray-100'
@@ -947,10 +947,10 @@ ${locationText}` : ''}
                       transition={{ delay: 1.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <TreePine className={`w-8 h-8 mx-auto mb-2 ${
+                      <TreePine className={`w-6 h-6 mx-auto mb-2 ${
                         property.es_country ? 'text-green-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.es_country ? 'text-green-700' : 'text-gray-500'
                       }`}>
                         Country Club
@@ -966,53 +966,53 @@ ${locationText}` : ''}
               ) : property.property_type === 'apartamento' ? (
                 /* Características específicas para departamentos */
                 <motion.div 
-                  className="space-y-6"
+                  className="space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, staggerChildren: 0.1 }}
                 >
                   {/* Características básicas del departamento */}
                   <motion.div 
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                    className="grid grid-cols-2 md:grid-cols-4 gap-3"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5, staggerChildren: 0.1 }}
                   >
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bed className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.bedrooms}</div>
-                      <div className="text-sm text-gray-600">Dormitorios</div>
+                      <Bed className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{property.bedrooms}</div>
+                      <div className="text-xs text-gray-600">Dormitorios</div>
                     </motion.div>
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bath className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{property.bathrooms}</div>
-                      <div className="text-sm text-gray-600">Baños</div>
+                      <Bath className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{property.bathrooms}</div>
+                      <div className="text-xs text-gray-600">Baños</div>
                     </motion.div>
                     <motion.div 
-                      className="text-center p-4 bg-gray-50 rounded-lg"
+                      className="text-center p-3 bg-gray-50 rounded-lg"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.8 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
-                      <div className="text-sm text-gray-600">m² Construcción</div>
+                      <Square className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-gray-900">{getPropertyArea(property.property_type, property.construccion, property.terreno)}</div>
+                      <div className="text-xs text-gray-600">m² Construcción</div>
                     </motion.div>
                     <motion.div 
-                      className={`text-center p-4 rounded-lg border ${
+                      className={`text-center p-3 rounded-lg border ${
                         property.paga_expensas 
                           ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-100' 
                           : 'bg-gray-50 border-gray-100'
@@ -1022,10 +1022,10 @@ ${locationText}` : ''}
                       transition={{ delay: 0.9 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <DollarSign className={`w-8 h-8 mx-auto mb-2 ${
+                      <DollarSign className={`w-6 h-6 mx-auto mb-2 ${
                         property.paga_expensas ? 'text-indigo-500' : 'text-gray-400'
                       }`} />
-                      <div className={`text-sm font-medium ${
+                      <div className={`text-xs font-medium ${
                         property.paga_expensas ? 'text-indigo-700' : 'text-gray-500'
                       }`}>
                         Paga Expensas
@@ -1237,7 +1237,7 @@ ${locationText}` : ''}
 
           {/* Columna derecha - Mapa y contacto animada */}
           <motion.div 
-            className="space-y-6"
+            className="space-y-4"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -1251,13 +1251,13 @@ ${locationText}` : ''}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <motion.div 
-                className="p-4 border-b"
+                className="p-3 border-b"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900 font-heading">Ubicación</h3>
+                  <h3 className="text-base font-semibold text-gray-900 font-heading">Ubicación</h3>
                   {property.latitude && property.longitude && (
                     <motion.div 
                       className="flex items-center text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full"
@@ -1288,7 +1288,7 @@ ${locationText}` : ''}
               
               {/* Mapa interactivo */}
               <motion.div 
-                className="h-64 bg-gray-100 relative overflow-hidden"
+                className="h-48 bg-gray-100 relative overflow-hidden"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
@@ -1343,49 +1343,49 @@ ${locationText}` : ''}
 
             {/* Información del agente */}
             <motion.div 
-              className="bg-white border rounded-lg p-6"
+              className="bg-white border rounded-lg p-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <motion.div 
-                className="flex items-center mb-4"
+                className="flex items-center mb-3"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mr-4">
-                  <User className="w-6 h-6 text-primary-600" />
+                <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                  <User className="w-5 h-5 text-primary-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 font-heading">María Julieta Navarro</h3>
-                  <p className="text-sm text-gray-600 font-body">Agente inmobiliario</p>                
+                  <h3 className="text-sm font-semibold text-gray-900 font-heading">María Julieta Navarro</h3>
+                  <p className="text-xs text-gray-600 font-body">Agente inmobiliario</p>                
                 </div>
               </motion.div>
               
               <motion.div 
-                className="space-y-3 mb-4"
+                className="space-y-2 mb-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, staggerChildren: 0.1 }}
               >
                 <motion.div 
-                  className="flex items-center text-sm text-gray-600 font-body"
+                  className="flex items-center text-xs text-gray-600 font-body"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.7 }}
                 >
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-3 h-3 mr-2" />
                   <span>+54 381 506-3361 (Ventas)</span>
                   <span>+54 9 3814 67-0607 (Ventas)</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center text-sm text-gray-600 font-body"
+                  className="flex items-center text-xs text-gray-600 font-body"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 }}
                 >
-                  <Mail className="w-4 h-4 mr-2" />
+                  <Mail className="w-3 h-3 mr-2" />
                   <span>Admgrouptuc@gmail.com</span>
                 </motion.div>
               </motion.div>
@@ -1420,7 +1420,7 @@ ${locationText}` : ''}
             
             {/* Precio de la propiedad */}
             <motion.div 
-              className="bg-white border rounded-lg p-6"
+              className="bg-white border rounded-lg p-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -1432,7 +1432,7 @@ ${locationText}` : ''}
                 transition={{ delay: 0.7, duration: 0.6 }}
               >
                 <motion.div 
-                  className="text-2xl font-bold text-gray-800 mb-2 font-heading"
+                  className="text-xl font-bold text-gray-800 mb-1 font-heading"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
@@ -1440,7 +1440,7 @@ ${locationText}` : ''}
                   {property.currency} {property.price.toLocaleString()}{property.operation_type === 'alquiler' ? '/mes' : ''}
                 </motion.div>
                 <motion.div 
-                  className="text-sm text-gray-600 font-body"
+                  className="text-xs text-gray-600 font-body"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 }}

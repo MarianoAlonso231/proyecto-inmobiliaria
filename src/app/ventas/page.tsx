@@ -147,10 +147,7 @@ function VentasContent() {
           }
         </h1>
         <p className="text-lg text-gray-600">
-          {filters.barrio 
-            ? `Descubrí las mejores propiedades en venta en ${filters.barrio}, Tucumán. Inmobiliaria confiable con asesoramiento personalizado y financiación disponible.`
-            : 'Encontrá tu casa ideal en Tucumán. Propiedades nuevas y usadas en Yerba Buena, San Miguel de Tucumán y más ubicaciones. Inmobiliaria recomendada con asesoramiento legal.'
-          }
+          Encuentra la propiedad ideal para tu hogar.
         </p>
       </motion.div>
 

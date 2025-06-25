@@ -125,7 +125,7 @@ function AlquileresContent() {
           Propiedades en Alquiler
         </h1>
         <p className="text-lg text-gray-600">
-          Encuentra el lugar perfecto para alquilar
+          Encuentra el lugar perfecto para alquilar.
         </p>
       </motion.div>
 
