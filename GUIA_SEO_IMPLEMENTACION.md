@@ -35,7 +35,7 @@ Se ha implementado un sistema completo de SEO local optimizado para tu inmobilia
 - comprar casa en Tucumán
 - alquilar departamento Tucumán
 - venta de propiedades en Tucumán
-- inmobiliaria confiable Tucumán
+- inmobiliaria profesional Tucumán
 - inmobiliarias recomendadas en Tucumán
 
 ## 🛠️ Archivos Implementados
@@ -145,7 +145,7 @@ Ejemplos:
 
 ### Página Principal (Home)
 ```
-Title: "Group Inmobiliaria - Inmobiliaria Confiable en Tucumán | Casas, Departamentos y Terrenos"
+Title: "Group Inmobiliaria - Inmobiliaria en Tucumán | Casas, Departamentos y Terrenos"
 Description: "Inmobiliaria líder en Tucumán. Encontrá casas en venta, departamentos en alquiler, terrenos y propiedades de inversión..."
 ```
 

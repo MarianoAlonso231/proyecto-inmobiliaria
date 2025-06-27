@@ -69,8 +69,8 @@ function LocalSEOContent() {
 
   const services = [
     {
-      id: 'confiable',
-      title: 'Inmobiliaria Confiable',
+      id: 'experiencia',
+      title: 'Inmobiliaria en Tucumán',
       description: 'Más de 1000 operaciones exitosas en Tucumán',
       icon: HomeIcon
     },
@@ -132,7 +132,7 @@ function LocalSEOContent() {
             }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Somos la <strong>inmobiliaria más confiable en Tucumán</strong>, especializada en la compra, venta y alquiler de propiedades. 
+            Somos una <strong>inmobiliaria líder en Tucumán</strong>, especializada en la compra, venta y alquiler de propiedades. 
             Con más de 10 años de experiencia en el mercado inmobiliario tucumano, te ayudamos a encontrar tu hogar ideal.
           </motion.p>
         </motion.div>
@@ -246,7 +246,7 @@ function LocalSEOContent() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 1.4 }}
           >
-            Contactanos hoy mismo. Somos la <strong>inmobiliaria recomendada en Tucumán</strong> 
+            Contactanos hoy mismo. Somos tu <strong>inmobiliaria de confianza en Tucumán</strong> 
             para todas tus necesidades inmobiliarias.
           </motion.p>
           

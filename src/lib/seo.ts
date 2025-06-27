@@ -67,7 +67,7 @@ const KEYWORDS = {
     'comprar casa en Tucumán',
     'alquilar departamento Tucumán',
     'venta de propiedades en Tucumán',
-    'inmobiliaria confiable Tucumán',
+    'inmobiliaria profesional Tucumán',
     'inmobiliarias recomendadas en Tucumán',
     'invertir en propiedades Tucumán'
   ],
@@ -105,14 +105,14 @@ function generateTitle(config: SEOConfig): string {
 
   // Títulos para páginas de listado
   const titleMappings: Record<PageType, string> = {
-    'home': `${BRAND_NAME} - Inmobiliaria Confiable en Tucumán | Casas, Departamentos y Terrenos`,
+    'home': `${BRAND_NAME} - Inmobiliaria en Tucumán | Casas, Departamentos y Terrenos`,
     'ventas': `Casas en Venta Tucumán - Propiedades Nuevas y Usadas | ${BRAND_NAME}`,
     'alquileres': `Alquileres en Tucumán - Casas y Departamentos Disponibles | ${BRAND_NAME}`,
     'propiedades': `Propiedades en Tucumán - Bienes Raíces de Calidad | ${BRAND_NAME}`,
     'terrenos': `Terrenos en Venta Tucumán - Lotes Económicos y Premium | ${BRAND_NAME}`,
     'departamentos': `Departamentos en Tucumán - Alquiler y Venta | ${BRAND_NAME}`,
     'casas': `Casas en Tucumán - Encuentra tu Hogar Ideal | ${BRAND_NAME}`,
-    'contacto': `Contacto - Inmobiliaria Recomendada en Tucumán | ${BRAND_NAME}`,
+    'contacto': `Contacto - Inmobiliaria en Tucumán | ${BRAND_NAME}`,
     'tasacion': `Tasación Gratuita de Propiedades en Tucumán | ${BRAND_NAME}`,
     'property-detail': `Propiedad en Tucumán | ${BRAND_NAME}`
   };
@@ -155,21 +155,21 @@ function generateDescription(config: SEOConfig): string {
     const bedroomText = bedrooms ? `${bedrooms} dormitorios` : '';
     const areaText = area ? `${area}m²` : '';
     
-    return `${propType} en ${operationText.toLowerCase()} en ${locationName}. ${priceText} ${bedroomText} ${areaText}. Inmobiliaria confiable en Tucumán con asesoramiento personalizado. ¡Consultá ahora!`.replace(/\s+/g, ' ').trim();
+    return `${propType} en ${operationText.toLowerCase()} en ${locationName}. ${priceText} ${bedroomText} ${areaText}. Inmobiliaria en Tucumán con asesoramiento personalizado. ¡Consultá ahora!`.replace(/\s+/g, ' ').trim();
   }
 
   // Descripciones para páginas de listado
   const descriptionMappings: Record<PageType, string> = {
     'home': `Inmobiliaria líder en Tucumán. Encontrá casas en venta, departamentos en alquiler, terrenos y propiedades de inversión. Asesoramiento personalizado y financiación disponible. ¡Tu próximo hogar te está esperando!`,
-    'ventas': `Descubrí las mejores casas en venta en Tucumán. Propiedades nuevas y usadas en Yerba Buena, San Miguel de Tucumán y más ubicaciones. Inmobiliaria confiable con asesoramiento legal. ¡Comprá tu casa ideal!`,
+    'ventas': `Descubrí las mejores casas en venta en Tucumán. Propiedades nuevas y usadas en Yerba Buena, San Miguel de Tucumán y más ubicaciones. Inmobiliaria profesional con asesoramiento legal. ¡Comprá tu casa ideal!`,
     'alquileres': `Alquileres en Tucumán - Casas y departamentos disponibles para familias y estudiantes. Propiedades amuebladas y sin amueblar en las mejores zonas. Contratos flexibles y precios accesibles.`,
     'propiedades': `Explorá todas nuestras propiedades en Tucumán. Casas, departamentos, terrenos y oficinas en venta y alquiler. Bienes raíces de calidad con la mejor atención personalizada.`,
     'terrenos': `Terrenos en venta en Tucumán - Lotes económicos y premium para construcción e inversión. Ubicaciones estratégicas en Yerba Buena, Tafí Viejo y más zonas de crecimiento.`,
     'departamentos': `Departamentos en Tucumán para alquiler y venta. Desde studios hasta 3 dormitorios en San Miguel de Tucumán, Yerba Buena y centro. Modernos y bien ubicados.`,
     'casas': `Casas en Tucumán - Encontrá tu hogar ideal. Propiedades familiares con jardín, pileta y garaje. Financiación disponible y asesoramiento completo para tu compra.`,
-    'contacto': `Contactate con la inmobiliaria más recomendada de Tucumán. Asesoramiento personalizado en compra, venta y alquiler de propiedades. Atención profesional y resultados garantizados.`,
+    'contacto': `Contactate con nuestra inmobiliaria en Tucumán. Asesoramiento personalizado en compra, venta y alquiler de propiedades. Atención profesional y resultados garantizados.`,
     'tasacion': `Tasación gratuita de propiedades en Tucumán. Evaluamos tu casa, departamento o terreno con criterios de mercado actualizados. Servicios profesionales de bienes raíces.`,
-    'property-detail': `Propiedad disponible en Tucumán. Inmobiliaria confiable con amplia experiencia en el mercado local. Consultá condiciones y financiación disponible.`
+    'property-detail': `Propiedad disponible en Tucumán. Inmobiliaria especializada con amplia experiencia en el mercado local. Consultá condiciones y financiación disponible.`
   };
 
   let baseDescription = descriptionMappings[pageType] || descriptionMappings['home'];
@@ -179,7 +179,7 @@ function generateDescription(config: SEOConfig): string {
     const locationName = TUCUMAN_LOCATIONS[location];
     const propType = PROPERTY_TYPES[propertyType];
     const operationText = operation === 'venta' ? 'venta' : 'alquiler';
-    baseDescription = `${propType}s en ${operationText} en ${locationName}, Tucumán. Inmobiliaria especializada con propiedades de calidad y precios competitivos. Asesoramiento personalizado y financiación disponible.`;
+    baseDescription = `${propType}s en ${operationText} en ${locationName}, Tucumán. Inmobiliaria profesional con propiedades de calidad y precios competitivos. Asesoramiento personalizado y financiación disponible.`;
   }
 
   return baseDescription;
