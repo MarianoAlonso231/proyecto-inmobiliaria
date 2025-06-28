@@ -23,11 +23,11 @@ const Footer = () => {
             <div className="mb-6">
               <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 inline-block">
                 <Image
-                  src="/logo.svg"
+                  src="/logo-new.png"
                   alt="GROUP Inmobiliaria Logo"
                   width={160}
                   height={80}
-                  className="h-16 w-auto"
+                  className="h-20 w-auto"
                 />
               </div>
             </div>
