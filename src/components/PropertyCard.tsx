@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { formatPropertyType } from '@/lib/utils';
 import { usePropertyImageAlt } from '@/components/SEOHead';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 interface PropertyCardProps {
   id: string;
   title: string;
@@ -60,6 +61,7 @@ const PropertyCard = ({
   paga_expensas
 }: PropertyCardProps) => {
   const router = useRouter();
+  const { trackPropertyView, trackEvent } = useGoogleAnalytics();
   
   // Generar alt text optimizado para SEO
   const imageAlt = usePropertyImageAlt(
@@ -68,7 +70,32 @@ const PropertyCard = ({
     location
   );
 
+  // Parsear el precio para obtener el valor numérico (opcional para analytics)
+  const parsePrice = (priceStr: string): number | undefined => {
+    const numericPrice = priceStr.replace(/[^\d]/g, '');
+    return numericPrice ? parseInt(numericPrice) : undefined;
+  };
+
   const handleViewDetails = () => {
+    // Trackear el clic en "Ver detalles"
+    trackPropertyView(id, propertyType, parsePrice(price));
+    
+    // Trackear evento adicional de navegación
+    trackEvent({
+      action: 'property_card_click',
+      category: 'Property Interaction',
+      label: `${propertyType}_${type}`,
+      custom_parameters: {
+        property_id: id,
+        property_type: propertyType,
+        transaction_type: type,
+        location: location,
+        price_range: parsePrice(price) ? 
+          parsePrice(price)! > 100000 ? 'high' : 
+          parsePrice(price)! > 50000 ? 'medium' : 'low' : 'unknown'
+      }
+    });
+
     router.push(`/propiedades/${id}`);
   };
 

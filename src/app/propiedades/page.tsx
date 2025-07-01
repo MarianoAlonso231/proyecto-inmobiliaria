@@ -14,6 +14,7 @@ import Footer from '@/components/Footer';
 import { useProperties, Property } from '@/hooks/useProperties';
 import PropertyCard from '@/components/PropertyCard';
 import { formatPrice, getPropertyArea } from '@/lib/utils';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 
 function PropiedadesContent() {
@@ -28,6 +29,9 @@ function PropiedadesContent() {
     precioMax: '',
     barrio: ''
   });
+
+  // Analytics hook
+  const { trackSearch, trackEvent } = useGoogleAnalytics();
 
 
 
@@ -80,6 +84,41 @@ function PropiedadesContent() {
   };
 
   const applyFilters = () => {
+    // Crear término de búsqueda para analytics
+    const searchTerms = [];
+    if (filters.operacion !== 'todas') searchTerms.push(filters.operacion);
+    if (filters.tipo !== 'todos') searchTerms.push(filters.tipo);
+    if (filters.dormitorios !== 'cualquiera') searchTerms.push(`${filters.dormitorios} dormitorios`);
+    if (filters.barrio) searchTerms.push(filters.barrio);
+    
+    const searchTerm = searchTerms.length > 0 ? searchTerms.join(' + ') : 'búsqueda general';
+
+    // Trackear la búsqueda
+    trackSearch(searchTerm, {
+      operation_type: filters.operacion,
+      property_type: filters.tipo,
+      bedrooms: filters.dormitorios,
+      min_price: filters.precioMin || null,
+      max_price: filters.precioMax || null,
+      neighborhood: filters.barrio || null,
+      results_count: filteredProperties.length
+    });
+
+    // Trackear evento adicional
+    trackEvent({
+      action: 'property_search_filter_applied',
+      category: 'Property Search',
+      label: searchTerm,
+      custom_parameters: {
+        search_filters_used: Object.entries(filters)
+          .filter(([key, value]) => value && value !== 'todas' && value !== 'todos' && value !== 'cualquiera')
+          .map(([key]) => key),
+        total_filters_applied: Object.values(filters).filter(value => 
+          value && value !== 'todas' && value !== 'todos' && value !== 'cualquiera'
+        ).length
+      }
+    });
+
     applyFiltersWithParams();
   };
 

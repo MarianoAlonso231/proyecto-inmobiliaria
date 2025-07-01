@@ -11,6 +11,7 @@ import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight, staggerContainer, staggerItem } from '@/hooks/useScrollAnimation';
+import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
 
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
@@ -20,6 +21,9 @@ export default function ContactoPage() {
     asunto: '',
     mensaje: ''
   });
+
+  // Analytics hook
+  const { trackContactForm, trackEvent } = useGoogleAnalytics();
 
   // Animation hooks
   const { ref: headerRef, controls: headerControls } = useScrollAnimation();
@@ -64,6 +68,23 @@ ${formData.telefono ? `• Teléfono: ${formData.telefono}` : ''}
 ${formData.mensaje}
 
 ¡Espero su respuesta!`;
+
+    // Trackear el envío del formulario de contacto
+    trackContactForm(formData.asunto);
+    
+    // Trackear evento adicional con detalles específicos
+    trackEvent({
+      action: 'contact_form_whatsapp_submit',
+      category: 'Lead Generation',
+      label: formData.asunto,
+      custom_parameters: {
+        form_type: 'contact_page',
+        inquiry_subject: formData.asunto,
+        contact_method: 'whatsapp',
+        has_phone: Boolean(formData.telefono),
+        phone_number_used: phoneNumber === '5493812231989' ? 'administration' : 'sales'
+      }
+    });
 
     // Abrir WhatsApp con el mensaje
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;

@@ -3,6 +3,8 @@ import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { generateSEOMetadata } from "@/lib/seo";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { getGoogleAnalyticsId } from "@/lib/google-analytics";
 
 const montserrat = Montserrat({ 
   subsets: ["latin"],
@@ -37,6 +39,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ffffff" />
       </head>
       <body className={`${openSans.className} bg-white text-gray-900 min-h-screen font-body`}>
+        <GoogleAnalytics ga_id={getGoogleAnalyticsId()} />
         <Providers>{children}</Providers>
       </body>
     </html>
