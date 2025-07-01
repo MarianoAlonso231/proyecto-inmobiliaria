@@ -32,9 +32,11 @@ export default function GoogleAnalytics({ ga_id }: GoogleAnalyticsProps) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!ga_id) return;
+    if (!ga_id || typeof window === 'undefined') return;
 
-    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+    // Manejar caso cuando searchParams no está disponible (SSR)
+    const search = searchParams ? searchParams.toString() : '';
+    const url = pathname + (search ? `?${search}` : '');
     
     // Trackear page view cuando cambie la ruta
     pageview(ga_id, url);
