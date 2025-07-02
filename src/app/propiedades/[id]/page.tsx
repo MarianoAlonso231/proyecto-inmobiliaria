@@ -290,22 +290,18 @@ ${locationText}` : ''}
         {/* Navegación */}
         {property && property.images.length > 1 && (
           <>
-            <motion.button
+            <button
               onClick={prevImage}
               className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors shadow-lg z-10"
-              whileHover={{ scale: 1.1, x: -5 }}
-              whileTap={{ scale: 0.9 }}
             >
               <ChevronLeft className="w-6 h-6" />
-            </motion.button>
-            <motion.button
+            </button>
+            <button
               onClick={nextImage}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 text-black rounded-full hover:bg-white transition-colors shadow-lg z-10"
-              whileHover={{ scale: 1.1, x: 5 }}
-              whileTap={{ scale: 0.9 }}
             >
               <ChevronRight className="w-6 h-6" />
-            </motion.button>
+            </button>
           </>
         )}
         
@@ -493,28 +489,24 @@ ${locationText}` : ''}
                 {/* Navegación */}
                 {property.images.length > 1 && (
                   <>
-                    <motion.button
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         prevImage();
                       }}
                       className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
-                      whileHover={{ scale: 1.1, x: -3 }}
-                      whileTap={{ scale: 0.9 }}
                     >
                       <ChevronLeft className="w-5 h-5" />
-                    </motion.button>
-                    <motion.button
+                    </button>
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         nextImage();
                       }}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/60 text-white rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
-                      whileHover={{ scale: 1.1, x: 3 }}
-                      whileTap={{ scale: 0.9 }}
                     >
                       <ChevronRight className="w-5 h-5" />
-                    </motion.button>
+                    </button>
                     
                     {/* Contador */}
                     <motion.div 

@@ -9,6 +9,12 @@ import { motion } from 'framer-motion';
 import { formatPropertyType } from '@/lib/utils';
 import { usePropertyImageAlt } from '@/components/SEOHead';
 import { useGoogleAnalytics } from '@/hooks/useGoogleAnalytics';
+
+// Función helper para limpiar la ubicación
+const cleanLocation = (location: string): string => {
+  return location.trim().replace(/,\s*$/, '');
+};
+
 interface PropertyCardProps {
   id: string;
   title: string;
@@ -142,7 +148,7 @@ const PropertyCard = ({
           </h3>
           <div className="flex items-center text-gray-600 mb-3">
             <MapPin className="w-5 h-5 mr-2 text-gray-500" />
-            <span className="text-sm">{location}</span>
+            <span className="text-sm">{cleanLocation(location)}</span>
           </div>
         </div>
 
