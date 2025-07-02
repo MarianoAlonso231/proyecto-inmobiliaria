@@ -35,9 +35,9 @@ function PropiedadesContent() {
 
 
 
-  // Filtrar solo propiedades disponibles
+  // Filtrar propiedades disponibles y reservadas
   const availableProperties = allProperties.filter(property => 
-    property.status === 'disponible'
+    property.status === 'disponible' || property.status === 'reservado'
   );
 
   // Aplicar filtros desde URL cuando las propiedades se cargan
@@ -317,6 +317,7 @@ function PropiedadesContent() {
                 image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                 type={property.operation_type}
                 propertyType={property.property_type}
+                status={property.status}
                 images={property.images}
                 barrio_cerrado={property.barrio_cerrado}
                 es_country={property.es_country}

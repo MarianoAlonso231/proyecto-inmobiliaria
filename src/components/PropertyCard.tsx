@@ -26,6 +26,8 @@ interface PropertyCardProps {
   image: string;
   type: 'venta' | 'alquiler';
   propertyType: string;
+  // Agregamos la prop status para manejar el estado reservado
+  status?: 'disponible' | 'vendido' | 'alquilado' | 'reservado';
   // Propiedades adicionales para compatibilidad
   description?: string;
   yearBuilt?: number;
@@ -61,6 +63,7 @@ const PropertyCard = ({
   image, 
   type, 
   propertyType,
+  status = 'disponible',
   images,
   barrio_cerrado,
   es_country,
@@ -68,6 +71,9 @@ const PropertyCard = ({
 }: PropertyCardProps) => {
   const router = useRouter();
   const { trackPropertyView, trackEvent } = useGoogleAnalytics();
+  
+  // Determinar si la propiedad está reservada
+  const isReserved = status === 'reservado';
   
   // Generar alt text optimizado para SEO
   const imageAlt = usePropertyImageAlt(
@@ -109,6 +115,7 @@ const PropertyCard = ({
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      className={isReserved ? 'filter grayscale opacity-80' : ''}
     >
       <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative overflow-hidden">
@@ -120,13 +127,21 @@ const PropertyCard = ({
             transition={{ duration: 0.4, ease: "easeOut" }}
             loading="lazy"
           />
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
           <Badge 
             variant={type === 'venta' ? 'default' : 'secondary'}
             className={`${type === 'venta' ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
           >
             {type === 'venta' ? 'Venta' : 'Alquiler'}
           </Badge>
+          {isReserved && (
+            <Badge 
+              variant="destructive"
+              className="bg-red-500 hover:bg-red-600 text-white font-bold animate-pulse"
+            >
+              RESERVADO
+            </Badge>
+          )}
         </div>
         <div className="absolute bottom-3 left-3">
           <Badge variant="outline" className="bg-white/90 text-gray-900 border-gray-300">
@@ -264,11 +279,15 @@ const PropertyCard = ({
           </div>
           <Button 
             size="sm" 
-            className="bg-[#ff8425] hover:bg-[#e6741f]"
+            className={isReserved 
+              ? "bg-gray-400 hover:bg-gray-500 cursor-not-allowed" 
+              : "bg-[#ff8425] hover:bg-[#e6741f]"
+            }
             style={{ color: '#ffffff' }}
-            onClick={handleViewDetails}
+            onClick={isReserved ? undefined : handleViewDetails}
+            disabled={isReserved}
           >
-            Ver detalles
+            {isReserved ? 'Reservado' : 'Ver detalles'}
           </Button>
         </div>
       </CardContent>

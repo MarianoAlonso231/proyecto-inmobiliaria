@@ -44,9 +44,26 @@ export default function AdminDashboard() {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
+  // Estado para filtros en el panel de administración
+  const [filters, setFilters] = useState({
+    nombre: '',
+    operacion: 'todas' as 'todas' | 'venta' | 'alquiler'
+  });
+
   // Hook personalizado para propiedades y notificaciones
   const { properties, isLoading: isLoadingProperties, error: propertiesError, stats, createProperty, updateProperty, deleteProperty, propertyToFormData, clearError } = useProperties();
   const { showToast, ToastContainer } = useToast();
+
+  // Filtrar propiedades según los filtros seleccionados
+  const filteredProperties = properties.filter(property => {
+    // Filtro por nombre (título)
+    const matchesName = property.title.toLowerCase().includes(filters.nombre.toLowerCase());
+    
+    // Filtro por operación
+    const matchesOperation = filters.operacion === 'todas' || property.operation_type === filters.operacion;
+    
+    return matchesName && matchesOperation;
+  });
 
   useEffect(() => {
     let isMounted = true; // Flag para evitar actualizaciones de estado si el componente se desmonta
@@ -593,24 +610,98 @@ export default function AdminDashboard() {
               </Dialog>
             </div>
 
+            {/* Filtros para propiedades */}
+            <Card className="bg-white border border-gray-200">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <MapPin className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">Filtros</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="filtro-nombre" className="text-gray-700 font-medium">
+                      Buscar por nombre
+                    </Label>
+                    <Input
+                      id="filtro-nombre"
+                      type="text"
+                      placeholder="Ingresa el nombre de la propiedad..."
+                      value={filters.nombre}
+                      onChange={(e) => setFilters(prev => ({ ...prev, nombre: e.target.value }))}
+                      className="mt-1 bg-white border-gray-300 text-gray-900"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="filtro-operacion" className="text-gray-700 font-medium">
+                      Operación
+                    </Label>
+                    <select
+                      id="filtro-operacion"
+                      value={filters.operacion}
+                      onChange={(e) => setFilters(prev => ({ ...prev, operacion: e.target.value as 'todas' | 'venta' | 'alquiler' }))}
+                      className="mt-1 w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="todas">Todas las operaciones</option>
+                      <option value="venta">Venta</option>
+                      <option value="alquiler">Alquiler</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex items-end">
+                    <Button
+                      onClick={() => setFilters({ nombre: '', operacion: 'todas' })}
+                      variant="outline"
+                      className="w-full bg-white hover:bg-gray-50 text-gray-700 border-gray-300"
+                    >
+                      Limpiar filtros
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="mt-3 text-sm text-gray-600">
+                  Mostrando {filteredProperties.length} de {properties.length} propiedades
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Properties List */}
             {isLoadingProperties ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
               </div>
-            ) : properties.length === 0 ? (
+            ) : filteredProperties.length === 0 ? (
               <Card className="bg-white border border-gray-200">
                 <CardContent className="p-8 text-center">
                   <div className="p-4 bg-gray-100 rounded-full w-fit mx-auto mb-4">
                     <Home className="h-12 w-12 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay propiedades</h3>
-                  <p className="text-gray-600">Agrega tu primera propiedad para comenzar</p>
+                  {properties.length === 0 ? (
+                    <>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay propiedades</h3>
+                      <p className="text-gray-600">Agrega tu primera propiedad para comenzar</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No se encontraron propiedades</h3>
+                      <p className="text-gray-600">No hay propiedades que coincidan con los filtros aplicados</p>
+                      <Button
+                        onClick={() => setFilters({ nombre: '', operacion: 'todas' })}
+                        variant="outline"
+                        className="mt-3 bg-white hover:bg-gray-50 text-gray-700 border-gray-300"
+                      >
+                        Limpiar filtros
+                      </Button>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {properties.map((property) => (
+                {filteredProperties.map((property) => (
                   <Card key={property.id} className="overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                     <CardContent className="p-0">
                       {/* Image placeholder */}

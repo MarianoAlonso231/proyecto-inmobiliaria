@@ -175,6 +175,7 @@ const FeaturedProperties = () => {
                     image={property.images.length > 0 ? property.images[0] : '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png'}
                     type={property.operation_type}
                     propertyType={property.property_type}
+                    status={property.status}
                     images={property.images.length > 0 ? property.images : ['/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png']}
                     barrio_cerrado={property.barrio_cerrado}
                     es_country={property.es_country}

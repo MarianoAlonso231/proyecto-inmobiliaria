@@ -790,7 +790,7 @@ export function useFeaturedProperties(limit = 6) {
         .from('properties')
         .select('*')
         .eq('featured', true)
-        .eq('status', 'disponible')
+        .in('status', ['disponible', 'reservado'])
         .order('created_at', { ascending: false })
         .limit(limit);
 
