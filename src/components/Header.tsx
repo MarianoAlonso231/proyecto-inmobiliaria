@@ -13,13 +13,22 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Cambiado de 10 a 100 para que se active después de hacer más scroll
-      setIsScrolled(window.scrollY > 100);
+      const scrollY = window.scrollY;
+      
+      // Implementar hysteresis para evitar el parpadeo:
+      // - Al bajar: se activa a los 100px
+      // - Al subir: se desactiva a los 80px
+      // Esto evita que cambie constantemente cerca del umbral
+      if (!isScrolled && scrollY > 100) {
+        setIsScrolled(true);
+      } else if (isScrolled && scrollY < 80) {
+        setIsScrolled(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isScrolled]); // Agregamos isScrolled como dependencia
 
   const navItems = [
     { name: 'Ventas', href: '/ventas' },
@@ -132,14 +141,9 @@ const Header = () => {
                     : 'px-6 py-2.5 text-base animate-pulse-glow'
                 }`}
               >
-                <motion.div
-                  animate={!isScrolled ? { rotate: [0, 5, -5, 0] } : {}}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  <Phone className={`mr-2 transition-all duration-300 ${
-                    isScrolled ? 'w-3 h-3' : 'w-4 h-4'
-                  }`} />
-                </motion.div>
+                <Phone className={`mr-2 transition-all duration-300 ${
+                  isScrolled ? 'w-3 h-3' : 'w-4 h-4'
+                }`} />
                 {isScrolled ? 'WhatsApp' : 'Contactar por WhatsApp'}
               </Button>
             </motion.div>

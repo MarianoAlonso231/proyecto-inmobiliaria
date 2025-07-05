@@ -63,9 +63,9 @@ export function getPropertyArea(propertyType: string, construccion?: number | nu
     return terreno ? `${terreno}m²` : 'N/A';
   }
   
-  // Para estacionamientos, mostrar la construcción como área del estacionamiento
+  // Para estacionamientos, mostrar el área del terreno
   if (propertyType.toLowerCase() === 'estacionamiento') {
-    return construccion ? `${construccion}m²` : 'N/A';
+    return terreno ? `${terreno}m²` : 'N/A';
   }
   
   // Para otros tipos de propiedad, mostrar la construcción
