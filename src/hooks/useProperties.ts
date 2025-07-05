@@ -13,7 +13,7 @@ export interface Property {
   price: number;
   currency: string;
   operation_type: 'venta' | 'alquiler';
-  property_type: 'casa' | 'apartamento' | 'oficina' | 'local' | 'terreno';
+  property_type: 'casa' | 'apartamento' | 'oficina' | 'local' | 'terreno' | 'estacionamiento';
   bedrooms: number;
   bathrooms: number;
   construccion: number;
@@ -33,6 +33,9 @@ export interface Property {
   barrio_cerrado?: boolean;
   es_country?: boolean;
   paga_expensas?: boolean;
+  // Campos específicos para estacionamientos
+  cubierto?: boolean;
+  capacidad?: number;
   created_at: string;
   updated_at: string;
 }
@@ -63,6 +66,9 @@ export interface PropertyFormData {
   barrio_cerrado: boolean;
   es_country: boolean;
   paga_expensas: boolean;
+  // Campos específicos para estacionamientos
+  cubierto: boolean;
+  capacidad: string;
 }
 
 export const initialFormData: PropertyFormData = {
@@ -90,7 +96,10 @@ export const initialFormData: PropertyFormData = {
   // Campos específicos para terrenos
   barrio_cerrado: false,
   es_country: false,
-  paga_expensas: false
+  paga_expensas: false,
+  // Campos específicos para estacionamientos
+  cubierto: false,
+  capacidad: '1'
 };
 
 // Función con timeout para evitar colgadas
@@ -318,7 +327,10 @@ export function useProperties() {
         // Campos específicos para terrenos
         barrio_cerrado: formData.barrio_cerrado,
         es_country: formData.es_country,
-        paga_expensas: formData.paga_expensas
+        paga_expensas: formData.paga_expensas,
+        // Campos específicos para estacionamientos
+        cubierto: formData.cubierto,
+        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null
       };
 
       // Debug de coordenadas (solo en desarrollo)
@@ -547,7 +559,10 @@ export function useProperties() {
         // Campos específicos para terrenos
         barrio_cerrado: formData.barrio_cerrado,
         es_country: formData.es_country,
-        paga_expensas: formData.paga_expensas
+        paga_expensas: formData.paga_expensas,
+        // Campos específicos para estacionamientos
+        cubierto: formData.cubierto,
+        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null
       };
 
       // Validación específica de coordenadas para actualización
@@ -706,7 +721,10 @@ export function useProperties() {
       // Campos específicos para terrenos
       barrio_cerrado: property.barrio_cerrado || false,
       es_country: property.es_country || false,
-      paga_expensas: property.paga_expensas || false
+      paga_expensas: property.paga_expensas || false,
+      // Campos específicos para estacionamientos
+      cubierto: property.cubierto || false,
+      capacidad: property.capacidad?.toString() || '1'
     };
   };
 

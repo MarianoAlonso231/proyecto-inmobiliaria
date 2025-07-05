@@ -27,7 +27,8 @@ export const PROPERTY_TYPES = {
   'apartamento': 'Departamento',
   'terreno': 'Terreno',
   'oficina': 'Oficina',
-  'local': 'Local Comercial'
+  'local': 'Local Comercial',
+  'estacionamiento': 'Estacionamiento'
 };
 
 // Operaciones

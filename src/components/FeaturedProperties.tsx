@@ -180,6 +180,8 @@ const FeaturedProperties = () => {
                     barrio_cerrado={property.barrio_cerrado}
                     es_country={property.es_country}
                     paga_expensas={property.paga_expensas}
+                    cubierto={property.cubierto}
+                    capacidad={property.capacidad}
                   />
                 </motion.div>
               ))}

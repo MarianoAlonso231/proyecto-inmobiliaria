@@ -210,6 +210,18 @@ export default function PropertyDetailsPage() {
 • ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
 • Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
 • Características especiales: ${characteristics.join(', ')}` : ''}`;
+    } else if (property.property_type === 'estacionamiento') {
+      const characteristics = [];
+      if (property.cubierto) characteristics.push('Cubierto');
+      if (property.capacidad && property.capacidad > 1) characteristics.push(`Capacidad: ${property.capacidad} autos`);
+      
+      characteristicsText = `🚗 Características del Estacionamiento:
+• Tipo: ${formatPropertyType(property.property_type)}
+• ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
+• ${property.cubierto ? 'Cubierto (Techado)' : 'Descubierto'}
+• Capacidad: ${property.capacidad || 1} auto${(property.capacidad || 1) > 1 ? 's' : ''}
+• Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `
+• Características especiales: ${characteristics.join(', ')}` : ''}`;
     } else {
       characteristicsText = `🏠 Características:
 • ${property.bedrooms} dormitorios
@@ -1026,6 +1038,77 @@ ${locationText}` : ''}
                         property.paga_expensas ? 'text-indigo-600' : 'text-gray-400'
                       }`}>
                         {property.paga_expensas ? 'Sí' : 'No'}
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              ) : property.property_type === 'estacionamiento' ? (
+                /* Características específicas para estacionamientos */
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, staggerChildren: 0.1 }}
+                >
+                  {/* Área del estacionamiento */}
+                  <motion.div 
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                  >
+                    <Square className="w-8 h-8 text-primary-400 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-gray-900">{property.terreno || 'N/A'}</div>
+                    <div className="text-xs text-gray-600">m² Terreno</div>
+                  </motion.div>
+
+                  {/* Características específicas del estacionamiento */}
+                  <motion.div 
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, staggerChildren: 0.1 }}
+                  >
+                    <motion.div 
+                      className={`text-center p-4 rounded-lg border ${
+                        property.cubierto 
+                          ? 'bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100' 
+                          : 'bg-gray-50 border-gray-100'
+                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Shield className={`w-8 h-8 mx-auto mb-2 ${
+                        property.cubierto ? 'text-blue-500' : 'text-gray-400'
+                      }`} />
+                      <div className={`text-lg font-bold ${
+                        property.cubierto ? 'text-blue-700' : 'text-gray-500'
+                      }`}>
+                        {property.cubierto ? 'Cubierto' : 'Descubierto'}
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        property.cubierto ? 'text-blue-600' : 'text-gray-400'
+                      }`}>
+                        {property.cubierto ? 'Techado' : 'Al aire libre'}
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      className="text-center p-4 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 rounded-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <Car className="w-8 h-8 text-orange-500 mx-auto mb-2" />
+                      <div className="text-lg font-bold text-orange-700">
+                        {property.capacidad || 1} auto{(property.capacidad || 1) > 1 ? 's' : ''}
+                      </div>
+                      <div className="text-xs text-orange-600 mt-1">
+                        Capacidad
                       </div>
                     </motion.div>
                   </motion.div>

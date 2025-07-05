@@ -178,6 +178,7 @@ function VentasContent() {
                     <SelectItem value="oficina">Oficina</SelectItem>
                     <SelectItem value="local">Local</SelectItem>
                     <SelectItem value="terreno">Terreno</SelectItem>
+                    <SelectItem value="estacionamiento">Estacionamiento</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -288,6 +289,8 @@ function VentasContent() {
                 barrio_cerrado={property.barrio_cerrado}
                 es_country={property.es_country}
                 paga_expensas={property.paga_expensas}
+                cubierto={property.cubierto}
+                capacidad={property.capacidad}
               />
             </motion.div>
           ))}

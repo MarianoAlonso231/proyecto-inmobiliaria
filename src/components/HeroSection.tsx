@@ -135,6 +135,7 @@ const HeroSection = () => {
                   <SelectItem value="oficina">Oficina</SelectItem>
                   <SelectItem value="local">Local Comercial</SelectItem>
                   <SelectItem value="terreno">Terreno</SelectItem>
+                  <SelectItem value="estacionamiento">Estacionamiento</SelectItem>
                 </SelectContent>
               </Select>
             </div>

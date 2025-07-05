@@ -50,6 +50,9 @@ interface PropertyCardProps {
   barrio_cerrado?: boolean;
   es_country?: boolean;
   paga_expensas?: boolean;
+  // Campos específicos para estacionamientos
+  cubierto?: boolean;
+  capacidad?: number;
 }
 
 const PropertyCard = ({ 
@@ -67,7 +70,9 @@ const PropertyCard = ({
   images,
   barrio_cerrado,
   es_country,
-  paga_expensas
+  paga_expensas,
+  cubierto,
+  capacidad
 }: PropertyCardProps) => {
   const router = useRouter();
   const { trackPropertyView, trackEvent } = useGoogleAnalytics();
@@ -250,6 +255,27 @@ const PropertyCard = ({
               <div className="flex items-center space-x-1">
                 <DollarSign className="w-5 h-5 text-gray-500" />
                 <span className="text-xs font-medium">{paga_expensas ? 'C/Exp' : 'S/Exp'}</span>
+              </div>
+            </>
+          ) : propertyType === 'estacionamiento' ? (
+            // Características específicas para estacionamientos
+            <>
+              <div className="flex items-center space-x-1">
+                <Square className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium">{area}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <span className="text-xs font-medium">{cubierto ? 'Cubierto' : 'Descubierto'}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 6h8l2 2v6a2 2 0 01-2 2h-1m-4 0H7m4 0V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h4z" />
+                </svg>
+                <span className="text-xs font-medium">{capacidad || 1} auto{(capacidad || 1) > 1 ? 's' : ''}</span>
               </div>
             </>
           ) : (

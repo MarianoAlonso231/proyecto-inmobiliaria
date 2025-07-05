@@ -102,6 +102,7 @@ export function PropertyForm({
                 <SelectItem value="oficina">Oficina</SelectItem>
                 <SelectItem value="local">Local</SelectItem>
                 <SelectItem value="terreno">Terreno</SelectItem>
+                <SelectItem value="estacionamiento">Estacionamiento</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -314,6 +315,43 @@ export function PropertyForm({
                   <Label htmlFor="paga_expensas_departamento" className="text-sm font-medium text-gray-700">
                     Paga Expensas
                   </Label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Campos específicos para estacionamientos */}
+          {formData.property_type === 'estacionamiento' && (
+            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+              <h4 className="text-lg font-medium text-gray-900 mb-3">Características del Estacionamiento</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="cubierto"
+                    checked={formData.cubierto}
+                    onChange={(e) => onInputChange('cubierto', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-slate-400 focus:ring-slate-400"
+                  />
+                  <Label htmlFor="cubierto" className="text-sm font-medium text-gray-700">
+                    Cubierto (Techado)
+                  </Label>
+                </div>
+                
+                <div>
+                  <Label htmlFor="capacidad" className="text-sm font-medium text-gray-700">
+                    Capacidad (Cantidad de autos)
+                  </Label>
+                  <Input
+                    id="capacidad"
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={formData.capacidad}
+                    onChange={(e) => onInputChange('capacidad', e.target.value)}
+                    className="mt-1 bg-white border-gray-300 focus:border-slate-500"
+                    placeholder="1"
+                  />
                 </div>
               </div>
             </div>
