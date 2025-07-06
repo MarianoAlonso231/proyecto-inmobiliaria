@@ -29,7 +29,8 @@ import {
   ArrowLeft,
   User,
   MessageSquare,
-  DollarSign
+  DollarSign,
+  CheckCircle
 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useProperties } from '@/hooks/useProperties';
@@ -1225,85 +1226,49 @@ ${locationText}` : ''}
               </motion.h2>
               <motion.div 
                 className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                style={{ gridAutoRows: 'min-content' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, staggerChildren: 0.1 }}
               >
                 {property.features && property.features.length > 0 ? (
-                  property.features.map((feature, index) => {
-                    let IconComponent = Building;
-                    const featureLower = feature.toLowerCase();
-                    
-                    if (featureLower.includes('garage') || featureLower.includes('garaje')) {
-                      IconComponent = Car;
-                    } else if (featureLower.includes('jardín') || featureLower.includes('jardin')) {
-                      IconComponent = TreePine;
-                    } else if (featureLower.includes('piscina')) {
-                      IconComponent = Waves;
-                    } else if (featureLower.includes('seguridad')) {
-                      IconComponent = Shield;
-                    } else if (featureLower.includes('gimnasio')) {
-                      IconComponent = Dumbbell;
-                    } else if (featureLower.includes('wifi')) {
-                      IconComponent = Wifi;
-                    }
-
-                    return (
-                      <motion.div 
-                        key={index} 
-                        className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.7 + index * 0.1 }}
-                        whileHover={{ scale: 1.05, x: 5 }}
-                      >
-                        <IconComponent className="w-5 h-5 text-primary-600 mr-3" />
-                        <span className="text-sm font-medium text-primary-700 font-body">{feature}</span>
-                      </motion.div>
-                    );
-                  })
+                  property.features
+                    .sort((a, b) => b.length - a.length) // Ordenar por longitud, más largo primero
+                    .map((feature, index) => (
+                    <motion.div 
+                      key={index} 
+                      className="flex items-start p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 + index * 0.1 }}
+                      whileHover={{ scale: 1.05, x: 5 }}
+                    >
+                      <div className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3">
+                        <CheckCircle className="w-5 h-5 text-primary-600" />
+                      </div>
+                      <span className="text-sm font-medium text-primary-700 font-body flex-1">{feature}</span>
+                    </motion.div>
+                  ))
                 ) : (
                   <>
-                    <motion.div 
-                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 }}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                    >
-                      <Car className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700 font-body">Garaje</span>
-                    </motion.div>
-                    <motion.div 
-                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.8 }}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                    >
-                      <TreePine className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700 font-body">Jardín</span>
-                    </motion.div>
-                    <motion.div 
-                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.9 }}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                    >
-                      <Wifi className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700 font-body">WiFi</span>
-                    </motion.div>
-                    <motion.div 
-                      className="flex items-center p-3 bg-primary-50 border border-primary-200 rounded-lg"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 1.0 }}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                    >
-                      <Shield className="w-5 h-5 text-primary-600 mr-3" />
-                      <span className="text-sm font-medium text-primary-700 font-body">Seguridad</span>
-                    </motion.div>
+                    {['Seguridad', 'Garaje', 'Jardín', 'WiFi']
+                      .sort((a, b) => b.length - a.length) // Ordenar por longitud, más largo primero
+                      .map((feature, index) => (
+                        <motion.div 
+                          key={feature}
+                          className="flex items-start p-3 bg-primary-50 border border-primary-200 rounded-lg"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.7 + index * 0.1 }}
+                          whileHover={{ scale: 1.05, x: 5 }}
+                        >
+                          <div className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3">
+                            <CheckCircle className="w-5 h-5 text-primary-600" />
+                          </div>
+                          <span className="text-sm font-medium text-primary-700 font-body flex-1">{feature}</span>
+                        </motion.div>
+                      ))
+                    }
                   </>
                 )}
               </motion.div>
@@ -1445,14 +1410,18 @@ ${locationText}` : ''}
                 transition={{ delay: 0.6, staggerChildren: 0.1 }}
               >
                 <motion.div 
-                  className="flex items-center text-xs text-gray-600 font-body"
+                  className="space-y-1"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.7 }}
                 >
-                  <Phone className="w-3 h-3 mr-2" />
-                  <span>+54 381 506-3361 (Ventas)</span>
-                  <span>+54 9 3814 67-0607 (Ventas)</span>
+                  <div className="flex items-center text-xs text-gray-600 font-body">
+                    <Phone className="w-3 h-3 mr-2" />
+                    <span>+54 381 506-3361 (Ventas)</span>
+                  </div>
+                  <div className="flex items-center text-xs text-gray-600 font-body pl-5">
+                    <span>+54 3814 67-0607 (Ventas)</span>
+                  </div>
                 </motion.div>
                 <motion.div 
                   className="flex items-center text-xs text-gray-600 font-body"
