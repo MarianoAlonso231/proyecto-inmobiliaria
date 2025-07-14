@@ -30,7 +30,8 @@ import {
   User,
   MessageSquare,
   DollarSign,
-  CheckCircle
+  CheckCircle,
+  Sofa
 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useProperties } from '@/hooks/useProperties';
@@ -990,9 +991,19 @@ ${locationText}` : ''}
                       transition={{ delay: 0.6 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <Bed className="w-6 h-6 text-primary-400 mx-auto mb-2" />
-                      <div className="text-lg font-bold text-gray-900">{property.bedrooms}</div>
-                      <div className="text-xs text-gray-600">Dormitorios</div>
+                      {property.is_monoambiente ? (
+                        <>
+                          <Sofa className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                          <div className="text-lg font-bold text-gray-900">Monoambiente</div>
+                          <div className="text-xs text-gray-600">Tipo</div>
+                        </>
+                      ) : (
+                        <>
+                          <Bed className="w-6 h-6 text-primary-400 mx-auto mb-2" />
+                          <div className="text-lg font-bold text-gray-900">{property.bedrooms}</div>
+                          <div className="text-xs text-gray-600">Dormitorios</div>
+                        </>
+                      )}
                     </motion.div>
                     <motion.div 
                       className="text-center p-3 bg-gray-50 rounded-lg"

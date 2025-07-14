@@ -303,7 +303,7 @@ export function PropertyForm({
           {formData.property_type === 'apartamento' && (
             <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
               <h4 className="text-lg font-medium text-gray-900 mb-3">Características del Departamento</h4>
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -314,6 +314,19 @@ export function PropertyForm({
                   />
                   <Label htmlFor="paga_expensas_departamento" className="text-sm font-medium text-gray-700">
                     Paga Expensas
+                  </Label>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="is_monoambiente"
+                    checked={formData.is_monoambiente}
+                    onChange={(e) => onInputChange('is_monoambiente', e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 bg-white focus:border-indigo-400 focus:ring-indigo-400"
+                  />
+                  <Label htmlFor="is_monoambiente" className="text-sm font-medium text-gray-700">
+                    Es Monoambiente
                   </Label>
                 </div>
               </div>

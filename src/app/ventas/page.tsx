@@ -66,8 +66,11 @@ function VentasContent() {
     let filtered = ventaProperties.filter(property => {
       if (filtersToApply.tipo !== 'todos' && property.property_type !== filtersToApply.tipo) return false;
       if (filtersToApply.dormitorios !== 'cualquiera') {
-        if (filtersToApply.dormitorios === '4' && property.bedrooms < 4) return false;
-        if (filtersToApply.dormitorios !== '4' && property.bedrooms.toString() !== filtersToApply.dormitorios) return false;
+        if (filtersToApply.dormitorios === 'monoambiente') {
+          // Filtrar solo departamentos monoambiente
+          if (property.property_type !== 'apartamento' || !property.is_monoambiente) return false;
+        } else if (filtersToApply.dormitorios === '4' && property.bedrooms < 4) return false;
+        else if (filtersToApply.dormitorios !== '4' && property.bedrooms.toString() !== filtersToApply.dormitorios) return false;
       }
       if (filtersToApply.precioMin && property.price < parseInt(filtersToApply.precioMin)) return false;
       if (filtersToApply.precioMax && property.price > parseInt(filtersToApply.precioMax)) return false;
@@ -191,6 +194,7 @@ function VentasContent() {
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-200">
                     <SelectItem value="cualquiera">Cualquiera</SelectItem>
+                    <SelectItem value="monoambiente">Monoambiente</SelectItem>
                     <SelectItem value="1">1</SelectItem>
                     <SelectItem value="2">2</SelectItem>
                     <SelectItem value="3">3</SelectItem>
@@ -291,6 +295,7 @@ function VentasContent() {
                 paga_expensas={property.paga_expensas}
                 cubierto={property.cubierto}
                 capacidad={property.capacidad}
+                is_monoambiente={property.is_monoambiente}
               />
             </motion.div>
           ))}

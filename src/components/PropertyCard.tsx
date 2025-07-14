@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Bed, Bath, Square, Shield, TreePine, DollarSign } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Shield, TreePine, DollarSign, Sofa } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { formatPropertyType } from '@/lib/utils';
@@ -53,6 +53,8 @@ interface PropertyCardProps {
   // Campos específicos para estacionamientos
   cubierto?: boolean;
   capacidad?: number;
+  // Campos específicos para departamentos
+  is_monoambiente?: boolean;
 }
 
 const PropertyCard = ({ 
@@ -72,7 +74,8 @@ const PropertyCard = ({
   es_country,
   paga_expensas,
   cubierto,
-  capacidad
+  capacidad,
+  is_monoambiente
 }: PropertyCardProps) => {
   const router = useRouter();
   const { trackPropertyView, trackEvent } = useGoogleAnalytics();
@@ -241,8 +244,14 @@ const PropertyCard = ({
             // Características específicas para departamentos
             <>
               <div className="flex items-center space-x-1">
-                <Bed className="w-5 h-5 text-gray-500" />
-                <span className="text-sm font-medium">{bedrooms}</span>
+                {is_monoambiente ? (
+                  <Sofa className="w-5 h-5 text-gray-500" />
+                ) : (
+                  <Bed className="w-5 h-5 text-gray-500" />
+                )}
+                <span className="text-sm font-medium">
+                  {is_monoambiente ? 'Monoambiente' : bedrooms}
+                </span>
               </div>
               <div className="flex items-center space-x-1">
                 <Bath className="w-5 h-5 text-gray-500" />

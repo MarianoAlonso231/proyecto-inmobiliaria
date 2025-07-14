@@ -166,6 +166,7 @@ const HeroSection = () => {
                 </SelectTrigger>
                 <SelectContent className="bg-white z-50">
                   <SelectItem value="cualquier_dormitorio">Cualquier cantidad</SelectItem>
+                  <SelectItem value="monoambiente">Monoambiente</SelectItem>
                   <SelectItem value="1">1 dormitorio</SelectItem>
                   <SelectItem value="2">2 dormitorios</SelectItem>
                   <SelectItem value="3">3 dormitorios</SelectItem>

@@ -36,6 +36,8 @@ export interface Property {
   // Campos específicos para estacionamientos
   cubierto?: boolean;
   capacidad?: number;
+  // Campos específicos para departamentos
+  is_monoambiente?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -69,6 +71,8 @@ export interface PropertyFormData {
   // Campos específicos para estacionamientos
   cubierto: boolean;
   capacidad: string;
+  // Campos específicos para departamentos
+  is_monoambiente: boolean;
 }
 
 export const initialFormData: PropertyFormData = {
@@ -99,7 +103,9 @@ export const initialFormData: PropertyFormData = {
   paga_expensas: false,
   // Campos específicos para estacionamientos
   cubierto: false,
-  capacidad: '1'
+  capacidad: '1',
+  // Campos específicos para departamentos
+  is_monoambiente: false
 };
 
 // Función con timeout para evitar colgadas
@@ -330,7 +336,9 @@ export function useProperties() {
         paga_expensas: formData.paga_expensas,
         // Campos específicos para estacionamientos
         cubierto: formData.cubierto,
-        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null
+        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null,
+        // Campos específicos para departamentos
+        is_monoambiente: formData.is_monoambiente
       };
 
       // Debug de coordenadas (solo en desarrollo)
@@ -562,7 +570,9 @@ export function useProperties() {
         paga_expensas: formData.paga_expensas,
         // Campos específicos para estacionamientos
         cubierto: formData.cubierto,
-        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null
+        capacidad: formData.capacidad ? parseInt(formData.capacidad) : null,
+        // Campos específicos para departamentos
+        is_monoambiente: formData.is_monoambiente
       };
 
       // Validación específica de coordenadas para actualización
@@ -724,7 +734,9 @@ export function useProperties() {
       paga_expensas: property.paga_expensas || false,
       // Campos específicos para estacionamientos
       cubierto: property.cubierto || false,
-      capacidad: property.capacidad?.toString() || '1'
+      capacidad: property.capacidad?.toString() || '1',
+      // Campos específicos para departamentos
+      is_monoambiente: property.is_monoambiente || false
     };
   };
 

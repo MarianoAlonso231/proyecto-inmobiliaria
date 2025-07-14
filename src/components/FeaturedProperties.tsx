@@ -182,6 +182,7 @@ const FeaturedProperties = () => {
                     paga_expensas={property.paga_expensas}
                     cubierto={property.cubierto}
                     capacidad={property.capacidad}
+                    is_monoambiente={property.is_monoambiente}
                   />
                 </motion.div>
               ))}
