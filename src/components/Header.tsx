@@ -33,6 +33,7 @@ const Header = () => {
   const navItems = [
     { name: 'Ventas', href: '/ventas' },
     { name: 'Alquileres', href: '/alquileres' },
+    { name: 'Mapa', href: '/mapa' },
     { name: 'Tasación', href: '/tasacion' },
     { name: 'Contacto', href: '/contacto' },
   ];

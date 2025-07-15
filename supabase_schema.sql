@@ -10,11 +10,20 @@ CREATE TABLE IF NOT EXISTS properties (
     price DECIMAL(12, 2) NOT NULL,
     currency VARCHAR(3) DEFAULT 'USD',
     operation_type VARCHAR(20) NOT NULL CHECK (operation_type IN ('venta', 'alquiler')),
-    property_type VARCHAR(50) NOT NULL CHECK (property_type IN ('casa', 'apartamento', 'oficina', 'local', 'terreno')),
+    property_type VARCHAR(50) NOT NULL CHECK (property_type IN ('casa', 'apartamento', 'oficina', 'local', 'terreno', 'estacionamiento')),
     bedrooms INTEGER DEFAULT 0,
     bathrooms INTEGER DEFAULT 0,
     construccion DECIMAL(8, 2),
     terreno DECIMAL(8, 2),
+    -- Campos específicos para terrenos
+    barrio_cerrado BOOLEAN DEFAULT FALSE,
+    es_country BOOLEAN DEFAULT FALSE,
+    paga_expensas BOOLEAN DEFAULT FALSE,
+    -- Campos específicos para estacionamientos
+    cubierto BOOLEAN DEFAULT FALSE,
+    capacidad INTEGER DEFAULT 1,
+    -- Campos específicos para departamentos
+    is_monoambiente BOOLEAN DEFAULT FALSE,
     address VARCHAR(255),
     neighborhood VARCHAR(100),
     city VARCHAR(100) DEFAULT 'San Miguel de Tucumán',
@@ -90,6 +99,14 @@ CREATE INDEX IF NOT EXISTS idx_properties_created_at ON properties(created_at);
 CREATE INDEX IF NOT EXISTS idx_client_inquiries_property_id ON client_inquiries(property_id);
 CREATE INDEX IF NOT EXISTS idx_client_inquiries_status ON client_inquiries(status);
 
+-- Índices para campos específicos por tipo de propiedad
+CREATE INDEX IF NOT EXISTS idx_properties_barrio_cerrado ON properties(barrio_cerrado);
+CREATE INDEX IF NOT EXISTS idx_properties_es_country ON properties(es_country);
+CREATE INDEX IF NOT EXISTS idx_properties_paga_expensas ON properties(paga_expensas);
+CREATE INDEX IF NOT EXISTS idx_properties_cubierto ON properties(cubierto);
+CREATE INDEX IF NOT EXISTS idx_properties_capacidad ON properties(capacidad);
+CREATE INDEX IF NOT EXISTS idx_properties_is_monoambiente ON properties(is_monoambiente);
+
 -- Insertar datos de ejemplo
 INSERT INTO properties (
     title, description, price, operation_type, property_type, 
@@ -141,6 +158,14 @@ INSERT INTO properties (
         ARRAY['https://ejemplo.com/imagen3.jpg'],
         false
     );
+
+-- Comentarios para documentar los campos específicos por tipo de propiedad
+COMMENT ON COLUMN properties.barrio_cerrado IS 'Indica si el terreno está ubicado en un barrio cerrado';
+COMMENT ON COLUMN properties.es_country IS 'Indica si el terreno está ubicado en un country club';
+COMMENT ON COLUMN properties.paga_expensas IS 'Indica si el terreno debe pagar expensas';
+COMMENT ON COLUMN properties.cubierto IS 'Indica si el estacionamiento está cubierto (techado)';
+COMMENT ON COLUMN properties.capacidad IS 'Cantidad de autos que caben en el estacionamiento';
+COMMENT ON COLUMN properties.is_monoambiente IS 'Indica si un departamento es monoambiente (solo aplica para property_type = apartamento)';
 
 -- RLS (Row Level Security) - Opcional para mayor seguridad
 -- ALTER TABLE properties ENABLE ROW LEVEL SECURITY;

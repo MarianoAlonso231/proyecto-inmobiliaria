@@ -6,6 +6,7 @@ import { Home as HomeIcon, DollarSign, Scale, MapPin } from 'lucide-react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
+import MapSection from '@/components/MapSection';
 import ServicesSection from '@/components/ServicesSection';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
@@ -286,6 +287,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <FeaturedProperties />
+      <MapSection />
       <ServicesSection />
       <LocalSEOContent />
       <Footer />
