@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
@@ -11,6 +11,23 @@ const MapSection = () => {
   const { properties, isLoading } = useProperties();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  // Hook para detectar tamaño de pantalla
+  const [mapHeight, setMapHeight] = useState("500px");
+  
+  useEffect(() => {
+    const updateMapHeight = () => {
+      if (window.innerWidth < 768) {
+        setMapHeight("300px");
+      } else {
+        setMapHeight("500px");
+      }
+    };
+    
+    updateMapHeight();
+    window.addEventListener('resize', updateMapHeight);
+    return () => window.removeEventListener('resize', updateMapHeight);
+  }, []);
 
   // Variantes de animación
   const containerVariants = {
@@ -172,24 +189,24 @@ const MapSection = () => {
           animate={isInView ? "visible" : "hidden"}
           className="mb-8"
         >
-          <Card className="bg-white border-gray-200 overflow-hidden">
-            <CardContent className="p-0">
-              {isLoading ? (
-                <div className="h-[500px] flex items-center justify-center bg-gray-50">
-                  <div className="text-center">
-                    <div className="w-8 h-8 border-4 border-[#ff8425] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-600">Cargando propiedades...</p>
+                      <Card className="bg-white border-gray-200 overflow-hidden">
+              <CardContent className="p-0">
+                {isLoading ? (
+                  <div style={{ height: mapHeight }} className="flex items-center justify-center bg-gray-50">
+                    <div className="text-center">
+                      <div className="w-8 h-8 border-4 border-[#ff8425] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-gray-600">Cargando propiedades...</p>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <InteractiveMap 
-                  properties={properties} 
-                  height="500px"
-                  showControls={false}
-                />
-              )}
-            </CardContent>
-          </Card>
+                ) : (
+                  <InteractiveMap 
+                    properties={properties} 
+                    height={mapHeight}
+                    showControls={false}
+                  />
+                )}
+              </CardContent>
+            </Card>
         </motion.div>
 
 
