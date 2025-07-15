@@ -37,7 +37,7 @@ const MapaPage = () => {
   useEffect(() => {
     const updateMapHeight = () => {
       if (window.innerWidth < 768) {
-        setMapHeight("350px");
+        setMapHeight("450px");
       } else {
         setMapHeight("600px");
       }
