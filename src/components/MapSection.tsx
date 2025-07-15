@@ -13,14 +13,14 @@ const MapSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   
   // Hook para detectar tamaño de pantalla
-  const [mapHeight, setMapHeight] = useState("500px");
+  const [mapHeight, setMapHeight] = useState("600px");
   
   useEffect(() => {
     const updateMapHeight = () => {
       if (window.innerWidth < 768) {
-        setMapHeight("300px");
+        setMapHeight("450px");
       } else {
-        setMapHeight("500px");
+        setMapHeight("600px");
       }
     };
     
