@@ -249,7 +249,7 @@ function MultiplePropertiesPopup({ properties }: { properties: Property[] }) {
                   {property.title}{property.is_monoambiente ? ' (Monoambiente)' : ''}
                 </h4>
                 
-                <div className="flex items-center gap-1 mb-1">
+                <div className="flex flex-wrap items-center gap-1 mb-1">
                   <Badge 
                     variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
                     className={`text-xs ${
@@ -260,6 +260,16 @@ function MultiplePropertiesPopup({ properties }: { properties: Property[] }) {
                   >
                     {property.operation_type === 'venta' ? 'Venta' : 'Alquiler'}
                   </Badge>
+                  {property.status !== 'disponible' && (
+                    <Badge 
+                      variant="default"
+                      className="text-xs bg-gray-600 hover:bg-gray-700 text-white font-bold"
+                    >
+                      {property.status === 'reservado' ? 'RESERVADO' :
+                       property.status === 'vendido' ? 'VENDIDO' :
+                       property.status === 'alquilado' ? 'ALQUILADO' : 'NO DISPONIBLE'}
+                    </Badge>
+                  )}
                 </div>
 
                 <div className="text-sm font-bold text-[#ff8425] mb-1">
@@ -298,11 +308,20 @@ function MultiplePropertiesPopup({ properties }: { properties: Property[] }) {
                 )}
 
                 <Button
-                  onClick={() => router.push(`/propiedades/${property.id}`)}
-                  className="w-full bg-[#ff8425] hover:bg-[#e6741f] text-white text-xs py-1 h-7"
+                  onClick={() => {
+                    if (property.status === 'disponible') {
+                      router.push(`/propiedades/${property.id}`)
+                    }
+                  }}
+                  disabled={property.status !== 'disponible'}
+                  className={`w-full text-white text-xs py-1 h-7 ${
+                    property.status === 'disponible'
+                      ? 'bg-[#ff8425] hover:bg-[#e6741f]'
+                      : 'bg-gray-400 hover:bg-gray-500 cursor-not-allowed'
+                  }`}
                 >
                   <Eye className="w-3 h-3 mr-1" />
-                  Ver detalles
+                  {property.status === 'disponible' ? 'Ver detalles' : 'No disponible'}
                 </Button>
               </div>
             </div>
@@ -317,8 +336,13 @@ function MultiplePropertiesPopup({ properties }: { properties: Property[] }) {
 function PropertyPopup({ property }: { property: Property }) {
   const router = useRouter();
 
+  // Determinar si la propiedad está disponible
+  const isAvailable = property.status === 'disponible';
+
   const handleViewProperty = () => {
-    router.push(`/propiedades/${property.id}`);
+    if (isAvailable) {
+      router.push(`/propiedades/${property.id}`);
+    }
   };
 
   const formatLocation = (address: string, neighborhood?: string) => {
@@ -342,7 +366,7 @@ function PropertyPopup({ property }: { property: Property }) {
               target.src = '/lovable-uploads/9129e3cd-5c03-4c9c-87c6-dceb873aae80.png';
             }}
           />
-          <div className="absolute top-2 left-2 flex gap-1">
+          <div className="absolute top-2 left-2 flex flex-col gap-1">
             <Badge 
               variant={property.operation_type === 'venta' ? 'default' : 'secondary'}
               className={`text-xs ${
@@ -353,6 +377,16 @@ function PropertyPopup({ property }: { property: Property }) {
             >
               {property.operation_type === 'venta' ? 'Venta' : 'Alquiler'}
             </Badge>
+            {!isAvailable && (
+              <Badge 
+                variant="default"
+                className="text-xs bg-gray-600 hover:bg-gray-700 text-white font-bold"
+              >
+                {property.status === 'reservado' ? 'RESERVADO' :
+                 property.status === 'vendido' ? 'VENDIDO' :
+                 property.status === 'alquilado' ? 'ALQUILADO' : 'NO DISPONIBLE'}
+              </Badge>
+            )}
           </div>
         </div>
       )}
@@ -423,10 +457,15 @@ function PropertyPopup({ property }: { property: Property }) {
         <div className="pt-2">
           <Button
             onClick={handleViewProperty}
-            className="w-full bg-[#ff8425] hover:bg-[#e6741f] text-white text-xs py-2"
+            disabled={!isAvailable}
+            className={`w-full text-white text-xs py-2 ${
+              isAvailable 
+                ? 'bg-[#ff8425] hover:bg-[#e6741f]' 
+                : 'bg-gray-400 hover:bg-gray-500 cursor-not-allowed'
+            }`}
           >
             <Eye className="w-3 h-3 mr-1" />
-            Ver detalles
+            {isAvailable ? 'Ver detalles' : 'No disponible'}
           </Button>
         </div>
       </div>
@@ -459,7 +498,7 @@ const InteractiveMap = ({
     return properties.filter(property => 
       property.latitude && 
       property.longitude && 
-      property.status === 'disponible' &&
+      (property.status === 'disponible' || property.status === 'reservado' || property.status === 'vendido' || property.status === 'alquilado') &&
       !isNaN(property.latitude) && 
       !isNaN(property.longitude) &&
       property.latitude >= -90 && property.latitude <= 90 &&
@@ -547,20 +586,28 @@ const InteractiveMap = ({
         {propertyGroups.map((group) => {
           const hasVentas = group.properties.some(p => p.operation_type === 'venta');
           const hasAlquileres = group.properties.some(p => p.operation_type === 'alquiler');
+          const hasDisponibles = group.properties.some(p => p.status === 'disponible');
           
           // Determinar color y tipo según las propiedades del grupo
           let color = '#ff8425'; // Color por defecto (mixto)
           let type: 'venta' | 'alquiler' = 'venta';
           
-          if (hasVentas && !hasAlquileres) {
-            color = '#10b981'; // Verde para solo ventas
-            type = 'venta';
-          } else if (hasAlquileres && !hasVentas) {
-            color = '#3b82f6'; // Azul para solo alquileres
-            type = 'alquiler';
-          } else if (hasVentas && hasAlquileres) {
-            color = '#ff8425'; // Naranja para mixto
-            type = 'venta'; // Usar venta como base para el icono
+          // Si no hay propiedades disponibles, usar color gris
+          if (!hasDisponibles) {
+            color = '#6b7280'; // Gris para propiedades no disponibles
+            type = hasVentas ? 'venta' : 'alquiler';
+          } else {
+            // Solo usar colores activos si hay propiedades disponibles
+            if (hasVentas && !hasAlquileres) {
+              color = '#10b981'; // Verde para solo ventas
+              type = 'venta';
+            } else if (hasAlquileres && !hasVentas) {
+              color = '#3b82f6'; // Azul para solo alquileres
+              type = 'alquiler';
+            } else if (hasVentas && hasAlquileres) {
+              color = '#ff8425'; // Naranja para mixto
+              type = 'venta'; // Usar venta como base para el icono
+            }
           }
 
           return (

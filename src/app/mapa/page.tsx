@@ -61,7 +61,7 @@ const MapaPage = () => {
     let filtered = properties.filter(property => 
       property.latitude && 
       property.longitude && 
-      property.status === 'disponible'
+      (property.status === 'disponible' || property.status === 'reservado' || property.status === 'vendido' || property.status === 'alquilado')
     );
 
     // Filtro por operación
@@ -409,7 +409,7 @@ const MapaPage = () => {
                 </motion.h3>
                 
                 <motion.div 
-                  className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
                   variants={containerVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -550,10 +550,53 @@ const MapaPage = () => {
                    whileHover={{ opacity: 1 }}
                    transition={{ duration: 0.2 }}
                  >
-                   Ubicaciones mixtas (ventas y alquileres) o múltiples propiedades
+                   Ubicaciones mixtas (ventas y alquileres) disponibles
                  </motion.p>
                   </motion.div>
 
+                  <motion.div 
+                    variants={itemVariants}
+                    whileHover={{ 
+                      y: -12,
+                      rotateY: 5,
+                      transition: { duration: 0.3, ease: "easeOut" } 
+                    }}
+                    className="text-center group/item relative z-10"
+                  >
+                    <motion.div 
+                      className="bg-gray-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 relative"
+                      whileHover={{ 
+                        rotate: 360,
+                        scale: 1.15,
+                        boxShadow: "0 10px 30px rgba(107, 114, 128, 0.4)"
+                      }}
+                      transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Home className="w-8 h-8 text-white opacity-70" />
+                      </motion.div>
+                    </motion.div>
+                 
+                 <motion.h4 
+                   className="font-semibold text-gray-900 mb-3"
+                   whileHover={{ scale: 1.05 }}
+                   transition={{ duration: 0.2 }}
+                 >
+                   Marcadores Grises
+                 </motion.h4>
+                 
+                 <motion.p 
+                   className="text-sm text-gray-600 leading-relaxed"
+                   initial={{ opacity: 0.8 }}
+                   whileHover={{ opacity: 1 }}
+                   transition={{ duration: 0.2 }}
+                 >
+                   Propiedades no disponibles (vendidas, reservadas o alquiladas)
+                 </motion.p>
+                  </motion.div>
 
                 </motion.div>
               </CardContent>
