@@ -30,9 +30,9 @@ function AlquileresContent() {
 
 
 
-  // Filtrar solo propiedades en alquiler (disponibles y reservadas)
+  // Filtrar solo propiedades en alquiler (disponibles, reservadas y alquiladas)
   const alquilerProperties = allProperties.filter(property => 
-    property.operation_type === 'alquiler' && (property.status === 'disponible' || property.status === 'reservado')
+    property.operation_type === 'alquiler' && (property.status === 'disponible' || property.status === 'reservado' || property.status === 'alquilado')
   );
 
   // Aplicar filtros desde URL cuando las propiedades se cargan

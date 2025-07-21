@@ -80,8 +80,11 @@ const PropertyCard = ({
   const router = useRouter();
   const { trackPropertyView, trackEvent } = useGoogleAnalytics();
   
-  // Determinar si la propiedad está reservada
+  // Determinar si la propiedad está reservada, vendida o alquilada
   const isReserved = status === 'reservado';
+  const isSold = status === 'vendido';
+  const isRented = status === 'alquilado';
+  const isUnavailable = isReserved || isSold || isRented;
   
   // Generar alt text optimizado para SEO
   const imageAlt = usePropertyImageAlt(
@@ -123,7 +126,7 @@ const PropertyCard = ({
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={isReserved ? 'filter grayscale opacity-80' : ''}
+      className={isUnavailable ? 'filter grayscale opacity-80' : ''}
     >
       <Card className="group overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="relative overflow-hidden">
@@ -148,6 +151,22 @@ const PropertyCard = ({
               className="bg-red-500 hover:bg-red-600 text-white font-bold animate-pulse"
             >
               RESERVADO
+            </Badge>
+          )}
+          {isSold && (
+            <Badge 
+              variant="default"
+              className="bg-gray-600 hover:bg-gray-700 text-white font-bold"
+            >
+              VENDIDO
+            </Badge>
+          )}
+          {isRented && (
+            <Badge 
+              variant="default"
+              className="bg-gray-600 hover:bg-gray-700 text-white font-bold"
+            >
+              ALQUILADO
             </Badge>
           )}
         </div>
@@ -314,15 +333,15 @@ const PropertyCard = ({
           </div>
           <Button 
             size="sm" 
-            className={isReserved 
+            className={isUnavailable 
               ? "bg-gray-400 hover:bg-gray-500 cursor-not-allowed" 
               : "bg-[#ff8425] hover:bg-[#e6741f]"
             }
             style={{ color: '#ffffff' }}
-            onClick={isReserved ? undefined : handleViewDetails}
-            disabled={isReserved}
+            onClick={isUnavailable ? undefined : handleViewDetails}
+            disabled={isUnavailable}
           >
-            {isReserved ? 'Reservado' : 'Ver detalles'}
+            {isUnavailable ? 'No disponible' : 'Ver detalles'}
           </Button>
         </div>
       </CardContent>

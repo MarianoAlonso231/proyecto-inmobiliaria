@@ -35,9 +35,9 @@ function PropiedadesContent() {
 
 
 
-  // Filtrar propiedades disponibles y reservadas
+  // Filtrar propiedades disponibles, reservadas, vendidas y alquiladas
   const availableProperties = allProperties.filter(property => 
-    property.status === 'disponible' || property.status === 'reservado'
+    property.status === 'disponible' || property.status === 'reservado' || property.status === 'vendido' || property.status === 'alquilado'
   );
 
   // Aplicar filtros desde URL cuando las propiedades se cargan

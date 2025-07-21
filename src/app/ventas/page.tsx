@@ -31,9 +31,9 @@ function VentasContent() {
 
 
 
-  // Filtrar solo propiedades en venta (disponibles y reservadas)
+  // Filtrar solo propiedades en venta (disponibles, reservadas y vendidas)
   const ventaProperties = allProperties.filter(property => 
-    property.operation_type === 'venta' && (property.status === 'disponible' || property.status === 'reservado')
+    property.operation_type === 'venta' && (property.status === 'disponible' || property.status === 'reservado' || property.status === 'vendido')
   );
 
   // Aplicar filtros desde URL cuando las propiedades se cargan
