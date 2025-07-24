@@ -207,7 +207,7 @@ export default function PropertyDetailsPage() {
       
       characteristicsText = `🏠 Características:
 • Tipo: ${formatPropertyType(property.property_type)}
-• ${property.bedrooms} dormitorios
+• ${property.is_monoambiente ? 'Monoambiente' : `${property.bedrooms} dormitorios`}
 • ${property.bathrooms} baños
 • ${getPropertyArea(property.property_type, property.construccion, property.terreno)}
 • Ubicación: ${property.neighborhood || property.address || 'Ubicación no especificada'}${characteristics.length > 0 ? `

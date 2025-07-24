@@ -246,7 +246,7 @@ function MultiplePropertiesPopup({ properties }: { properties: Property[] }) {
               {/* Información */}
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold text-xs text-gray-900 line-clamp-1 mb-1">
-                  {property.title}{property.is_monoambiente ? ' (Monoambiente)' : ''}
+                  {property.title}
                 </h4>
                 
                 <div className="flex flex-wrap items-center gap-1 mb-1">
@@ -394,7 +394,7 @@ function PropertyPopup({ property }: { property: Property }) {
       {/* Información de la propiedad */}
       <div className="space-y-2">
         <h3 className="font-semibold text-sm text-gray-900 line-clamp-2">
-          {property.title}{property.is_monoambiente ? ' (Monoambiente)' : ''}
+          {property.title}
         </h3>
         
         <div className="flex items-center text-gray-600 text-xs">
